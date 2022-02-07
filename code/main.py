@@ -2,6 +2,8 @@ import pygame
 import sys
 from settings import *
 from level import *
+from hub import *
+from player import Player
 
 
 class Game:
@@ -26,6 +28,8 @@ class Game:
             self.level.run()
             pygame.display.update()
             self.clock.tick(FPS)
+            if self.level.player_dead:
+                self.level = Hub()
 
 
 if __name__ == '__main__':

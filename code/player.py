@@ -37,6 +37,9 @@ class Player(Entity):
         self.health = self.stats['health']
         self.speed = self.stats['speed']
 
+        # statut
+        self.is_dead = False
+
     def import_player_assets(self):
         character_path = '../graphics/player/'
         self.animations = {
@@ -99,6 +102,14 @@ class Player(Entity):
         else:
             if 'attack' in self.status:
                 self.status = self.status.replace('_attack', '')
+
+        # mort
+        self.health -= 1
+        if self.health == 0:
+            self.is_dead = True
+        elif self.health > 0:
+            self.is_dead = False
+        print(self.is_dead)
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()

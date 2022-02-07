@@ -7,9 +7,10 @@ from support import *
 from random import choice
 from ui import UI
 from enemy import Enemy
+from debug import *
 
 
-class Level:
+class Hub:
     def __init__(self):
         # obtenir la surface d'affichage
         self.display_surface = pygame.display.get_surface()
@@ -26,6 +27,9 @@ class Level:
 
         # UI
         self.ui = UI()
+
+        # player status
+        self.player_dead = self.player.is_dead
 
     def create_map(self):
         layouts = {
@@ -50,17 +54,6 @@ class Level:
                         if style == 'boundary':
                             Tile(
                                 (x, y), [self.obstacle_sprites], 'invisible')
-                        # herbe
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'grass', random_grass_image)
-
-                        # objets
-                        if style == 'object':
-                            surf = graphics['objects'][int(col)]
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'object', surf)
 
                         # entities
                         if style == 'entities':
@@ -70,18 +63,6 @@ class Level:
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
                                     self.create_magic)
-                            else:
-                                if col == '390':
-                                    monster_name = 'bamboo'
-                                elif col == '391':
-                                    monster_name = 'spirit'
-                                elif col == '392':
-                                    monster_name = 'raccoon'
-                                else:
-                                    monster_name = 'squid'
-
-                                Enemy(monster_name, (x, y), [
-                                      self.visible_sprites], self.obstacle_sprites)
 
     def create_magic(self, style, strength):
         print(style)
@@ -93,8 +74,6 @@ class Level:
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
         self.ui.display(self.player)
-        # player status
-        self.player_dead = self.player.is_dead
 
 
 class YSortCameraGroup(pygame.sprite.Group):
