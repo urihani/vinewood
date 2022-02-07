@@ -5,7 +5,6 @@ from player import Player
 from debug import debug
 from support import *
 from random import choice
-from weapon import Weapon
 from ui import UI
 from enemy import Enemy
 
@@ -19,7 +18,7 @@ class Level:
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
-        # attack sprites
+        # sprites d'attaque
         self.current_attack = None
 
         # sprites (setup)
@@ -70,8 +69,6 @@ class Level:
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.create_attack,
-                                    self.destroy_attack,
                                     self.create_magic)
                             else:
                                 if col == '390':
@@ -86,18 +83,9 @@ class Level:
                                 Enemy(monster_name, (x, y), [
                                       self.visible_sprites], self.obstacle_sprites)
 
-    def create_attack(self):
-        self.current_attack = Weapon(self.player, [self.visible_sprites])
-
-    def create_magic(self, style, strength, cost):
+    def create_magic(self, style, strength):
         print(style)
         print(strength)
-        print(cost)
-
-    def destroy_attack(self):
-        if self.current_attack:
-            self.current_attack.kill()
-        self.current_attack = None
 
     def run(self):
         # met à jour et dessine les sprites
