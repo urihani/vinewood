@@ -7,7 +7,6 @@ from support import *
 from random import choice
 from ui import UI
 from enemy import Enemy
-from debug import *
 
 
 class Hub:
@@ -28,8 +27,7 @@ class Hub:
         # UI
         self.ui = UI()
 
-        # player status
-        self.player_dead = self.player.is_dead
+        self.player_teleport = False
 
     def create_map(self):
         layouts = {
@@ -40,7 +38,8 @@ class Hub:
         }
         graphics = {
             'grass': import_folder('../graphics/Grass'),
-            'objects': import_folder('../graphics/objects')
+            'objects': import_folder('../graphics/objects'),
+            'portail': import_folder('../graphics/portail')
         }
 
         for style, layout in layouts.items():
@@ -54,6 +53,11 @@ class Hub:
                         if style == 'boundary':
                             Tile(
                                 (x, y), [self.obstacle_sprites], 'invisible')
+                        # herbe
+                        if style == 'grass':
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x, y), [self.visible_sprites,
+                                 self.obstacle_sprites], 'grass', random_grass_image)
 
                         # entities
                         if style == 'entities':
@@ -63,6 +67,9 @@ class Hub:
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
                                     self.create_magic)
+
+            portail = graphics['portail'][0]
+            Tile((1850, 1100), [self.visible_sprites], 'portail', portail)
 
     def create_magic(self, style, strength):
         print(style)
@@ -74,6 +81,10 @@ class Hub:
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
         self.ui.display(self.player)
+
+        # player status pour la téléportation
+        self.player_teleport = self.player.teleport
+        self.player_dead = self.player.is_dead
 
 
 class YSortCameraGroup(pygame.sprite.Group):

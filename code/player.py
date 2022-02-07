@@ -39,6 +39,7 @@ class Player(Entity):
 
         # statut
         self.is_dead = False
+        self.teleport = False
 
     def import_player_assets(self):
         character_path = '../graphics/player/'
@@ -83,6 +84,14 @@ class Player(Entity):
                     self.magic_index]['strength']
                 self.create_magic(style, strength)
 
+            # debug death
+            if keys[pygame.K_m]:
+                self.health = 0
+
+            # debug téléportation
+            if keys[pygame.K_l]:
+                self.teleport = True
+
     def get_status(self):
 
         # idle
@@ -104,12 +113,8 @@ class Player(Entity):
                 self.status = self.status.replace('_attack', '')
 
         # mort
-        self.health -= 1
         if self.health == 0:
             self.is_dead = True
-        elif self.health > 0:
-            self.is_dead = False
-        print(self.is_dead)
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
