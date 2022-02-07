@@ -3,9 +3,7 @@ import pygame
 import sys
 from settings import *
 from level import *
-from hub import *
 from player import Player
-from hub import *
 
 
 class Game:
@@ -16,9 +14,10 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
+        pygame.mouse.set_cursor(
+            (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
         self.level = Level()
-        self.hub = Hub()
 
     def run(self):
         while True:
@@ -31,14 +30,6 @@ class Game:
             self.level.run()
             pygame.display.update()
             self.clock.tick(FPS)
-
-            # mécanique de téléportation
-            print('dead : ' + str(self.level.player_dead))
-            print('teleport : ' + str(self.hub.player_teleport))
-            if self.level.player_dead:
-                self.level = Hub()
-            elif self.hub.player_teleport:
-                self.level = Level()
 
 
 if __name__ == '__main__':
