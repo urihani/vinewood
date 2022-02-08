@@ -116,16 +116,8 @@ class Player(Entity):
         if self.health <= 0:
             self.is_dead = True
             self.health = 0
-            # print(self.health)
             self.player_death()
             self.respawn()
-            # self.visible_sprites = YSortCameraGroup()
-            # try de reccrer un joueur ( marche pas)
-            # self.player = Player(
-            #  (2112, 1344),
-            # [visible_sprites],
-            #  self.obstacle_sprites,
-            #  self.create_magic)
 
     def get_pos(self):
         return [self.rect.left, self.rect.top]

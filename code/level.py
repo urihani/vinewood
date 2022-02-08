@@ -38,6 +38,9 @@ class Level:
         self.fire_group = pygame.sprite.Group()
         self.fired = False
 
+        # chaudron
+        self.cauldron_sprites = import_folder('../graphics/cauldron/')
+
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -78,7 +81,7 @@ class Level:
                             Tile((x, y), [self.visible_sprites,
                                  self.obstacle_sprites], 'object', surf)
 
-                        # entities
+                            # entities
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player(
