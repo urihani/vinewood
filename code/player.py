@@ -1,4 +1,3 @@
-from code.level import Level
 import math
 from tkinter.messagebox import NO
 from tkinter.ttk import Style
@@ -34,6 +33,7 @@ class Player(Entity):
         self.can_switch_magic = True
         self.magic_switch_time = None
         self.shoot = shoot
+        self.cooldown = powers_data['fire_ball']['cooldown']
 
         # stats
         self.stats = {'health': 100,
@@ -142,7 +142,7 @@ class Player(Entity):
         current_time = pygame.time.get_ticks()
 
         if self.attacking:
-            if current_time - self.attack_time >= FIRE_COOLDOWN:
+            if current_time - self.attack_time >= self.cooldown:
                 self.attacking = False
 
     def animate(self):
@@ -166,5 +166,3 @@ class Player(Entity):
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
-        # print('Cursor : X=' +
-        #       str(self.mouse_pos[0]) + ' - Y=' + str(self.mouse_pos[1]))

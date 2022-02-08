@@ -39,7 +39,7 @@ monster_data = {
 
 # powers
 powers_data = {
-    'boule_de_feu': {'damage': 30, 'attack_speed': 3, 'reach': 4, 'reload': 1},
-    'triple boule de feu': {'damage': 15, 'attack_speed': 3, 'reach': 4, 'reload': 1},
-    'grosse_boule_de_feu': {'damage': 75, 'attack_speed': 1, 'reach': 2, 'reload': 2}
+    'fire_ball': {'damage': 30, 'cooldown': 400, 'reach': 4, 'reload': 1},
+    'triple_fire_ball': {'damage': 15, 'cooldown': 400, 'reach': 4, 'reload': 1},
+    'big_fire_ball': {'damage': 75, 'cooldown': 400, 'reach': 2, 'reload': 2}
 }
