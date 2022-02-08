@@ -27,8 +27,6 @@ class Level:
         # UI
         self.ui = UI()
 
-        self.player_dead = False
-
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),

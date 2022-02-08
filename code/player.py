@@ -1,9 +1,11 @@
+import math
 from tkinter.messagebox import NO
 from tkinter.ttk import Style
 import pygame
 from settings import *
 from support import import_folder
 from entity import Entity
+from projectile import *
 
 
 class Player(Entity):
@@ -13,6 +15,7 @@ class Player(Entity):
             '../graphics/test/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
+        self.display_surface = pygame.display.get_surface()
 
         # graphics setup
         self.import_player_assets()
@@ -36,10 +39,17 @@ class Player(Entity):
                       'attack': 10, 'speed': 5}
         self.health = self.stats['health']
         self.speed = self.stats['speed']
-
-        # statut
         self.is_dead = False
-        self.teleport = False
+
+        # load images
+        self.crosshair_img = pygame.image.load(
+            '../graphics/crosshair/0.png').convert_alpha()
+
+        # boules de feu
+        self.fire_img = pygame.image.load(
+            '../graphics/powers/simple_fire/0.png').convert_alpha()
+        self.fire_group = pygame.sprite.Group()
+        self.fired = False
 
     def import_player_assets(self):
         character_path = '../graphics/player/'
@@ -57,40 +67,44 @@ class Player(Entity):
         keys = pygame.key.get_pressed()
         if not self.attacking:
             # mouvements
-            if keys[pygame.K_UP]:
+            if keys[pygame.K_z]:
                 self.direction.y = -1
                 self.status = 'up'
-            elif keys[pygame.K_DOWN]:
+            elif keys[pygame.K_s]:
                 self.direction.y = 1
                 self.status = 'down'
             else:
                 self.direction.y = 0
 
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_d]:
                 self.direction.x = 1
                 self.status = 'right'
-            elif keys[pygame.K_LEFT]:
+            elif keys[pygame.K_q]:
                 self.direction.x = -1
                 self.status = 'left'
             else:
                 self.direction.x = 0
 
             # magie
-            if keys[pygame.K_LCTRL] and not self.attacking:
-                self.attacking = True
-                self.attack_time = pygame.time.get_ticks()
-                style = list(magic_data.keys())[self.magic_index]
-                strength = list(magic_data.values())[
-                    self.magic_index]['strength']
-                self.create_magic(style, strength)
+            # if keys[pygame.K_LCTRL] and not self.attacking:
+            #     self.attacking = True
+            #     self.attack_time = pygame.time.get_ticks()
+            #     style = list(magic_data.keys())[self.magic_index]
+            #     strength = list(magic_data.values())[
+            #         self.magic_index]['strength']
+            #     self.create_magic(style, strength)
+
+            if pygame.mouse.get_pressed()[0] and self.fired == False:
+                # self.fired = True
+                self.player_pos = self.get_pos()
+                # print('Player : X=' +
+                #       str(self.player_pos[0]) + ' - Y=' + str(self.player_pos[1]))
+                self.shoot()
+            # TODO timer sur la boule de feu
 
             # debug death
             if keys[pygame.K_m]:
                 self.health = 0
-
-            # debug téléportation
-            if keys[pygame.K_l]:
-                self.teleport = True
 
     def get_status(self):
 
@@ -115,6 +129,20 @@ class Player(Entity):
         # mort
         if self.health == 0:
             self.is_dead = True
+
+    def get_pos(self):
+        return [self.rect.left, self.rect.top]
+
+    def shoot(self):
+        x_dist = self.mouse_pos[0] - (1024 / 2) - 10
+        y_dist = self.mouse_pos[1] - (768 / 2) - 10
+        self.rads = math.atan2(-y_dist, x_dist)
+        self.angle = degrees(self.rads)
+
+        fire_ball = Projectile(self.fire_img, (1024 / 2) -
+                               10, (768 / 2) - 10, self.angle)
+        self.fire_group.add(fire_ball)
+        print(len(self.fire_group))
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
@@ -141,3 +169,11 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.fire_group.update()
+        self.fire_group.draw(self.display_surface)
+
+        # position de la souris
+        self.mouse_pos = pygame.mouse.get_pos()
+        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
+        # print('Cursor : X=' +
+        #       str(self.mouse_pos[0]) + ' - Y=' + str(self.mouse_pos[1]))
