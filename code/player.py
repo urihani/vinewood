@@ -134,13 +134,12 @@ class Player(Entity):
         return [self.rect.left, self.rect.top]
 
     def shoot(self):
-        x_dist = self.mouse_pos[0] - (1024 / 2) - 10
-        y_dist = self.mouse_pos[1] - (768 / 2) - 10
-        self.rads = math.atan2(-y_dist, x_dist)
-        self.angle = degrees(self.rads)
+        x_dist = self.mouse_pos[0] - (1024 / 2)
+        y_dist = self.mouse_pos[1] - (768 / 2)
+        self.angle = math.atan2(-y_dist, x_dist)
 
-        fire_ball = Projectile(self.fire_img, (1024 / 2) -
-                               10, (768 / 2) - 10, self.angle)
+        fire_ball = Projectile(self.fire_img, (1024 / 2),
+                               (768 / 2), self.angle)
         self.fire_group.add(fire_ball)
         print(len(self.fire_group))
 

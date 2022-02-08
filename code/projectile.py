@@ -11,15 +11,21 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.angle = math.radians(angle)
+        self.angle = angle
         self.speed = 10
+        self.x = x
+        self.y = y
 
         # vitesses
         self.dx = math.cos(self.angle) * self.speed
         self.dy = -(math.sin(self.angle) * self.speed)
 
     def update(self):
+        self.x = self.x + self.dx
+        self.y = self.y + self.dy
+        self.rect.x = int(self.x)
+        self.rect.y = int(self.y)
 
         # déplacement de la boule de feu
-        self.rect.x += self.dx
-        self.rect.y += self.dy
+        # self.rect.x += int(self.dx)
+        # self.rect.y += int(self.dy)
