@@ -80,24 +80,12 @@ class Player(Entity):
             else:
                 self.direction.x = 0
 
-            # magie
-            # if keys[pygame.K_LCTRL] and not self.attacking:
-            #     self.attacking = True
-            #     self.attack_time = pygame.time.get_ticks()
-            #     style = list(magic_data.keys())[self.magic_index]
-            #     strength = list(magic_data.values())[
-            #         self.magic_index]['strength']
-            #     self.create_magic(style, strength)
-
+            # boules de feu
             if pygame.mouse.get_pressed()[0]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                # self.fired = True
                 self.player_pos = self.get_pos()
-                # print('Player : X=' +
-                #       str(self.player_pos[0]) + ' - Y=' + str(self.player_pos[1]))
                 self.shoot()
-            # TODO timer sur la boule de feu
 
             # debug death
             if keys[pygame.K_m]:

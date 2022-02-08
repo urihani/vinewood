@@ -2,6 +2,7 @@ import math
 import sys
 import pygame
 from math import *
+from settings import *
 
 
 class Projectile(pygame.sprite.Sprite):
@@ -12,7 +13,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.angle = angle
-        self.speed = 10
+        self.speed = powers_data['fire_ball']['speed']
         self.x = x
         self.y = y
 
@@ -20,7 +21,12 @@ class Projectile(pygame.sprite.Sprite):
         self.dx = math.cos(self.angle) * self.speed
         self.dy = -(math.sin(self.angle) * self.speed)
 
+        self.deg = math.degrees(self.angle)
+        print(self.deg)
+        self.image = pygame.transform.rotate(self.image, self.deg)
+
     def update(self):
+
         self.x = self.x + self.dx
         self.y = self.y + self.dy
         self.rect.x = int(self.x)
