@@ -9,7 +9,7 @@ from projectile import *
 
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacle_sprites, shoot):
+    def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn):
         super().__init__(groups)
         self.image = pygame.image.load(
             '../graphics/test/player.png').convert_alpha()
@@ -40,6 +40,10 @@ class Player(Entity):
         self.health = self.stats['health']
         self.speed = self.stats['speed']
         self.is_dead = False
+
+        # méthodes partagées
+        self.player_death = player_death
+        self.respawn = respawn
 
         # load images
         self.crosshair_img = pygame.image.load(
@@ -113,7 +117,8 @@ class Player(Entity):
             self.is_dead = True
             self.health = 0
             # print(self.health)
-            # self.kill()
+            self.player_death()
+            self.respawn()
             # self.visible_sprites = YSortCameraGroup()
             # try de reccrer un joueur ( marche pas)
             # self.player = Player(
