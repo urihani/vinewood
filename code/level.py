@@ -19,6 +19,7 @@ class Level:
         # groupes de sprites (setup)
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+        self.enemy_sprites = pygame.sprite.Group()
 
         # sprites d'attaque
         self.current_attack = None
@@ -36,6 +37,9 @@ class Level:
         self.fire_sprites = import_folder('../graphics/powers/simple_fire/')
         self.fire_group = pygame.sprite.Group()
         self.fired = False
+
+        # chaudron
+        self.cauldron_sprites = import_folder('../graphics/cauldron/')
 
     def create_map(self):
         layouts = {
@@ -77,14 +81,16 @@ class Level:
                             Tile((x, y), [self.visible_sprites,
                                  self.obstacle_sprites], 'object', surf)
 
-                        # entities
+                            # entities
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.shoot)
+                                    self.shoot,
+                                    self.player_death,
+                                    self.respawn)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -95,11 +101,12 @@ class Level:
                                 else:
                                     monster_name = 'squid'
 
-                                Enemy(monster_name,
-                                      (x, y),
-                                      [self.visible_sprites,
-                                       self.attackable_sprites],
-                                      self.obstacle_sprites)
+                                self.enemy = Enemy(monster_name,
+                                                   (x, y),
+                                                   [self.visible_sprites,
+                                                       self.attackable_sprites,
+                                                       self.enemy_sprites],
+                                                   self.obstacle_sprites)
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -113,6 +120,52 @@ class Level:
                                (768 / 2),
                                self.angle)
         self.fire_group.add(fire_ball)
+
+    def player_death(self):
+        self.player.kill()
+
+        for sprite in self.enemy_sprites:
+            sprite.kill()
+
+    def respawn(self):
+        layouts = {
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        # positions
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+
+                        # entities
+                        if style == 'entities':
+                            if col == '394':
+                                self.player = Player(
+                                    (x, y),
+                                    [self.visible_sprites],
+                                    self.obstacle_sprites,
+                                    self.shoot, self.player_death, self.respawn)
+                            else:
+                                if col == '390':
+                                    monster_name = 'bamboo'
+                                elif col == '391':
+                                    monster_name = 'spirit'
+                                elif col == '392':
+                                    monster_name = 'raccoon'
+                                else:
+                                    monster_name = 'squid'
+
+                                self.enemy = Enemy(monster_name,
+                                                   (x, y),
+                                                   [self.visible_sprites,
+                                                       self.attackable_sprites,
+                                                       self.enemy_sprites],
+                                                   self.obstacle_sprites)
 
     def run(self):
         # met à jour et dessine les sprites
@@ -164,6 +217,4 @@ class YSortCameraGroup(pygame.sprite.Group):
         enemy_sprites = [sprite for sprite in self.sprites()
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
-            if pygame.sprite.spritecollide(enemy, fire_group, True):
-                print('hit')
             enemy.enemy_update(player, fire_group)
