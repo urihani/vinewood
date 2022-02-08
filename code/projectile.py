@@ -26,6 +26,9 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x = int(self.x)
         self.rect.y = int(self.y)
 
-        # déplacement de la boule de feu
-        # self.rect.x += int(self.dx)
-        # self.rect.y += int(self.dy)
+        # portée des projectiles
+        self.x_dist = self.rect.x - (1024 / 2)
+        self.y_dist = self.rect.y - (768 / 2)
+        self.dist = math.hypot(self.x_dist, self.y_dist)
+        if self.dist > 200:
+            self.kill()

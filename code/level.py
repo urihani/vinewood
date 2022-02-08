@@ -1,4 +1,5 @@
 import pygame
+import math
 from settings import *
 from tile import Tile
 from player import Player
@@ -7,6 +8,7 @@ from support import *
 from random import choice
 from ui import UI
 from enemy import Enemy
+from projectile import *
 
 
 class Level:
@@ -20,12 +22,20 @@ class Level:
 
         # sprites d'attaque
         self.current_attack = None
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
         # sprites (setup)
         self.create_map()
 
         # UI
         self.ui = UI()
+
+        # boules de feu
+        self.fire_img = pygame.image.load(
+            '../graphics/powers/simple_fire/0.png').convert_alpha()
+        self.fire_group = pygame.sprite.Group()
+        self.fired = False
 
     def create_map(self):
         layouts = {
@@ -69,7 +79,7 @@ class Level:
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.create_magic)
+                                    self.create_magic, self.shoot)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -80,12 +90,24 @@ class Level:
                                 else:
                                     monster_name = 'squid'
 
-                                Enemy(monster_name, (x, y), [
-                                      self.visible_sprites], self.obstacle_sprites)
+                                Enemy(monster_name,
+                                      (x, y),
+                                      [self.visible_sprites,
+                                       self.attackable_sprites],
+                                      self.obstacle_sprites)
 
     def create_magic(self, style, strength):
         print(style)
         print(strength)
+
+    def shoot(self):
+        x_dist = self.mouse_pos[0] - (1024 / 2)
+        y_dist = self.mouse_pos[1] - (768 / 2)
+        self.angle = math.atan2(-y_dist, x_dist)
+
+        fire_ball = Projectile(self.fire_img, (1024 / 2),
+                               (768 / 2), self.angle)
+        self.fire_group.add(fire_ball)
 
     def run(self):
         # met à jour et dessine les sprites
@@ -95,6 +117,11 @@ class Level:
         self.ui.display(self.player)
         # player status
         self.player_dead = self.player.is_dead
+
+        self.fire_group.update()
+        self.fire_group.draw(self.display_surface)
+        # position de la souris
+        self.mouse_pos = pygame.mouse.get_pos()
 
 
 class YSortCameraGroup(pygame.sprite.Group):

@@ -9,7 +9,7 @@ from projectile import *
 
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacle_sprites, create_magic):
+    def __init__(self, pos, groups, obstacle_sprites, create_magic, shoot):
         super().__init__(groups)
         self.image = pygame.image.load(
             '../graphics/test/player.png').convert_alpha()
@@ -23,7 +23,6 @@ class Player(Entity):
 
         # mouvement
         self.attacking = False
-        self.attack_cooldown = 400
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
 
@@ -33,6 +32,7 @@ class Player(Entity):
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
+        self.shoot = shoot
 
         # stats
         self.stats = {'health': 100,
@@ -44,12 +44,6 @@ class Player(Entity):
         # load images
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
-
-        # boules de feu
-        self.fire_img = pygame.image.load(
-            '../graphics/powers/simple_fire/0.png').convert_alpha()
-        self.fire_group = pygame.sprite.Group()
-        self.fired = False
 
     def import_player_assets(self):
         character_path = '../graphics/player/'
@@ -94,7 +88,9 @@ class Player(Entity):
             #         self.magic_index]['strength']
             #     self.create_magic(style, strength)
 
-            if pygame.mouse.get_pressed()[0] and self.fired == False:
+            if pygame.mouse.get_pressed()[0]:
+                self.attacking = True
+                self.attack_time = pygame.time.get_ticks()
                 # self.fired = True
                 self.player_pos = self.get_pos()
                 # print('Player : X=' +
@@ -115,8 +111,6 @@ class Player(Entity):
 
         # attaques
         if self.attacking:
-            self.direction.x = 0
-            self.direction.y = 0
             if not 'attack' in self.status:
                 if 'idle' in self.status:
                     self.status = self.status.replace('idle', 'attack')
@@ -133,21 +127,11 @@ class Player(Entity):
     def get_pos(self):
         return [self.rect.left, self.rect.top]
 
-    def shoot(self):
-        x_dist = self.mouse_pos[0] - (1024 / 2)
-        y_dist = self.mouse_pos[1] - (768 / 2)
-        self.angle = math.atan2(-y_dist, x_dist)
-
-        fire_ball = Projectile(self.fire_img, (1024 / 2),
-                               (768 / 2), self.angle)
-        self.fire_group.add(fire_ball)
-        print(len(self.fire_group))
-
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
 
         if self.attacking:
-            if current_time - self.attack_time >= self.attack_cooldown:
+            if current_time - self.attack_time >= FIRE_COOLDOWN:
                 self.attacking = False
 
     def animate(self):
@@ -168,8 +152,6 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
-        self.fire_group.update()
-        self.fire_group.draw(self.display_surface)
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
