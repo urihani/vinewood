@@ -9,6 +9,7 @@ from random import choice
 from ui import UI
 from enemy import Enemy
 from projectile import *
+from chaudron import Chaudron
 
 
 class Level:
@@ -38,9 +39,6 @@ class Level:
         self.fire_group = pygame.sprite.Group()
         self.fired = False
 
-        # chaudron
-        self.cauldron_sprites = import_folder('../graphics/cauldron/')
-
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -52,6 +50,9 @@ class Level:
             'grass': import_folder('../graphics/Grass'),
             'objects': import_folder('../graphics/objects')
         }
+
+        Chaudron((2170, 300), [self.visible_sprites,
+                 self.obstacle_sprites], self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -79,7 +80,7 @@ class Level:
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'object', surf)
+                                          self.obstacle_sprites], 'object', surf)
 
                             # entities
                         if style == 'entities':
