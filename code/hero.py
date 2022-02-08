@@ -8,11 +8,11 @@ from entity import Entity
 from projectile import *
 
 
-class Player(Entity):
+class Hero(Entity):
     def __init__(self, pos, groups, obstacle_sprites, shoot):
         super().__init__(groups)
         self.image = pygame.image.load(
-            '../graphics/hero/up_idle/up_idle_01.png').convert_alpha()
+            '../graphics/hero/down_dle/down_idle01.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         self.display_surface = pygame.display.get_surface()
