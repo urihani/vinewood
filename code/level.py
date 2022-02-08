@@ -32,8 +32,8 @@ class Level:
         self.ui = UI()
 
         # boules de feu
-        self.fire_img = pygame.image.load(
-            '../graphics/powers/simple_fire/0.png').convert_alpha()
+        # animation boule de feu
+        self.fire_sprites = import_folder('../graphics/powers/simple_fire/')
         self.fire_group = pygame.sprite.Group()
         self.fired = False
 
@@ -105,7 +105,7 @@ class Level:
         y_dist = self.mouse_pos[1] - (768 / 2)
         self.angle = math.atan2(-y_dist, x_dist)
 
-        fire_ball = Projectile(self.fire_img, (1024 / 2),
+        fire_ball = Projectile(self.fire_sprites, (1024 / 2),
                                (768 / 2), self.angle)
         self.fire_group.add(fire_ball)
 
