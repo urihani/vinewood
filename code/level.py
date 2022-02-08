@@ -63,8 +63,13 @@ class Level:
                         # herbe
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'grass', random_grass_image)
+                            Tile(
+                                (x, y),
+                                [self.visible_sprites,
+                                 self.obstacle_sprites,
+                                 self.attackable_sprites],
+                                'grass',
+                                random_grass_image)
 
                         # objets
                         if style == 'object':
@@ -79,7 +84,7 @@ class Level:
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.create_magic, self.shoot)
+                                    self.shoot)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -96,30 +101,30 @@ class Level:
                                        self.attackable_sprites],
                                       self.obstacle_sprites)
 
-    def create_magic(self, style, strength):
-        print(style)
-        print(strength)
-
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
         y_dist = self.mouse_pos[1] - (768 / 2)
         self.angle = math.atan2(-y_dist, x_dist)
 
-        fire_ball = Projectile(self.fire_sprites, (1024 / 2),
-                               (768 / 2), self.angle)
+        fire_ball = Projectile([self.visible_sprites,
+                                self.attackable_sprites],
+                               self.fire_sprites,
+                               (1024 / 2),
+                               (768 / 2),
+                               self.angle)
         self.fire_group.add(fire_ball)
 
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
+        self.fire_group.update()
+        self.fire_group.draw(self.display_surface)
+        self.visible_sprites.enemy_update(self.player, self.fire_group)
         self.ui.display(self.player)
         # player status
         self.player_dead = self.player.is_dead
 
-        self.fire_group.update()
-        self.fire_group.draw(self.display_surface)
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
@@ -155,8 +160,10 @@ class YSortCameraGroup(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
 
-    def enemy_update(self, player):
+    def enemy_update(self, player, fire_group):
         enemy_sprites = [sprite for sprite in self.sprites()
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
-            enemy.enemy_update(player)
+            if pygame.sprite.spritecollide(enemy, fire_group, True):
+                print('hit')
+            enemy.enemy_update(player, fire_group)

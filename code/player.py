@@ -9,7 +9,7 @@ from projectile import *
 
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacle_sprites, create_magic, shoot):
+    def __init__(self, pos, groups, obstacle_sprites, shoot):
         super().__init__(groups)
         self.image = pygame.image.load(
             '../graphics/test/player.png').convert_alpha()
@@ -27,7 +27,6 @@ class Player(Entity):
         self.obstacle_sprites = obstacle_sprites
 
         # magie
-        self.create_magic = create_magic
         self.magic_index = 0
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True

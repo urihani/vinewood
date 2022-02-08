@@ -7,8 +7,8 @@ from support import import_folder
 
 
 class Projectile(pygame.sprite.Sprite):
-    def __init__(self, sprites, x, y, angle):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self, groups, sprites, x, y, angle):
+        pygame.sprite.Sprite.__init__(self, groups)
         self.current_sprite = 0
         self.sprites = sprites
         self.image = self.sprites[self.current_sprite]
@@ -25,7 +25,7 @@ class Projectile(pygame.sprite.Sprite):
         self.dy = -(math.sin(self.angle) * self.speed)
 
         self.deg = math.degrees(self.angle)
-        print(self.deg)
+        # print(self.deg)
 
     def update(self):
         self.animate()
