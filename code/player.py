@@ -126,8 +126,8 @@ class Player(Entity):
             self.is_dead = True
             self.health = 0
             # print(self.health)
-            self.kill()
-            self.visible_sprites = YSortCameraGroup()
+            # self.kill()
+            # self.visible_sprites = YSortCameraGroup()
             # try de reccrer un joueur ( marche pas)
             # self.player = Player(
             #  (2112, 1344),
