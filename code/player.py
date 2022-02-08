@@ -1,3 +1,4 @@
+from code.level import Level
 import math
 from tkinter.messagebox import NO
 from tkinter.ttk import Style
@@ -127,8 +128,19 @@ class Player(Entity):
                 self.status = self.status.replace('_attack', '')
 
         # mort
-        if self.health == 0:
+        if self.health <= 0:
             self.is_dead = True
+            self.health = 0
+            #print(self.health)
+            self.kill()
+            self.visible_sprites = YSortCameraGroup()
+            #try de reccrer un joueur ( marche pas)
+            #self.player = Player(
+                                  #  (2112, 1344),
+                                   # [visible_sprites],
+                                  #  self.obstacle_sprites,
+                                  #  self.create_magic)
+            
 
     def get_pos(self):
         return [self.rect.left, self.rect.top]
@@ -170,6 +182,7 @@ class Player(Entity):
         self.move(self.speed)
         self.fire_group.update()
         self.fire_group.draw(self.display_surface)
+        #print(self.get_pos())
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
