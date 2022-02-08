@@ -42,7 +42,7 @@ class Projectile(pygame.sprite.Sprite):
             self.kill()
 
     def animate(self):
-        self.current_sprite += 0.2
+        self.current_sprite += 0.3
 
         if self.current_sprite >= len(self.sprites):
             self.current_sprite = 0
