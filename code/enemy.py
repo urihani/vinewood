@@ -111,4 +111,8 @@ class Enemy(Entity):
         # collisions avec les boules de feu
         if pygame.sprite.spritecollide(self,fire_group, True):
             print('Omae wa mou... shindeiru')
-            self.kill()
+            self.health -= player.stats['attack']
+            if self.health <= 0:
+                self.kill()
+            else:
+                print('sons dégat')
