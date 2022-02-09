@@ -3,12 +3,13 @@ from settings import *
 
 
 class UI:
-    def __init__(self):
+    def __init__(self, count_monsters):
 
         # general
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         self.font_big = pygame.font.Font(UI_FONT, UI_FONT_BIG)
+        self.count_monsters = count_monsters
 
         # bar setup
         self.health_bar_rect = pygame.Rect(
@@ -36,6 +37,17 @@ class UI:
         # drawing the bar
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
+
+    def show_count_monsters(self):
+        bg_rect = pygame.Rect(550, 10, 250, 50)
+        self.nb_enemies = self.count_monsters()
+        #myfont = pygame.font.SysFont('Comic Sans MS', 15)
+        textsurface = self.font.render(
+            f"Nombre d'ennemis restants : {self.nb_enemies}", False, (0, 0, 0,))
+        count_monsters_rect = textsurface.get_rect()
+        #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+        self.display_surface.blit(textsurface, bg_rect)
+        print(self.nb_enemies)
 
     def show_cauldron_menu(self):
         bg_rect = pygame.Rect(350, 20, 350, 730)
@@ -92,3 +104,4 @@ class UI:
             player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 
         self.magic_overlay(player.magic_index, not player.can_switch_magic)
+        self.show_count_monsters()
