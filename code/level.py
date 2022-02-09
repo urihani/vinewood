@@ -74,10 +74,9 @@ class Level:
             self.obstacle_sprites)
 
         Field(
-            (1880, 340),
+            (1800, 340),
             [self.visible_sprites,
-             self.obstacle_sprites,
-             self.interactable_sprites],
+             self.obstacle_sprites],
             self.obstacle_sprites)
 
         for style, layout in layouts.items():

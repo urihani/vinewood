@@ -18,21 +18,21 @@ class Field(Interactable):
 
         # movement
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -10)
+        self.hitbox = self.rect.inflate(0, 0)
         self.obstacle_sprites = obstacle_sprites
 
-        def animate(self):
+    def animate(self):
 
-            self.frame_index += self.animation_speed
-            if self.frame_index >= len(self.animation):
-                self.frame_index = 0
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(self.animation):
+            self.frame_index = 0
 
-            self.image = self.animation[int(self.frame_index)]
-            self.rect = self.image.get_rect(center=self.hitbox.center)
+        self.image = self.animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
 
-        def update(self):
-            self.animate()
+    def update(self):
+        self.animate()
 
-        def enemy_update(self, player):
-            self.get_status(player)
-            self.actions(player)
+    def enemy_update(self, player):
+        self.get_status(player)
+        self.actions(player)
