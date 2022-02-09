@@ -8,6 +8,7 @@ class UI:
         # general
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
+        self.font_big = pygame.font.Font(UI_FONT, UI_FONT_BIG)
 
         # bar setup
         self.health_bar_rect = pygame.Rect(
@@ -33,6 +34,16 @@ class UI:
         # drawing the bar
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
+
+    def show_interaction(self):
+
+        img = self.font_big.render('E pour intéragir', False, TEXT_COLOR)
+        self.display_surface.blit(img, (250, 500))
+
+    def show_cauldron_menu(self, is_displayed):
+        if is_displayed:
+            bg_rect = pygame.Rect(500, 500, 300, 300)
+            pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
     def selection_box(self, left, top, has_switched):
         bg_rect = pygame.Rect(left, top, ITEM_BOX_SIZE, ITEM_BOX_SIZE)

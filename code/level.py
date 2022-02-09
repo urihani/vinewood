@@ -1,3 +1,5 @@
+from os import kill
+from tkinter.messagebox import NO
 import pygame
 import math
 from settings import *
@@ -26,9 +28,15 @@ class Level:
         self.current_attack = None
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
+        self.interactable_sprites = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
 
         # sprites (setup)
         self.create_map()
+
+        #nombre de monstre sur la map
+        self.nb_monster = 0
+        self.nb_monsterMax()
 
         # UI
         self.ui = UI()
@@ -38,6 +46,10 @@ class Level:
         self.fire_sprites = import_folder('../graphics/powers/simple_fire/')
         self.fire_group = pygame.sprite.Group()
         self.fired = False
+
+        self.is_displayed = False
+        self.pressed = False
+        self.press_time = None
 
     def create_map(self):
         layouts = {
@@ -51,8 +63,12 @@ class Level:
             'objects': import_folder('../graphics/objects')
         }
 
-        Chaudron((2170, 300), [self.visible_sprites,
-                 self.obstacle_sprites], self.obstacle_sprites)
+        Chaudron(
+            (2170, 300),
+            [self.visible_sprites,
+             self.obstacle_sprites,
+             self.interactable_sprites],
+            self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -87,7 +103,8 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites,
+                                     self.player_group],
                                     self.obstacle_sprites,
                                     self.shoot,
                                     self.player_death,
@@ -108,6 +125,29 @@ class Level:
                                                        self.attackable_sprites,
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
+
+
+    def nb_monsterMax(self):
+        layouts = {
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+        graphics = {
+            'grass': import_folder('../graphics/grass'),
+            'objects': import_folder('../graphics/objects')
+        }
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        if style == 'entities':
+                            if col == '390' or col == '391' or col == '392' or col == '393':
+                                self.nb_monster += 1
+
+        print(self.nb_monster)
+
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -171,7 +211,29 @@ class Level:
     def check_collide_obstacles(self):
         for obstacle in self.obstacle_sprites:
             if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
-                print("Need to train your aim bro")
+                # print("Need to train your aim bro")
+                if obstacle.sprite_type == 'grass':
+                    obstacle.kill()
+
+    def check_collide_interactable(self):
+        self.keys = pygame.key.get_pressed()
+
+        for interactable in self.interactable_sprites:
+            if pygame.sprite.spritecollide(interactable, self.player_group, False):
+                self.ui.show_interaction()
+        if self.keys[pygame.K_e]:
+            self.pressed = True
+            self.press_time = pygame.time.get_ticks()
+            self.is_displayed = not self.is_displayed
+        if self.is_displayed:
+            self.ui.show_cauldron_menu(True)
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.pressed:
+            if current_time - self.pressed >= 4000:
+                self.pressed = False
 
     def run(self):
         # met à jour et dessine les sprites
@@ -188,7 +250,10 @@ class Level:
         self.mouse_pos = pygame.mouse.get_pos()
 
         # vérification des colisions entre bullets et mobs /!\ DÉ-COMMENTEZ LORSQUE LES HITBOX DES OBSTACLES SERONT RÉDUITES
-        # self.check_collide_obstacles()
+        self.check_collide_obstacles()
+
+        # intéraction avec le chaudron
+        self.check_collide_interactable()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
@@ -227,3 +292,4 @@ class YSortCameraGroup(pygame.sprite.Group):
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
             enemy.enemy_update(player, fire_group)
+        

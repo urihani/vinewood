@@ -160,5 +160,5 @@ class Player(Entity):
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
 
-        print(self.rect.left)
-        print(self.rect.top)
+        # print(self.rect.left)
+        # print(self.rect.top)

@@ -40,6 +40,7 @@ class Game:
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
 
+
     def update(self):
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
@@ -52,7 +53,7 @@ class Game:
                     sys.exit()
 
             self.screen.fill('black')
-            if self.game_pause == False:
+            if self.game_pause == False and self.credit == False:
                 self.level.run()
 
             # souris
@@ -61,7 +62,7 @@ class Game:
             self.update()
             self.game_pause_input_check()
             pygame.display.update()
-            if self.game_pause:
+            if self.game_pause or self.credit:
                 self.clock.tick(0)
                 # faire disparaitre le curseur
                 pygame.mouse.set_cursor()
@@ -75,17 +76,19 @@ class Game:
         keys = pygame.key.get_pressed()
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
-        if keys[pygame.K_ESCAPE] and self.is_pressed == False or self.resume == True and self.is_pressed == False:
-
+        if (keys[pygame.K_ESCAPE] and self.is_pressed == False and self.credit == False ) or (self.resume == True and self.is_pressed == False and self.credit == False):
+            
             self.is_pressed = True
-            self.is_waiting = False
+            #self.is_waiting = False
+            self.resume = False
             if self.game_pause:
                 self.game_pause = False
+                time.sleep(0.1)
+                self.is_pressed = False
             else:
                 self.game_pause = True
         if self.game_pause:
-            if self.game_pause:
-                self.clock.tick(0)
+            self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
 
             self.resume_rect = self.resume_surface.get_rect(
@@ -103,12 +106,13 @@ class Game:
             self.Rmenu_rect = self.Rmenu_surface.get_rect(midbottom=(512, 590))
             self.display_surface.blit(self.Rmenu_surface, self.Rmenu_rect)
 
-            if not self.is_waiting:
-                self.dernierTemps = time.time()
-                self.is_waiting = True
-            if time.time() > self.dernierTemps + 0.1:
-                self.is_pressed = False
-                self.is_waiting = False
+            #if not self.is_waiting:
+            #self.dernierTemps = time.time()
+                #self.is_waiting = True
+            #while time.time() < self.dernierTemps + 0.1:
+            time.sleep(0.1)
+            self.is_pressed = keys[pygame.K_ESCAPE]
+                #self.is_waiting = False
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -119,9 +123,17 @@ class Game:
                     if self.credit_rect.collidepoint(event.pos):
                         self.credit = True
 
-        if self.credit and self.game_pause:
+        if self.credit:
+            self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
-
+            self.retour_surf = pygame.image.load('../graphics/menu_pause/retour.png').convert_alpha()
+            self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
+            self.display_surface.blit(self.retour_surf, self.retour_rect)
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.retour_rect.collidepoint(event.pos):
+                        self.credit = False
+        
 
 if __name__ == '__main__':
     game = Game()

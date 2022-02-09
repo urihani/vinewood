@@ -11,6 +11,7 @@ ENERGY_BAR_WIDTH = 140
 ITEM_BOX_SIZE = 80
 UI_FONT = '../graphics/font/joystix.ttf'
 UI_FONT_SIZE = 18
+UI_FONT_BIG = 42
 
 # couleurs globales
 WATER_COLOR = '#71ddee'
