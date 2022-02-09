@@ -51,6 +51,8 @@ class Level:
         self.pressed = False
         self.press_time = None
 
+        self.enemy_count = 30
+
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -219,13 +221,6 @@ class Level:
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
                 self.ui.show_cauldron_menu()
-
-    def cooldowns(self):
-        current_time = pygame.time.get_ticks()
-
-        if self.pressed:
-            if current_time - self.pressed >= 4000:
-                self.pressed = False
 
     def run(self):
         # met à jour et dessine les sprites
