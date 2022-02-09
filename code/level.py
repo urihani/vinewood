@@ -12,6 +12,7 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
+from field import Field
 
 
 class Level:
@@ -71,6 +72,12 @@ class Level:
              self.obstacle_sprites,
              self.interactable_sprites],
             self.obstacle_sprites)
+
+        # Field(
+        #     (1800, 340),
+        #     [self.visible_sprites,
+        #      self.obstacle_sprites],
+        #     self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -188,7 +195,7 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites, self.player_group],
                                     self.obstacle_sprites,
                                     self.shoot, self.player_death, self.respawn)
                             else:
@@ -213,7 +220,7 @@ class Level:
             if len(self.fire_group.sprites()) >= 1:
                 for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
-                        print("COLLIDE: Need to train your aim bro")
+                        # print("COLLIDE: Need to train your aim bro")
                         fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
                             obstacle.kill()
