@@ -188,7 +188,7 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites, self.player_group],
                                     self.obstacle_sprites,
                                     self.shoot, self.player_death, self.respawn)
                             else:
@@ -208,14 +208,12 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
- 
-
     def check_collide_obstacles(self):
-        for obstacle in self.obstacle_sprites:            
+        for obstacle in self.obstacle_sprites:
             if len(self.fire_group.sprites()) >= 1:
-                for fire_ball in self.fire_group: 
+                for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
-                        print("COLLIDE: Need to train your aim bro")
+                        # print("COLLIDE: Need to train your aim bro")
                         fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
                             obstacle.kill()
