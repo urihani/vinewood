@@ -9,6 +9,7 @@ from random import choice
 from ui import UI
 from enemy import Enemy
 from projectile import *
+from chaudron import Chaudron
 
 
 class Level:
@@ -50,6 +51,9 @@ class Level:
             'objects': import_folder('../graphics/objects')
         }
 
+        Chaudron((2170, 300), [self.visible_sprites,
+                 self.obstacle_sprites], self.obstacle_sprites)
+
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -76,9 +80,9 @@ class Level:
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'object', surf)
+                                          self.obstacle_sprites], 'object', surf)
 
-                        # entities
+                            # entities
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player(

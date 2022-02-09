@@ -12,7 +12,7 @@ class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn):
         super().__init__(groups)
         self.image = pygame.image.load(
-            '../graphics/test/player.png').convert_alpha()
+            '../graphics/hero/up_idle/up_idle_01.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         self.display_surface = pygame.display.get_surface()
@@ -50,7 +50,7 @@ class Player(Entity):
             '../graphics/crosshair/0.png').convert_alpha()
 
     def import_player_assets(self):
-        character_path = '../graphics/player/'
+        character_path = '../graphics/hero/'
         self.animations = {
             'up': [], 'down': [], 'left': [], 'right': [],
             'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
@@ -116,16 +116,8 @@ class Player(Entity):
         if self.health <= 0:
             self.is_dead = True
             self.health = 0
-            # print(self.health)
             self.player_death()
             self.respawn()
-            # self.visible_sprites = YSortCameraGroup()
-            # try de reccrer un joueur ( marche pas)
-            # self.player = Player(
-            #  (2112, 1344),
-            # [visible_sprites],
-            #  self.obstacle_sprites,
-            #  self.create_magic)
 
     def get_pos(self):
         return [self.rect.left, self.rect.top]
@@ -158,3 +150,6 @@ class Player(Entity):
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
+
+        print(self.rect.left)
+        print(self.rect.top)
