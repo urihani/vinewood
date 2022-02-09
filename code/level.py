@@ -39,8 +39,7 @@ class Level:
         self.nb_monsterMax()
 
         # UI
-        self.ui = ui
-        # self.ui = UI()
+        self.ui = UI(self.count_monsters)
 
         # boules de feu
         # animation boule de feu
@@ -148,6 +147,10 @@ class Level:
 
         print(self.nb_monster)
 
+    def count_monsters(self):
+        nb = len(self.enemy_sprites)+1
+        return nb
+
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
         y_dist = self.mouse_pos[1] - (768 / 2)
@@ -254,6 +257,8 @@ class Level:
 
         # intéraction avec le chaudron
         self.check_collide_interactable()
+
+        self.count_monsters()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
