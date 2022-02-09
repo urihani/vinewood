@@ -33,6 +33,10 @@ class Level:
         # sprites (setup)
         self.create_map()
 
+        #nombre de monstre sur la map
+        self.nb_monster = 0
+        self.nb_monsterMax()
+
         # UI
         self.ui = UI()
 
@@ -116,6 +120,29 @@ class Level:
                                                        self.attackable_sprites,
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
+
+
+    def nb_monsterMax(self):
+        layouts = {
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+        graphics = {
+            'grass': import_folder('../graphics/grass'),
+            'objects': import_folder('../graphics/objects')
+        }
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        if style == 'entities':
+                            if col == '390' or col == '391' or col == '392' or col == '393':
+                                self.nb_monster += 1
+
+        print(self.nb_monster)
+
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -245,3 +272,4 @@ class YSortCameraGroup(pygame.sprite.Group):
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
             enemy.enemy_update(player, fire_group)
+        

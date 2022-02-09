@@ -83,7 +83,7 @@ class Player(Entity):
             self.direction.x = 0
 
             # boules de feu
-            if pygame.mouse.get_pressed()[0]:
+            if pygame.mouse.get_pressed()[0] and not self.attacking:
                 shoot_sound = pygame.mixer.Sound(
                     '../audio/blum/blum_fireball.wav')
                 shoot_sound.play()
