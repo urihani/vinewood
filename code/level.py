@@ -34,7 +34,7 @@ class Level:
         # sprites (setup)
         self.create_map()
 
-        #nombre de monstre sur la map
+        # nombre de monstre sur la map
         self.nb_monster = 0
         self.nb_monsterMax()
 
@@ -126,7 +126,6 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
-
     def nb_monsterMax(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -147,7 +146,6 @@ class Level:
                                 self.nb_monster += 1
 
         print(self.nb_monster)
-
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -220,13 +218,7 @@ class Level:
 
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
-                self.ui.show_interaction()
-        if self.keys[pygame.K_e]:
-            self.pressed = True
-            self.press_time = pygame.time.get_ticks()
-            self.is_displayed = not self.is_displayed
-        if self.is_displayed:
-            self.ui.show_cauldron_menu(True)
+                self.ui.show_cauldron_menu()
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
@@ -292,4 +284,3 @@ class YSortCameraGroup(pygame.sprite.Group):
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
             enemy.enemy_update(player, fire_group)
-        
