@@ -37,6 +37,10 @@ class Game:
         self.resume_surface = pygame.image.load(
             '../graphics/menu_pause/resume.png').convert_alpha()
 
+        #hover
+        self.resume_hover = False
+        self.credit_hover = False
+
         # souris menu
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
@@ -84,6 +88,8 @@ class Game:
             self.resume = False
             if self.game_pause:
                 self.game_pause = False
+                self.resume_hover = False
+                self.credit_hover = False
                 time.sleep(0.1)
                 self.is_pressed = False
             else:
@@ -120,13 +126,39 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.resume_rect.collidepoint(event.pos):
                             self.resume = True
+                            self.resume_hover = False
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.credit_rect.collidepoint(event.pos):
                         self.credit = True
+                        self.credit_hover = False
                     
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                if event.type == pygame.MOUSEMOTION:
+                    if self.resume_rect.collidepoint(event.pos):
+                        self.resume_hover = True
+                    else:
+                        self.resume_hover = False
+
+                if event.type == pygame.MOUSEMOTION:
+                    if self.credit_rect.collidepoint(event.pos):
+                        self.credit_hover = True
+                    else:
+                        self.credit_hover = False
+
+        if self.resume_hover:
+            self.resume_surface_hover = pygame.image.load('../graphics/menu_pause/resume_hover.png').convert_alpha()
+            self.resume_rect = self.resume_surface_hover.get_rect(
+            midbottom=(512, 330))
+            self.display_surface.blit(self.resume_surface_hover, self.resume_rect)
+
+        if self.credit_hover:
+            self.credit_surface_hover = pygame.image.load('../graphics/menu_pause/credit_hover.png').convert_alpha()
+            self.credit_rect = self.credit_surface_hover.get_rect(
+                midbottom=(512, 460))
+            self.display_surface.blit(self.credit_surface_hover, self.credit_rect)
 
         if self.credit:
             self.clock.tick(0)
