@@ -16,14 +16,13 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
-        # faire disparaitre le curseur
-        pygame.mouse.set_cursor(
-            (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
+        
 
         self.level = Level()
         # self.level = Leveltest()
 
         # pause
+        
         self.dernierTemps = None
         self.is_waiting = False
         self.is_pressed = False
@@ -50,7 +49,9 @@ class Game:
                     sys.exit()
 
             self.screen.fill('black')
-            self.level.run()
+            if self.game_pause == False:
+                self.level.run()
+                
             # souris
             self.mouse_pos = pygame.mouse.get_pos()
             self.display_surface.blit(self.crosshair_img, self.mouse_pos)
@@ -59,8 +60,15 @@ class Game:
             pygame.display.update()
             if self.game_pause:
                 self.clock.tick(0)
+                # faire disparaitre le curseur
+                pygame.mouse.set_cursor()
             else:
                 self.clock.tick(FPS)
+                # faire disparaitre le curseur
+                pygame.mouse.set_cursor(
+                (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
+            
+            
 
 
     def game_pause_input_check(self):
@@ -68,6 +76,7 @@ class Game:
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
         if keys[pygame.K_ESCAPE] and self.is_pressed == False or self.resume == True and self.is_pressed == False:
+            
             self.is_pressed = True
             self.is_waiting = False
             if self.game_pause:
@@ -105,6 +114,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.resume_rect.collidepoint(event.pos):
                         self.resume = True
+                        
 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.credit_rect.collidepoint(event.pos):
@@ -112,6 +122,7 @@ class Game:
 
         if self.credit and self.game_pause:
             self.display_surface.fill(((64, 64, 64)))
+        
 
 if __name__ == '__main__':
     game = Game()
