@@ -15,7 +15,7 @@ from chaudron import Chaudron
 
 
 class Level:
-    def __init__(self):
+    def __init__(self, ui):
         # obtenir la surface d'affichage
         self.display_surface = pygame.display.get_surface()
 
@@ -39,7 +39,8 @@ class Level:
         self.nb_monsterMax()
 
         # UI
-        self.ui = UI()
+        self.ui = ui
+        # self.ui = UI()
 
         # boules de feu
         # animation boule de feu

@@ -17,7 +17,8 @@ class Game:
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
 
-        self.level = Level()
+        self.ui = UI()
+        self.level = Level(self.ui)
         # self.level = Leveltest()
 
         # music/sounds
@@ -40,7 +41,6 @@ class Game:
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
 
-
     def update(self):
         self.mouse_pos = pygame.mouse.get_pos()
         self.crosshair_rect = self.crosshair_img.get_rect(
@@ -53,14 +53,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                self.ui.handle_event(event)
 
             self.screen.fill('black')
             if self.game_pause == False and self.credit == False:
                 self.level.run()
 
             # souris
-            self.mouse_pos = pygame.mouse.get_pos()
-            self.display_surface.blit(self.crosshair_img, self.mouse_pos)
             self.update()
             self.game_pause_input_check()
             pygame.display.update()
@@ -74,13 +73,13 @@ class Game:
                 pygame.mouse.set_cursor(
                     (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
             self.i += 1
-            #print(self.is_pressed)
-            #print(self.i)
+            # print(self.is_pressed)
+            # print(self.i)
 
     def game_pause_input_check(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_ESCAPE] and self.is_pressed == False and self.credit == False) or (self.resume == True and self.is_pressed == False and self.credit == False):
-            
+
             self.is_pressed = True
             #self.is_waiting = False
             self.resume = False
@@ -109,34 +108,35 @@ class Game:
             self.Rmenu_rect = self.Rmenu_surface.get_rect(midbottom=(512, 590))
             self.display_surface.blit(self.Rmenu_surface, self.Rmenu_rect)
 
-            #if not self.is_waiting:
+            # if not self.is_waiting:
             #self.dernierTemps = time.time()
-                #self.is_waiting = True
-            #while time.time() < self.dernierTemps + 0.1:
+            #self.is_waiting = True
+            # while time.time() < self.dernierTemps + 0.1:
             time.sleep(0.1)
             self.is_pressed = keys[pygame.K_ESCAPE]
-                #self.is_waiting = False
+            #self.is_waiting = False
 
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if self.resume_rect.collidepoint(event.pos):
-                        self.resume = True
+            # for event in pygame.event.get():
+            #     if event.type == pygame.MOUSEBUTTONUP:
+            #         if self.resume_rect.collidepoint(event.pos):
+            #             self.resume = True
 
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if self.credit_rect.collidepoint(event.pos):
-                        self.credit = True
+            #     if event.type == pygame.MOUSEBUTTONUP:
+            #         if self.credit_rect.collidepoint(event.pos):
+            #             self.credit = True
 
         if self.credit:
             self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
-            self.retour_surf = pygame.image.load('../graphics/menu_pause/retour.png').convert_alpha()
+            self.retour_surf = pygame.image.load(
+                '../graphics/menu_pause/retour.png').convert_alpha()
             self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
             self.display_surface.blit(self.retour_surf, self.retour_rect)
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if self.retour_rect.collidepoint(event.pos):
-                        self.credit = False
-        
+            # for event in pygame.event.get():
+            #     if event.type == pygame.MOUSEBUTTONUP:
+            #         if self.retour_rect.collidepoint(event.pos):
+            #             self.credit = False
+
 
 if __name__ == '__main__':
     game = Game()
