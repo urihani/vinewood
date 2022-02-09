@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import pygame
 from settings import *
 
@@ -31,48 +32,28 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
     def show_cauldron_menu(self):
+        # print('show menu')
         bg_rect = pygame.Rect(350, 20, 350, 730)
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
         # dash
-        dash_rect = self.display_row('../graphics/power_ups/dash.png', 355, 25)
+        self.dash_rect = self.display_row(
+            '../graphics/power_ups/dash.png', 355, 25)
         # fire_rate
-        fire_rate_rect = self.display_row(
+        self.fire_rate_rect = self.display_row(
             '../graphics/power_ups/cadence.png', 355, 75)
         # damage
-        damage_rect = self.display_row(
+        self.damage_rect = self.display_row(
             '../graphics/power_ups/degats.png', 355, 125)
         # reach
-        reach_rect = self.display_row(
+        self.reach_rect = self.display_row(
             '../graphics/power_ups/portee.png', 355, 175)
         # speed
-        speed_rect = self.display_row(
+        self.speed_rect = self.display_row(
             '../graphics/power_ups/vitesse.png', 355, 225)
         # health
-        health_rect = self.display_row(
+        self.health_rect = self.display_row(
             '../graphics/power_ups/sante.png', 355, 275)
-
-        # event loop
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP:
-                # dash
-                if dash_rect.collidepoint(event.pos):
-                    print('dash - ok')
-                # fire_rate
-                if fire_rate_rect.collidepoint(event.pos):
-                    print('fire_rate - ok')
-                # damage
-                if damage_rect.collidepoint(event.pos):
-                    print('damage - ok')
-                # reach
-                if reach_rect.collidepoint(event.pos):
-                    print('reach - ok')
-                # speed
-                if speed_rect.collidepoint(event.pos):
-                    print('speed - ok')
-                # health
-                if health_rect.collidepoint(event.pos):
-                    print('health - ok')
 
     def display_row(self, path, x, y):
         dash_img = pygame.image.load(
@@ -98,6 +79,29 @@ class UI:
         magic_rect = magic_surf.get_rect(center=bg_rect.center)
 
         self.display_surface.blit(magic_surf, magic_rect)
+
+    def handle_event(self, event):
+        # print(hasattr(self, 'cauldron_menu_visible')
+        #       and self.cauldron_menu_visible)
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'dash_rect'):
+            # dash
+            if self.dash_rect.collidepoint(event.pos):
+                print('dash - ok')
+            # fire_rate
+            if self.fire_rate_rect.collidepoint(event.pos):
+                print('fire_rate - ok')
+            # damage
+            if self.damage_rect.collidepoint(event.pos):
+                print('damage - ok')
+            # reach
+            if self.reach_rect.collidepoint(event.pos):
+                print('reach - ok')
+            # speed
+            if self.speed_rect.collidepoint(event.pos):
+                print('speed - ok')
+            # health
+            if self.health_rect.collidepoint(event.pos):
+                print('health - ok')
 
     def display(self, player):
         self.show_bar(
