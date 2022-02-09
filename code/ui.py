@@ -31,6 +31,17 @@ class UI:
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
+    def show_count_monsters(self):
+        bg_rect = pygame.Rect(550, 10, 250, 50)
+        self.nb_enemies = self.count_monsters()
+        #myfont = pygame.font.SysFont('Comic Sans MS', 15)
+        textsurface = self.font.render(
+            f"Nombre d'ennemis restants : {self.nb_enemies}", False, (0, 0, 0,))
+        count_monsters_rect = textsurface.get_rect()
+        #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+        self.display_surface.blit(textsurface, bg_rect)
+        # print(self.nb_enemies)
+
     def show_cauldron_menu(self):
         # print('show menu')
         bg_rect = pygame.Rect(350, 20, 350, 730)
@@ -103,8 +114,10 @@ class UI:
             if self.health_rect.collidepoint(event.pos):
                 print('health - ok')
 
-    def display(self, player):
+    def display(self, player, count_monsters):
+        self.count_monsters = count_monsters
         self.show_bar(
             player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 
         self.magic_overlay(player.magic_index, not player.can_switch_magic)
+        self.show_count_monsters()

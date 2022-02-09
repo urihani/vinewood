@@ -12,7 +12,6 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
-from field import Field
 
 
 class Level:
@@ -40,8 +39,9 @@ class Level:
         self.nb_monsterMax()
 
         # UI
+        # self.ui = UI(self.count_monsters)
+
         self.ui = ui
-        # self.ui = UI()
 
         # boules de feu
         # animation boule de feu
@@ -52,8 +52,6 @@ class Level:
         self.is_displayed = False
         self.pressed = False
         self.press_time = None
-
-        self.enemy_count = 30
 
     def create_map(self):
         layouts = {
@@ -73,12 +71,6 @@ class Level:
              self.obstacle_sprites,
              self.interactable_sprites],
             self.obstacle_sprites)
-
-        # Field(
-        #     (1800, 340),
-        #     [self.visible_sprites,
-        #      self.obstacle_sprites],
-        #     self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -155,7 +147,9 @@ class Level:
                             if col == '390' or col == '391' or col == '392' or col == '393':
                                 self.nb_monster += 1
 
-        print(self.nb_monster)
+    def count_monsters(self):
+        nb = len(self.enemy_sprites)+1
+        return nb
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -165,7 +159,7 @@ class Level:
         fire_ball = Projectile([self.visible_sprites,
                                 self.attackable_sprites],
                                self.fire_sprites,
-                               ((self.player.rect.x+47)),
+                               ((self.player.rect.x+40)),
                                (self.player.rect.y+40),
                                self.angle)
         self.fire_group.add(fire_ball)
@@ -196,7 +190,7 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites, self.player_group],
+                                    [self.visible_sprites],
                                     self.obstacle_sprites,
                                     self.shoot, self.player_death, self.respawn)
                             else:
@@ -221,8 +215,8 @@ class Level:
             if len(self.fire_group.sprites()) >= 1:
                 for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
-                        # print("COLLIDE: Need to train your aim bro")
-                        fire_ball.kill()
+                        if obstacle.sprite_type != 'invisible':
+                            fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
                             obstacle.kill()
 
@@ -233,6 +227,13 @@ class Level:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
                 self.ui.show_cauldron_menu()
 
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.pressed:
+            if current_time - self.pressed >= 4000:
+                self.pressed = False
+
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
@@ -240,7 +241,7 @@ class Level:
         self.fire_group.update()
         self.fire_group.draw(self.display_surface)
         self.visible_sprites.enemy_update(self.player, self.fire_group)
-        self.ui.display(self.player)
+        self.ui.display(self.player, self.count_monsters)
         # player status
         self.player_dead = self.player.is_dead
 
@@ -252,6 +253,8 @@ class Level:
 
         # intéraction avec le chaudron
         self.check_collide_interactable()
+
+        self.count_monsters()
 
 
 class YSortCameraGroup(pygame.sprite.Group):

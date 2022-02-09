@@ -54,6 +54,9 @@ class Player(Entity):
         self.max_duration = 7.5
         self.duration = 0
         self.tired = False
+        self.cool_dash_max = 150
+        self.cool_dash = 0
+        self.has_dashed = False
 
     def import_player_assets(self):
         character_path = '../graphics/hero/'
@@ -75,10 +78,10 @@ class Player(Entity):
                 self.direction.y = -1
                 self.status = 'up'
                 if keys[pygame.K_SPACE]:
-                    print("DASH")
+                    self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
+                            self.hitbox.x += self.direction.y * \
                                 (self.speed*2.5)
                             self.duration += 1
                         else:
@@ -87,10 +90,10 @@ class Player(Entity):
                 self.direction.y = 1
                 self.status = 'down'
                 if keys[pygame.K_SPACE]:
-                    print("DASH")
+                    self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
+                            self.hitbox.x += self.direction.y * \
                                 (self.speed*2.5)
                             self.duration += 1
                         else:
@@ -102,7 +105,7 @@ class Player(Entity):
                 self.direction.x = 1
                 self.status = 'right'
                 if keys[pygame.K_SPACE]:
-                    print("DASH")
+                    self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -114,7 +117,7 @@ class Player(Entity):
                 self.direction.x = -1
                 self.status = 'left'
                 if keys[pygame.K_SPACE]:
-                    print("DASH")
+                    self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -141,9 +144,7 @@ class Player(Entity):
             if keys[pygame.K_SPACE]:
                 self.i = 0
                 self.speed = 45
-                print("input")
                 while (self.i < 10):
-                    print("in")
                     if keys[pygame.K_z]:
                         self.direction.y = -1
                         self.status = 'up'
@@ -226,6 +227,13 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
+        if self.has_dashed == True and self.cool_dash <= self.cool_dash_max:
+            self.cool_dash += 1
+        elif self.has_dashed == True and self.cool_dash >= self.cool_dash_max:
+            self.duration = 0
+            self.cool_dash = 0
+            self.has_dashed = False
+            self.tired = False
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
