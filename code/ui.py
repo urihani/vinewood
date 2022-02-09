@@ -49,6 +49,15 @@ class UI:
         # damage
         damage_rect = self.display_row(
             '../graphics/power_ups/degats.png', 355, 125)
+        # reach
+        reach_rect = self.display_row(
+            '../graphics/power_ups/portee.png', 355, 175)
+        # speed
+        speed_rect = self.display_row(
+            '../graphics/power_ups/vitesse.png', 355, 225)
+        # health
+        health_rect = self.display_row(
+            '../graphics/power_ups/sante.png', 355, 275)
 
         # event loop
         for event in pygame.event.get():
@@ -62,6 +71,15 @@ class UI:
                 # damage
                 if damage_rect.collidepoint(event.pos):
                     print('damage - ok')
+                # reach
+                if reach_rect.collidepoint(event.pos):
+                    print('reach - ok')
+                # speed
+                if speed_rect.collidepoint(event.pos):
+                    print('speed - ok')
+                # health
+                if health_rect.collidepoint(event.pos):
+                    print('health - ok')
 
     def display_row(self, path, x, y):
         dash_img = pygame.image.load(
