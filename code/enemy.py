@@ -115,5 +115,5 @@ class Enemy(Entity):
         if pygame.sprite.spritecollide(self, fire_group, True):
             print('ATTACK : Omae wa mou... shindeiru')
             #self.health -= player.stats['attack']
-            #if self.health <= 0:
+            # if self.health <= 0:
             self.kill()

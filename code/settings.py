@@ -17,6 +17,7 @@ UI_FONT_BIG = 42
 WATER_COLOR = '#71ddee'
 UI_BG_COLOR = '#222222'
 UI_BORDER_COLOR = '#111111'
+UI_ROW_COLOR = '#3f3b9f'
 TEXT_COLOR = '#EEEEEE'
 
 # couleurs interface

@@ -51,6 +51,8 @@ class Level:
         self.pressed = False
         self.press_time = None
 
+        self.enemy_count = 30
+
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -206,12 +208,10 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
- 
-
     def check_collide_obstacles(self):
-        for obstacle in self.obstacle_sprites:            
+        for obstacle in self.obstacle_sprites:
             if len(self.fire_group.sprites()) >= 1:
-                for fire_ball in self.fire_group: 
+                for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
                         print("COLLIDE: Need to train your aim bro")
                         fire_ball.kill()
@@ -224,13 +224,6 @@ class Level:
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
                 self.ui.show_cauldron_menu()
-
-    def cooldowns(self):
-        current_time = pygame.time.get_ticks()
-
-        if self.pressed:
-            if current_time - self.pressed >= 4000:
-                self.pressed = False
 
     def run(self):
         # met à jour et dessine les sprites
