@@ -34,7 +34,7 @@ class Level:
         # sprites (setup)
         self.create_map()
 
-        #nombre de monstre sur la map
+        # nombre de monstre sur la map
         self.nb_monster = 0
         self.nb_monsterMax()
 
@@ -126,7 +126,6 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
-
     def nb_monsterMax(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -146,8 +145,7 @@ class Level:
                             if col == '390' or col == '391' or col == '392' or col == '393':
                                 self.nb_monster += 1
 
-        print(self.nb_monster)
-
+        return self.nb_monster
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -292,4 +290,3 @@ class YSortCameraGroup(pygame.sprite.Group):
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
             enemy.enemy_update(player, fire_group)
-        

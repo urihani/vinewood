@@ -117,3 +117,4 @@ class Enemy(Entity):
             self.health -= player.stats['attack']
             if self.health <= 0:
                 self.kill()
+                return True
