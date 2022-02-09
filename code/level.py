@@ -117,8 +117,8 @@ class Level:
         fire_ball = Projectile([self.visible_sprites,
                                 self.attackable_sprites],
                                self.fire_sprites,
-                               ((self.player.rect.x+10)),
-                               (self.player.rect.y+30),
+                               ((self.player.rect.x+47)),
+                               (self.player.rect.y+40),
                                self.angle)
         self.fire_group.add(fire_ball)
 
