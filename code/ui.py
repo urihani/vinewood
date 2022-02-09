@@ -4,13 +4,12 @@ from settings import *
 
 
 class UI:
-    def __init__(self, count_monsters):
+    def __init__(self):
 
         # general
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         self.font_big = pygame.font.Font(UI_FONT, UI_FONT_BIG)
-        self.count_monsters = count_monsters
 
         # bar setup
         self.health_bar_rect = pygame.Rect(
@@ -115,7 +114,8 @@ class UI:
             if self.health_rect.collidepoint(event.pos):
                 print('health - ok')
 
-    def display(self, player):
+    def display(self, player, count_monsters):
+        self.count_monsters = count_monsters
         self.show_bar(
             player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 

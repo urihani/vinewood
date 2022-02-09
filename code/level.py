@@ -40,7 +40,9 @@ class Level:
         self.nb_monsterMax()
 
         # UI
-        self.ui = UI(self.count_monsters)
+        # self.ui = UI(self.count_monsters)
+
+        self.ui = ui
 
         # boules de feu
         # animation boule de feu
@@ -243,7 +245,7 @@ class Level:
         self.fire_group.update()
         self.fire_group.draw(self.display_surface)
         self.visible_sprites.enemy_update(self.player, self.fire_group)
-        self.ui.display(self.player)
+        self.ui.display(self.player, self.count_monsters)
         # player status
         self.player_dead = self.player.is_dead
 
