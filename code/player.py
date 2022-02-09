@@ -81,7 +81,7 @@ class Player(Entity):
                     self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
+                            self.hitbox.x += self.direction.y * \
                                 (self.speed*2.5)
                             self.duration += 1
                         else:
@@ -93,7 +93,7 @@ class Player(Entity):
                     self.has_dashed = True
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
+                            self.hitbox.x += self.direction.y * \
                                 (self.speed*2.5)
                             self.duration += 1
                         else:
