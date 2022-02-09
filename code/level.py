@@ -117,8 +117,8 @@ class Level:
         fire_ball = Projectile([self.visible_sprites,
                                 self.attackable_sprites],
                                self.fire_sprites,
-                               (1024 / 2),
-                               (768 / 2),
+                               ((self.player.rect.x+10)),
+                               (self.player.rect.y+30),
                                self.angle)
         self.fire_group.add(fire_ball)
 
@@ -168,6 +168,11 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
+    def check_collide_obstacles(self):
+        for obstacle in self.obstacle_sprites:
+            if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
+                print("Need to train your aim bro")
+
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
@@ -181,6 +186,9 @@ class Level:
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
+
+        # vérification des colisions entre bullets et mobs
+        self.check_collide_obstacles()
 
 
 class YSortCameraGroup(pygame.sprite.Group):

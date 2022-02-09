@@ -7,6 +7,7 @@ from support import *
 class Enemy(Entity):
     def __init__(self, monster_name, pos, groups, obstacle_sprites):
 
+
         # general setup
         super().__init__(groups)
         self.sprite_type = 'enemy'
@@ -103,9 +104,11 @@ class Enemy(Entity):
         self.cooldown()
 
     def enemy_update(self, player, fire_group):
-        # print(fire_group)
+        
         self.get_status(player)
         self.actions(player)
+        
         # collisions avec les boules de feu
-        if pygame.sprite.spritecollide(self, fire_group, True):
-            print('hit')
+        if pygame.sprite.spritecollide(self,fire_group, True):
+            print('Omae wa mou... shindeiru')
+            self.kill()
