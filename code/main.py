@@ -25,7 +25,7 @@ class Game:
         pygame.mixer.music.play(-1)
 
         # pause
-
+        self.i = 0
         self.dernierTemps = None
         self.is_waiting = False
         self.is_pressed = False
@@ -71,6 +71,9 @@ class Game:
                 # faire disparaitre le curseur
                 pygame.mouse.set_cursor(
                     (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
+            self.i += 1
+            #print(self.is_pressed)
+            #print(self.i)
 
     def game_pause_input_check(self):
         keys = pygame.key.get_pressed()
