@@ -7,7 +7,6 @@ from support import *
 class Enemy(Entity):
     def __init__(self, monster_name, pos, groups, obstacle_sprites):
 
-
         # general setup
         super().__init__(groups)
         self.sprite_type = 'enemy'
@@ -73,6 +72,10 @@ class Enemy(Entity):
         if self.status == 'attack':
             self.attack_time = pygame.time.get_ticks()
             if self.rect.colliderect(player.rect):
+                damage_sound = pygame.mixer.Sound(
+                    '../audio/blum/blum_ouch.wav')
+                damage_sound.set_volume(0.2)
+                damage_sound.play()
                 player.health -= self.attack_damage
                 player.get_status()
         elif self.status == 'move':
@@ -104,11 +107,13 @@ class Enemy(Entity):
         self.cooldown()
 
     def enemy_update(self, player, fire_group):
-        
+
         self.get_status(player)
         self.actions(player)
-        
+
         # collisions avec les boules de feu
-        if pygame.sprite.spritecollide(self,fire_group, True):
+        if pygame.sprite.spritecollide(self, fire_group, True):
             print('Omae wa mou... shindeiru')
-            self.kill()
+            self.health -= player.stats['attack']
+            if self.health <= 0:
+                self.kill()

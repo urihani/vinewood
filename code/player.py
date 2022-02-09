@@ -63,36 +63,38 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
-        if not self.attacking:
-            # mouvements
-            if keys[pygame.K_z]:
-                self.direction.y = -1
-                self.status = 'up'
-            elif keys[pygame.K_s]:
-                self.direction.y = 1
-                self.status = 'down'
-            else:
-                self.direction.y = 0
+        # mouvements
+        if keys[pygame.K_z]:
+            self.direction.y = -1
+            self.status = 'up'
+        elif keys[pygame.K_s]:
+            self.direction.y = 1
+            self.status = 'down'
+        else:
+            self.direction.y = 0
 
-            if keys[pygame.K_d]:
-                self.direction.x = 1
-                self.status = 'right'
-            elif keys[pygame.K_q]:
-                self.direction.x = -1
-                self.status = 'left'
-            else:
-                self.direction.x = 0
+        if keys[pygame.K_d]:
+            self.direction.x = 1
+            self.status = 'right'
+        elif keys[pygame.K_q]:
+            self.direction.x = -1
+            self.status = 'left'
+        else:
+            self.direction.x = 0
 
             # boules de feu
             if pygame.mouse.get_pressed()[0]:
+                shoot_sound = pygame.mixer.Sound(
+                    '../audio/blum/blum_fireball.wav')
+                shoot_sound.play()
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.player_pos = self.get_pos()
                 self.shoot()
 
-            # debug death
-            if keys[pygame.K_m]:
-                self.health = 0
+        # debug death
+        if keys[pygame.K_m]:
+            self.health = 0
 
             # POUR LE MENU PAUSE : voir main.py, c'est le seul moyen que j'ai trouvé pour modifier la framerate et figer le jeu. Loïc
 
@@ -116,6 +118,9 @@ class Player(Entity):
 
         # mort
         if self.health <= 0:
+            death_sound = pygame.mixer.Sound('../audio/blum/blum_dead.wav')
+            death_sound.set_volume(0.2)
+            death_sound.play()
             self.is_dead = True
             self.health = 0
             self.player_death()
@@ -149,7 +154,7 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
-        
+
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
