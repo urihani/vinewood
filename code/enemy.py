@@ -73,11 +73,7 @@ class Enemy(Entity):
             self.attack_time = pygame.time.get_ticks()
             if self.rect.colliderect(player.rect):
                 player.health -= self.attack_damage
-<<<<<<< HEAD
-                print(self.rect.colliderect(player.rect))
-=======
                 player.get_status()
->>>>>>> 91b1e0c06b8a274f0179607f98dffe7394e15817
         elif self.status == 'move':
             self.direction = self.get_player_distance_direction(player)[1]
         else:

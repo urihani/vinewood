@@ -182,8 +182,6 @@ class Level:
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
-    def kill_map(self):
-        self.kill()
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
