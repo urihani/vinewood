@@ -186,7 +186,7 @@ class Level:
     def check_collide_interactable(self):
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
-                print('intéraction')
+                self.ui.show_interaction()
 
     def run(self):
         # met à jour et dessine les sprites
