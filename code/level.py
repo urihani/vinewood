@@ -1,5 +1,6 @@
 from os import kill
 from tkinter.messagebox import NO
+from turtle import pos
 import pygame
 import math
 from settings import *
@@ -12,6 +13,7 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
+from particles import AnimationPlayer
 
 
 class Level:
@@ -52,6 +54,9 @@ class Level:
         self.is_displayed = False
         self.pressed = False
         self.press_time = None
+
+        # particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -218,6 +223,7 @@ class Level:
                         if obstacle.sprite_type != 'invisible':
                             fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
+                            self.animation_player.create_grass_particles(pos, [self.visible_sprites])
                             obstacle.kill()
 
     def check_collide_interactable(self):

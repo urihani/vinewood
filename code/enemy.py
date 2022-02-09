@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from entity import Entity
 from support import *
+from particles import AnimationPlayer
 
 
 class Enemy(Entity):
@@ -118,3 +119,4 @@ class Enemy(Entity):
             self.kill()
             player.tired = False
             player.duration = 0
+

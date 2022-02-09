@@ -9,6 +9,7 @@ from entity import Entity
 from projectile import *
 
 
+
 class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn):
         super().__init__(groups)
