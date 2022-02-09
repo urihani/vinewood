@@ -63,24 +63,25 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
-        # mouvements
-        if keys[pygame.K_z]:
-            self.direction.y = -1
-            self.status = 'up'
-        elif keys[pygame.K_s]:
-            self.direction.y = 1
-            self.status = 'down'
-        else:
-            self.direction.y = 0
+        if not self.attacking:
+            # mouvements
+            if keys[pygame.K_z]:
+                self.direction.y = -1
+                self.status = 'up'
+            elif keys[pygame.K_s]:
+                self.direction.y = 1
+                self.status = 'down'
+            else:
+                self.direction.y = 0
 
-        if keys[pygame.K_d]:
-            self.direction.x = 1
-            self.status = 'right'
-        elif keys[pygame.K_q]:
-            self.direction.x = -1
-            self.status = 'left'
-        else:
-            self.direction.x = 0
+            if keys[pygame.K_d]:
+                self.direction.x = 1
+                self.status = 'right'
+            elif keys[pygame.K_q]:
+                self.direction.x = -1
+                self.status = 'left'
+            else:
+                self.direction.x = 0
 
             # boules de feu
             if pygame.mouse.get_pressed()[0]:
