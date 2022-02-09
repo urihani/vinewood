@@ -41,12 +41,12 @@ class Level:
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
         graphics = {
-            'grass': import_folder('../graphics/Grass'),
+            'grass': import_folder('../graphics/grass'),
             'objects': import_folder('../graphics/objects')
         }
 
@@ -127,7 +127,7 @@ class Level:
     def respawn(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
