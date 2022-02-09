@@ -94,6 +94,8 @@ class Player(Entity):
             if keys[pygame.K_m]:
                 self.health = 0
 
+            # POUR LE MENU PAUSE : voir main.py, c'est le seul moyen que j'ai trouvé pour modifier la framerate et figer le jeu. Loïc
+
     def get_status(self):
 
         # idle
