@@ -52,6 +52,9 @@ class Player(Entity):
 
         # dash
         self.can_dash = True
+        self.max_duration = 7.5
+        self.duration = 0
+        self.tired = False
 
     def import_player_assets(self):
         character_path = '../graphics/hero/'
@@ -72,20 +75,55 @@ class Player(Entity):
             if keys[pygame.K_z]:
                 self.direction.y = -1
                 self.status = 'up'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
             elif keys[pygame.K_s]:
                 self.direction.y = 1
                 self.status = 'down'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
             else:
                 self.direction.y = 0
 
             if keys[pygame.K_d]:
                 self.direction.x = 1
                 self.status = 'right'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
             elif keys[pygame.K_q]:
                 self.direction.x = -1
                 self.status = 'left'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True               
             else:
                 self.direction.x = 0
+                
+
+                
 
             # boules de feu
             if pygame.mouse.get_pressed()[0] and not self.attacking:
@@ -98,33 +136,8 @@ class Player(Entity):
                 self.player_pos = self.get_pos()
                 self.shoot()
 
-            # dash
-            if self.can_dash:
-                if keys[pygame.K_SPACE]:
-                    self.i = 0
-                    self.speed = 45
-                    print("input")
-                    while (self.i < 10):
-                        print("in")
-                        if keys[pygame.K_z]:
-                            self.direction.y = -1
-                            self.status = 'up'
-                        elif keys[pygame.K_s]:
-                            self.direction.y = 1
-                            self.status = 'down'
-                        else:
-                            self.direction.y = 0
-
-                        if keys[pygame.K_d]:
-                            self.direction.x = 1
-                            self.status = 'right'
-                        elif keys[pygame.K_q]:
-                            self.direction.x = -1
-                            self.status = 'left'
-                        else:
-                            self.direction.x = 0
-                        self.i += 1
-                    self.speed = self.speed/10
+            
+          
 
 
         # debug death
@@ -170,6 +183,7 @@ class Player(Entity):
         if self.attacking:
             if current_time - self.attack_time >= self.cooldown:
                 self.attacking = False
+
 
     def animate(self):
         animation = self.animations[self.status]

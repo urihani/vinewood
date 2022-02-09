@@ -117,3 +117,5 @@ class Enemy(Entity):
             #self.health -= player.stats['attack']
             # if self.health <= 0:
             self.kill()
+            player.tired = False
+            player.duration = 0
