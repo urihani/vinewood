@@ -83,11 +83,14 @@ class Player(Entity):
             self.direction.x = 0
 
             # boules de feu
-        if pygame.mouse.get_pressed()[0] and not self.attacking:
-            self.attacking = True
-            self.attack_time = pygame.time.get_ticks()
-            self.player_pos = self.get_pos()
-            self.shoot()
+            if pygame.mouse.get_pressed()[0]:
+                shoot_sound = pygame.mixer.Sound(
+                    '../audio/blum/blum_fireball.wav')
+                shoot_sound.play()
+                self.attacking = True
+                self.attack_time = pygame.time.get_ticks()
+                self.player_pos = self.get_pos()
+                self.shoot()
 
         # debug death
         if keys[pygame.K_m]:
@@ -115,6 +118,9 @@ class Player(Entity):
 
         # mort
         if self.health <= 0:
+            death_sound = pygame.mixer.Sound('../audio/blum/blum_dead.wav')
+            death_sound.set_volume(0.2)
+            death_sound.play()
             self.is_dead = True
             self.health = 0
             self.player_death()
@@ -148,10 +154,10 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move(self.speed)
-        
+
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
 
-        print(self.rect.left)
-        print(self.rect.top)
+        # print(self.rect.left)
+        # print(self.rect.top)

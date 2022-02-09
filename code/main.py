@@ -16,13 +16,16 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
-        
 
         self.level = Level()
         # self.level = Leveltest()
 
+        # music/sounds
+        music = pygame.mixer.music.load('../audio/blum/blum.wav')
+        pygame.mixer.music.play(-1)
+
         # pause
-        
+
         self.dernierTemps = None
         self.is_waiting = False
         self.is_pressed = False
@@ -31,7 +34,7 @@ class Game:
         self.display_surface = pygame.display.get_surface()
         self.game_pause = False
         self.resume_surface = pygame.image.load(
-                '../graphics/menu_pause/resume.png').convert_alpha()
+            '../graphics/menu_pause/resume.png').convert_alpha()
 
         # souris menu
         self.crosshair_img = pygame.image.load(
@@ -52,7 +55,7 @@ class Game:
             self.screen.fill('black')
             if self.game_pause == False and self.credit == False:
                 self.level.run()
-                
+
             # souris
             self.mouse_pos = pygame.mouse.get_pos()
             self.display_surface.blit(self.crosshair_img, self.mouse_pos)
@@ -67,10 +70,7 @@ class Game:
                 self.clock.tick(FPS)
                 # faire disparaitre le curseur
                 pygame.mouse.set_cursor(
-                (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
-            
-            
-
+                    (8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
     def game_pause_input_check(self):
         keys = pygame.key.get_pressed()
@@ -91,7 +91,6 @@ class Game:
             self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
 
-            
             self.resume_rect = self.resume_surface.get_rect(
                 midbottom=(512, 330))
             self.display_surface.blit(self.resume_surface, self.resume_rect)
@@ -119,7 +118,6 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.resume_rect.collidepoint(event.pos):
                         self.resume = True
-                        
 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.credit_rect.collidepoint(event.pos):
