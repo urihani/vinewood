@@ -1,4 +1,5 @@
 from os import kill
+from tkinter.messagebox import NO
 import pygame
 import math
 from settings import *
@@ -41,6 +42,10 @@ class Level:
         self.fire_sprites = import_folder('../graphics/powers/simple_fire/')
         self.fire_group = pygame.sprite.Group()
         self.fired = False
+
+        self.is_displayed = False
+        self.pressed = False
+        self.press_time = None
 
     def create_map(self):
         layouts = {
@@ -179,14 +184,29 @@ class Level:
     def check_collide_obstacles(self):
         for obstacle in self.obstacle_sprites:
             if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
-                print("Need to train your aim bro")
+                # print("Need to train your aim bro")
                 if obstacle.sprite_type == 'grass':
                     obstacle.kill()
 
     def check_collide_interactable(self):
+        self.keys = pygame.key.get_pressed()
+
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
                 self.ui.show_interaction()
+        if self.keys[pygame.K_e]:
+            self.pressed = True
+            self.press_time = pygame.time.get_ticks()
+            self.is_displayed = not self.is_displayed
+        if self.is_displayed:
+            self.ui.show_cauldron_menu(True)
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.pressed:
+            if current_time - self.pressed >= 4000:
+                self.pressed = False
 
     def run(self):
         # met à jour et dessine les sprites

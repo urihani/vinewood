@@ -40,6 +40,11 @@ class UI:
         img = self.font_big.render('E pour intéragir', False, TEXT_COLOR)
         self.display_surface.blit(img, (250, 500))
 
+    def show_cauldron_menu(self, is_displayed):
+        if is_displayed:
+            bg_rect = pygame.Rect(500, 500, 300, 300)
+            pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+
     def selection_box(self, left, top, has_switched):
         bg_rect = pygame.Rect(left, top, ITEM_BOX_SIZE, ITEM_BOX_SIZE)
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
