@@ -79,7 +79,6 @@ class Game:
     def game_pause_input_check(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_ESCAPE] and self.is_pressed == False and self.credit == False) or (self.resume == True and self.is_pressed == False and self.credit == False):
-
             self.is_pressed = True
             #self.is_waiting = False
             self.resume = False
@@ -92,6 +91,7 @@ class Game:
         if self.game_pause and not self.credit:
             self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
+
 
             self.resume_rect = self.resume_surface.get_rect(
                 midbottom=(512, 330))
@@ -116,18 +116,17 @@ class Game:
             self.is_pressed = keys[pygame.K_ESCAPE]
             #self.is_waiting = False
 
-            # for event in pygame.event.get():
-            #     if event.type == pygame.MOUSEBUTTONUP:
-            #         if self.resume_rect.collidepoint(event.pos):
-            #             self.resume = True
-
-            if event.type == pygame.MOUSEBUTTONUP:
-                if self.credit_rect.collidepoint(event.pos):
-                    self.credit = True
-                
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.resume_rect.collidepoint(event.pos):
+                            self.resume = True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.credit_rect.collidepoint(event.pos):
+                        self.credit = True
+                    
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
         if self.credit:
             self.clock.tick(0)
