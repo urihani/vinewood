@@ -14,6 +14,8 @@ class UI:
         self.health_bar_rect = pygame.Rect(
             10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
 
+        self.clock = pygame.time.Clock()
+
         # convert magic dictionary
         self.magic_graphics = []
         for magic in magic_data.values():
@@ -39,14 +41,34 @@ class UI:
         bg_rect = pygame.Rect(350, 20, 350, 730)
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
-        btn1 = pygame.draw.rect(self.display_surface,
-                                UI_ROW_COLOR, (355, 25, 200, 45))
+        # dash
+        dash_rect = self.display_row('../graphics/power_ups/dash.png', 355, 25)
+        # fire_rate
+        fire_rate_rect = self.display_row(
+            '../graphics/power_ups/cadence.png', 355, 75)
+        # damage
+        damage_rect = self.display_row(
+            '../graphics/power_ups/degats.png', 355, 125)
 
+        # event loop
         for event in pygame.event.get():
-            if event.type == pygame.mouse.get_pressed() and event.button == 1:
-                pos = pygame.mouse.get_pos()
-                if btn1.collidepoint(pos):
-                    print('ok')
+            if event.type == pygame.MOUSEBUTTONUP:
+                # dash
+                if dash_rect.collidepoint(event.pos):
+                    print('dash - ok')
+                # fire_rate
+                if fire_rate_rect.collidepoint(event.pos):
+                    print('fire_rate - ok')
+                # damage
+                if damage_rect.collidepoint(event.pos):
+                    print('damage - ok')
+
+    def display_row(self, path, x, y):
+        dash_img = pygame.image.load(
+            path).convert_alpha()
+        rect = dash_img.get_rect(topleft=(x, y))
+        self.display_surface.blit(dash_img, rect)
+        return rect
 
     def selection_box(self, left, top, has_switched):
         bg_rect = pygame.Rect(left, top, ITEM_BOX_SIZE, ITEM_BOX_SIZE)
