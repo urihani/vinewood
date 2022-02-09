@@ -44,12 +44,12 @@ class Projectile(pygame.sprite.Sprite):
         # mais j'ai rencontré des bugs avec le déplacement de la caméra. J'ai implémenté un workaround. Loïc
 
         # portée des projectiles
-        # self.x_dist += 1
-        # self.y_dist += 1
+        self.x_dist += 6.5
+        self.y_dist += 6.5
 
         # CODE DE JU
-        self.x_dist = self.rect.x - (1024 / 2)
-        self.y_dist = self.rect.y - (768 / 2)
+        #self.x_dist = self.rect.x - (1024 / 2)
+        #self.y_dist = self.rect.y - (768 / 2)
 
         self.dist = math.hypot(self.x_dist, self.y_dist)
 

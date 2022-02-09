@@ -12,7 +12,6 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
-from field import Field
 
 
 class Level:
@@ -54,8 +53,6 @@ class Level:
         self.pressed = False
         self.press_time = None
 
-        self.enemy_count = 30
-
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -74,12 +71,6 @@ class Level:
              self.obstacle_sprites,
              self.interactable_sprites],
             self.obstacle_sprites)
-
-        # Field(
-        #     (1800, 340),
-        #     [self.visible_sprites,
-        #      self.obstacle_sprites],
-        #     self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -170,7 +161,7 @@ class Level:
         fire_ball = Projectile([self.visible_sprites,
                                 self.attackable_sprites],
                                self.fire_sprites,
-                               ((self.player.rect.x+47)),
+                               ((self.player.rect.x+40)),
                                (self.player.rect.y+40),
                                self.angle)
         self.fire_group.add(fire_ball)
@@ -201,7 +192,7 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites, self.player_group],
+                                    [self.visible_sprites],
                                     self.obstacle_sprites,
                                     self.shoot, self.player_death, self.respawn)
                             else:
@@ -221,13 +212,17 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
+ 
+
     def check_collide_obstacles(self):
-        for obstacle in self.obstacle_sprites:
+        for obstacle in self.obstacle_sprites:            
             if len(self.fire_group.sprites()) >= 1:
-                for fire_ball in self.fire_group:
+                for fire_ball in self.fire_group: 
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
-                        # print("COLLIDE: Need to train your aim bro")
-                        fire_ball.kill()
+                        print("COLLIDE: Need to train your aim bro")
+                        if obstacle.sprite_type != 'invisible':
+                            print(obstacle.sprite_type)
+                            fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
                             obstacle.kill()
 
@@ -237,6 +232,13 @@ class Level:
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
                 self.ui.show_cauldron_menu()
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.pressed:
+            if current_time - self.pressed >= 4000:
+                self.pressed = False
 
     def run(self):
         # met à jour et dessine les sprites
