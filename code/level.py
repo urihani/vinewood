@@ -9,6 +9,7 @@ from random import choice
 from ui import UI
 from enemy import Enemy
 from projectile import *
+from chaudron import Chaudron
 
 
 class Level:
@@ -19,6 +20,7 @@ class Level:
         # groupes de sprites (setup)
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+        self.enemy_sprites = pygame.sprite.Group()
 
         # sprites d'attaque
         self.current_attack = None
@@ -32,22 +34,25 @@ class Level:
         self.ui = UI()
 
         # boules de feu
-        self.fire_img = pygame.image.load(
-            '../graphics/powers/simple_fire/0.png').convert_alpha()
+        # animation boule de feu
+        self.fire_sprites = import_folder('../graphics/powers/simple_fire/')
         self.fire_group = pygame.sprite.Group()
         self.fired = False
 
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
         graphics = {
-            'grass': import_folder('../graphics/Grass'),
+            'grass': import_folder('../graphics/grass'),
             'objects': import_folder('../graphics/objects')
         }
+
+        Chaudron((2170, 300), [self.visible_sprites,
+                 self.obstacle_sprites], self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -63,83 +68,30 @@ class Level:
                         # herbe
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'grass', random_grass_image)
-
-                        # objets
-                        if style == 'object':
-                            surf = graphics['objects'][int(col)]
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'object', surf)
-
-                        # entities
-                        if style == 'entities':
-                            if col == '394':
-                                self.player = Player(
-                                    (x, y),
-                                    [self.visible_sprites],
-                                    self.obstacle_sprites,
-                                    self.create_magic, self.shoot,self.create_map,self.kill_map)
-                            else:
-                                if col == '390':
-                                    monster_name = 'bamboo'
-                                elif col == '391':
-                                    monster_name = 'spirit'
-                                elif col == '392':
-                                    monster_name = 'raccoon'
-                                else:
-                                    monster_name = 'squid'
-
-                                Enemy(monster_name,
-                                      (x, y),
-                                      [self.visible_sprites,
-                                       self.attackable_sprites],
-                                      self.obstacle_sprites)
-
-
-    def Recreate_map(self,x,y):
-        layouts = {
-            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('../map/map_Grass.csv'),
-            'object': import_csv_layout('../map/map_Objects.csv'),
-            'entities': import_csv_layout('../map/map_Entities.csv')
-        }
-        graphics = {
-            'grass': import_folder('../graphics/Grass'),
-            'objects': import_folder('../graphics/objects')
-        }
-
-        for style, layout in layouts.items():
-            for row_index, row in enumerate(layout):
-                for col_index, col in enumerate(row):
-                    if col != '-1':
-                        # positions
-                        x = x
-                        y = y
-                        # limites du terrain
-                        if style == 'boundary':
                             Tile(
-                                (x, y), [self.obstacle_sprites], 'invisible')
-                        # herbe
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'grass', random_grass_image)
+                                (x, y),
+                                [self.visible_sprites,
+                                 self.obstacle_sprites,
+                                 self.attackable_sprites],
+                                'grass',
+                                random_grass_image)
 
                         # objets
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites,
-                                 self.obstacle_sprites], 'object', surf)
+                                          self.obstacle_sprites], 'object', surf)
 
-                        # entities
+                            # entities
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.create_magic, self.shoot,self.create_map,self.kill_map)
+                                    self.shoot,
+                                    self.player_death,
+                                    self.respawn)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -150,37 +102,83 @@ class Level:
                                 else:
                                     monster_name = 'squid'
 
-                                Enemy(monster_name,
-                                      (x, y),
-                                      [self.visible_sprites,
-                                       self.attackable_sprites],
-                                      self.obstacle_sprites)                                  
-
-    def create_magic(self, style, strength):
-        print(style)
-        print(strength)
+                                self.enemy = Enemy(monster_name,
+                                                   (x, y),
+                                                   [self.visible_sprites,
+                                                       self.attackable_sprites,
+                                                       self.enemy_sprites],
+                                                   self.obstacle_sprites)
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
         y_dist = self.mouse_pos[1] - (768 / 2)
         self.angle = math.atan2(-y_dist, x_dist)
 
-        fire_ball = Projectile(self.fire_img, (1024 / 2),
-                               (768 / 2), self.angle)
+        fire_ball = Projectile([self.visible_sprites,
+                                self.attackable_sprites],
+                               self.fire_sprites,
+                               (1024 / 2),
+                               (768 / 2),
+                               self.angle)
         self.fire_group.add(fire_ball)
 
+    def player_death(self):
+        self.player.kill()
+
+        for sprite in self.enemy_sprites:
+            sprite.kill()
+
+    def respawn(self):
+        layouts = {
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        # positions
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+
+                        # entities
+                        if style == 'entities':
+                            if col == '394':
+                                self.player = Player(
+                                    (x, y),
+                                    [self.visible_sprites],
+                                    self.obstacle_sprites,
+                                    self.shoot, self.player_death, self.respawn)
+                            else:
+                                if col == '390':
+                                    monster_name = 'bamboo'
+                                elif col == '391':
+                                    monster_name = 'spirit'
+                                elif col == '392':
+                                    monster_name = 'raccoon'
+                                else:
+                                    monster_name = 'squid'
+
+                                self.enemy = Enemy(monster_name,
+                                                   (x, y),
+                                                   [self.visible_sprites,
+                                                       self.attackable_sprites,
+                                                       self.enemy_sprites],
+                                                   self.obstacle_sprites)
 
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
+        self.fire_group.update()
+        self.fire_group.draw(self.display_surface)
+        self.visible_sprites.enemy_update(self.player, self.fire_group)
         self.ui.display(self.player)
         # player status
         self.player_dead = self.player.is_dead
 
-        self.fire_group.update()
-        self.fire_group.draw(self.display_surface)
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
@@ -218,9 +216,8 @@ class YSortCameraGroup(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
 
-    def enemy_update(self, player):
+    def enemy_update(self, player, fire_group):
         enemy_sprites = [sprite for sprite in self.sprites()
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
-            enemy.enemy_update(player)
-
+            enemy.enemy_update(player, fire_group)

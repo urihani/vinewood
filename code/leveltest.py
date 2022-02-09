@@ -83,10 +83,6 @@ class Leveltest:
                                 Enemy(monster_name, (x, y), [
                                       self.visible_sprites], self.obstacle_sprites)
 
-    def create_magic(self, style, strength):
-        print(style)
-        print(strength)
-
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)

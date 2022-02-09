@@ -11,10 +11,10 @@ from projectile import *
 
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacle_sprites, create_magic, shoot,Recreate_map,kill_map):
+    def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn,Recreate_map,kill_map):
         super().__init__(groups)
         self.image = pygame.image.load(
-            '../graphics/test/player.png').convert_alpha()
+            '../graphics/hero/up_idle/up_idle_01.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         self.display_surface = pygame.display.get_surface()
@@ -43,7 +43,6 @@ class Player(Entity):
         self.game_pause = False
 
         # magie
-        self.create_magic = create_magic
         self.magic_index = 0
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
@@ -58,12 +57,16 @@ class Player(Entity):
         self.speed = self.stats['speed']
         self.is_dead = False
 
+        # méthodes partagées
+        self.player_death = player_death
+        self.respawn = respawn
+
         # load images
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
 
     def import_player_assets(self):
-        character_path = '../graphics/player/'
+        character_path = '../graphics/hero/'
         self.animations = {
             'up': [], 'down': [], 'left': [], 'right': [],
             'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
@@ -101,24 +104,12 @@ class Player(Entity):
             else:
                 self.direction.x = 0
         
-            # magie
-            # if keys[pygame.K_LCTRL] and not self.attacking:
-            #     self.attacking = True
-            #     self.attack_time = pygame.time.get_ticks()
-            #     style = list(magic_data.keys())[self.magic_index]
-            #     strength = list(magic_data.values())[
-            #         self.magic_index]['strength']
-            #     self.create_magic(style, strength)
-
+            # boules de feu
             if pygame.mouse.get_pressed()[0] and  not self.attacking:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
-                # self.fired = True
                 self.player_pos = self.get_pos()
-                # print('Player : X=' +
-                #       str(self.player_pos[0]) + ' - Y=' + str(self.player_pos[1]))
                 self.shoot()
-            # TODO timer sur la boule de feu
 
             # debug death
             if keys[pygame.K_m]:
@@ -192,9 +183,8 @@ class Player(Entity):
             self.is_dead = True
             self.health = 0
             # print(self.health)
-            #self.kill()
-            #self.kill_map()
-            #self.Recreate_map(2112, 1344)
+            self.player_death()
+            self.respawn()
 
     def get_pos(self):
         return [self.rect.left, self.rect.top]
@@ -228,3 +218,6 @@ class Player(Entity):
         self.input()
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
+
+        print(self.rect.left)
+        print(self.rect.top)
