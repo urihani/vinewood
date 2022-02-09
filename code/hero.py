@@ -152,4 +152,3 @@ class Hero(Entity):
         self.move(self.speed)
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
