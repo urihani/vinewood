@@ -16,11 +16,14 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.angle = angle
-        self.speed = powers_data['fire_ball']['speed']
         self.x = x
         self.y = y
         self.x_dist = 1
         self.y_dist = 1
+
+        # stats
+        self.speed = powers_data['fire_ball']['speed']
+        self.reach = powers_data['fire_ball']['reach']
 
         # vitesses
         self.dx = math.cos(self.angle) * self.speed
@@ -41,6 +44,7 @@ class Projectile(pygame.sprite.Sprite):
         self.y_dist += 1
         self.dist = math.hypot(self.x_dist, self.y_dist)
         if self.dist > 75:
+
             self.kill()
 
     def animate(self):
