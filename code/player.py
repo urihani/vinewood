@@ -51,7 +51,7 @@ class Player(Entity):
             '../graphics/crosshair/0.png').convert_alpha()
 
         # dash
-        self.can_dash = True
+        self.can_dash = False
         self.max_duration = 7.5
         self.duration = 0
         self.tired = False
@@ -73,74 +73,73 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
-        if not self.attacking:
-            # mouvements
-            if keys[pygame.K_z]:
-                self.direction.y = -1
-                self.status = 'up'
-                if keys[pygame.K_SPACE]:
-                    self.has_dashed = True
-                    if self.can_dash and self.tired == False:
-                        if self.duration <= self.max_duration:
-                            self.hitbox.y += self.direction.y * \
-                                (self.speed*2.5)
-                            self.duration += 1
-                        else:
-                            tired = True
-            elif keys[pygame.K_s]:
-                self.direction.y = 1
-                self.status = 'down'
-                if keys[pygame.K_SPACE]:
-                    self.has_dashed = True
-                    if self.can_dash and self.tired == False:
-                        if self.duration <= self.max_duration:
-                            self.hitbox.y += self.direction.y * \
-                                (self.speed*2.5)
-                            self.duration += 1
-                        else:
-                            tired = True
-            else:
-                self.direction.y = 0
+        # mouvements
+        if keys[pygame.K_z]:
+            self.direction.y = -1
+            self.status = 'up'
+            if keys[pygame.K_SPACE]:
+                self.has_dashed = True
+                if self.can_dash and self.tired == False:
+                    if self.duration <= self.max_duration:
+                        self.hitbox.y += self.direction.y * \
+                            (self.speed*2.5)
+                        self.duration += 1
+                    else:
+                        tired = True
+        elif keys[pygame.K_s]:
+            self.direction.y = 1
+            self.status = 'down'
+            if keys[pygame.K_SPACE]:
+                self.has_dashed = True
+                if self.can_dash and self.tired == False:
+                    if self.duration <= self.max_duration:
+                        self.hitbox.y += self.direction.y * \
+                            (self.speed*2.5)
+                        self.duration += 1
+                    else:
+                        tired = True
+        else:
+            self.direction.y = 0
 
-            if keys[pygame.K_d]:
-                self.direction.x = 1
-                self.status = 'right'
-                if keys[pygame.K_SPACE]:
-                    self.has_dashed = True
-                    if self.can_dash and self.tired == False:
-                        if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
-                                (self.speed*2.5)
-                            self.duration += 1
-                        else:
-                            tired = True
-            elif keys[pygame.K_q]:
-                self.direction.x = -1
-                self.status = 'left'
-                if keys[pygame.K_SPACE]:
-                    self.has_dashed = True
-                    if self.can_dash and self.tired == False:
-                        if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * \
-                                (self.speed*2.5)
-                            self.duration += 1
-                        else:
-                            tired = True
-            else:
-                self.direction.x = 0
+        if keys[pygame.K_d]:
+            self.direction.x = 1
+            self.status = 'right'
+            if keys[pygame.K_SPACE]:
+                self.has_dashed = True
+                if self.can_dash and self.tired == False:
+                    if self.duration <= self.max_duration:
+                        self.hitbox.x += self.direction.x * \
+                            (self.speed*2.5)
+                        self.duration += 1
+                    else:
+                        tired = True
+        elif keys[pygame.K_q]:
+            self.direction.x = -1
+            self.status = 'left'
+            if keys[pygame.K_SPACE]:
+                self.has_dashed = True
+                if self.can_dash and self.tired == False:
+                    if self.duration <= self.max_duration:
+                        self.hitbox.x += self.direction.x * \
+                            (self.speed*2.5)
+                        self.duration += 1
+                    else:
+                        tired = True
+        else:
+            self.direction.x = 0
 
-            # boules de feu
-            if pygame.mouse.get_pressed()[0] and not self.attacking:
-                shoot_sound = pygame.mixer.Sound(
-                    '../audio/blum/blum_fireball.wav')
-                shoot_sound.set_volume(0.5)
-                shoot_sound.play()
-                self.attacking = True
-                self.attack_time = pygame.time.get_ticks()
-                self.player_pos = self.get_pos()
-                self.shoot()
+        # boules de feu
+        if pygame.mouse.get_pressed()[0] and not self.attacking:
+            shoot_sound = pygame.mixer.Sound(
+                '../audio/blum/blum_fireball.wav')
+            shoot_sound.set_volume(0.5)
+            shoot_sound.play()
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            self.player_pos = self.get_pos()
+            self.shoot()
 
-        # dash
+    # dash
         if self.can_dash:
             if keys[pygame.K_SPACE]:
                 self.i = 0
@@ -170,7 +169,7 @@ class Player(Entity):
         if keys[pygame.K_m]:
             self.health = 0
 
-            # POUR LE MENU PAUSE : voir main.py, c'est le seul moyen que j'ai trouvé pour modifier la framerate et figer le jeu. Loïc
+        # POUR LE MENU PAUSE : voir main.py, c'est le seul moyen que j'ai trouvé pour modifier la framerate et figer le jeu. Loïc
 
     def get_status(self):
 

@@ -16,6 +16,8 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
+        self.nb_temp = 47
+
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
@@ -47,23 +49,53 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
         # dash
-        self.dash_rect = self.display_row(
-            '../graphics/power_ups/dash.png', 355, 25)
+        if self.nb_temp <= 47:
+            self.dash_rect = self.display_row(
+                '../graphics/power_ups/dash.png', 355, 25)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 25)
+            self.player.can_dash = False
+
         # fire_rate
-        self.fire_rate_rect = self.display_row(
-            '../graphics/power_ups/cadence.png', 355, 75)
+        if self.nb_temp <= 42:
+            self.fire_rate_rect = self.display_row(
+                '../graphics/power_ups/cadence.png', 355, 75)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 75)
+
         # damage
-        self.damage_rect = self.display_row(
-            '../graphics/power_ups/degats.png', 355, 125)
+        if self.nb_temp <= 36:
+            self.damage_rect = self.display_row(
+                '../graphics/power_ups/degats.png', 355, 125)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 125)
+
         # reach
-        self.reach_rect = self.display_row(
-            '../graphics/power_ups/portee.png', 355, 175)
+        if self.nb_temp <= 28:
+            self.reach_rect = self.display_row(
+                '../graphics/power_ups/portee.png', 355, 175)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 175)
+
         # speed
-        self.speed_rect = self.display_row(
-            '../graphics/power_ups/vitesse.png', 355, 225)
+        if self.nb_temp <= 20:
+            self.speed_rect = self.display_row(
+                '../graphics/power_ups/vitesse.png', 355, 225)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 225)
+
         # health
-        self.health_rect = self.display_row(
-            '../graphics/power_ups/sante.png', 355, 275)
+        if self.nb_temp <= 12:
+            self.health_rect = self.display_row(
+                '../graphics/power_ups/sante.png', 355, 275)
+        else:
+            self.display_row(
+                '../graphics/power_ups/none.png', 355, 275)
 
     def display_row(self, path, x, y):
         dash_img = pygame.image.load(
@@ -95,26 +127,33 @@ class UI:
         #       and self.cauldron_menu_visible)
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'dash_rect'):
             # dash
-            if self.dash_rect.collidepoint(event.pos):
+            if self.dash_rect.collidepoint(event.pos) and self.nb_temp <= 47:
                 print('dash - ok')
+                self.player.can_dash = True
             # fire_rate
-            if self.fire_rate_rect.collidepoint(event.pos):
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
+            if self.fire_rate_rect.collidepoint(event.pos) and self.nb_temp <= 42:
                 print('fire_rate - ok')
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'damage_rect'):
             # damage
-            if self.damage_rect.collidepoint(event.pos):
+            if self.damage_rect.collidepoint(event.pos) and self.nb_temp <= 36:
                 print('damage - ok')
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'reach_rect'):
             # reach
-            if self.reach_rect.collidepoint(event.pos):
+            if self.reach_rect.collidepoint(event.pos) and self.nb_temp <= 28:
                 print('reach - ok')
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
-            if self.speed_rect.collidepoint(event.pos):
+            if self.speed_rect.collidepoint(event.pos) and self.nb_temp <= 20:
                 print('speed - ok')
+        if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'health_rect'):
             # health
-            if self.health_rect.collidepoint(event.pos):
+            if self.health_rect.collidepoint(event.pos) and self.nb_temp <= 12:
                 print('health - ok')
 
     def display(self, player, count_monsters):
         self.count_monsters = count_monsters
+        self.player = player
         self.show_bar(
             player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 
