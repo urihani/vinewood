@@ -9,7 +9,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = surface
         if sprite_type == 'object':
             self.rect = self.image.get_rect(
-                center=(pos[0], pos[1] - TILESIZE))
+                topleft=(pos[0], pos[1] - TILESIZE))
         else:
             self.rect = self.image.get_rect(topleft=pos)
         

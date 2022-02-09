@@ -1,6 +1,7 @@
 import math
 from tkinter.messagebox import NO
 from tkinter.ttk import Style
+from turtle import speed
 import pygame
 from settings import *
 from support import import_folder
@@ -49,6 +50,9 @@ class Player(Entity):
         self.crosshair_img = pygame.image.load(
             '../graphics/crosshair/0.png').convert_alpha()
 
+        # dash
+        self.can_dash = True
+
     def import_player_assets(self):
         character_path = '../graphics/hero/'
         self.animations = {
@@ -93,6 +97,35 @@ class Player(Entity):
                 self.attack_time = pygame.time.get_ticks()
                 self.player_pos = self.get_pos()
                 self.shoot()
+
+            # dash
+            if self.can_dash:
+                if keys[pygame.K_SPACE]:
+                    self.i = 0
+                    self.speed = 45
+                    print("input")
+                    while (self.i < 10):
+                        print("in")
+                        if keys[pygame.K_z]:
+                            self.direction.y = -1
+                            self.status = 'up'
+                        elif keys[pygame.K_s]:
+                            self.direction.y = 1
+                            self.status = 'down'
+                        else:
+                            self.direction.y = 0
+
+                        if keys[pygame.K_d]:
+                            self.direction.x = 1
+                            self.status = 'right'
+                        elif keys[pygame.K_q]:
+                            self.direction.x = -1
+                            self.status = 'left'
+                        else:
+                            self.direction.x = 0
+                        self.i += 1
+                    self.speed = self.speed/10
+
 
         # debug death
         if keys[pygame.K_m]:

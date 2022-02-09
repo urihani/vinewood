@@ -12,6 +12,7 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
+from field import Field
 
 
 class Level:
@@ -67,6 +68,13 @@ class Level:
 
         Chaudron(
             (2170, 300),
+            [self.visible_sprites,
+             self.obstacle_sprites,
+             self.interactable_sprites],
+            self.obstacle_sprites)
+
+        Field(
+            (1880, 340),
             [self.visible_sprites,
              self.obstacle_sprites,
              self.interactable_sprites],
