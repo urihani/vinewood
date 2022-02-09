@@ -176,12 +176,17 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
+ 
+
     def check_collide_obstacles(self):
-        for obstacle in self.obstacle_sprites:
-            if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
-                print("Need to train your aim bro")
-                if obstacle.sprite_type == 'grass':
-                    obstacle.kill()
+        for obstacle in self.obstacle_sprites:            
+            if len(self.fire_group.sprites()) >= 1:
+                for fire_ball in self.fire_group: 
+                    if obstacle.hitbox2.colliderect(fire_ball.hitbox):
+                        print("COLLIDE: Need to train your aim bro")
+                        fire_ball.kill()
+                        if obstacle.sprite_type == 'grass':
+                            obstacle.kill()
 
     def check_collide_interactable(self):
         for interactable in self.interactable_sprites:
