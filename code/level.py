@@ -1,3 +1,4 @@
+from os import kill
 import pygame
 import math
 from settings import *
@@ -172,6 +173,8 @@ class Level:
         for obstacle in self.obstacle_sprites:
             if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
                 print("Need to train your aim bro")
+                if obstacle.sprite_type == 'grass':
+                    obstacle.kill()
 
     def run(self):
         # met à jour et dessine les sprites
@@ -188,7 +191,7 @@ class Level:
         self.mouse_pos = pygame.mouse.get_pos()
 
         # vérification des colisions entre bullets et mobs /!\ DÉ-COMMENTEZ LORSQUE LES HITBOX DES OBSTACLES SERONT RÉDUITES
-        # self.check_collide_obstacles()
+        self.check_collide_obstacles()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
