@@ -20,6 +20,8 @@ class Projectile(pygame.sprite.Sprite):
         self.y = y
         self.x_dist = 1
         self.y_dist = 1
+        self.hitbox = self.rect
+
 
         # stats
         self.speed = powers_data['fire_ball']['speed']

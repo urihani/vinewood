@@ -35,15 +35,18 @@ class UI:
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
-    def show_interaction(self):
+    def show_cauldron_menu(self):
+        bg_rect = pygame.Rect(350, 20, 350, 730)
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
-        img = self.font_big.render('E pour intéragir', False, TEXT_COLOR)
-        self.display_surface.blit(img, (250, 500))
+        btn1 = pygame.draw.rect(self.display_surface,
+                                UI_ROW_COLOR, (355, 25, 200, 45))
 
-    def show_cauldron_menu(self, is_displayed):
-        if is_displayed:
-            bg_rect = pygame.Rect(500, 500, 300, 300)
-            pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+        for event in pygame.event.get():
+            if event.type == pygame.mouse.get_pressed() and event.button == 1:
+                pos = pygame.mouse.get_pos()
+                if btn1.collidepoint(pos):
+                    print('ok')
 
     def selection_box(self, left, top, has_switched):
         bg_rect = pygame.Rect(left, top, ITEM_BOX_SIZE, ITEM_BOX_SIZE)

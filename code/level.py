@@ -51,6 +51,8 @@ class Level:
         self.pressed = False
         self.press_time = None
 
+        self.enemy_count = 30
+
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
@@ -145,7 +147,7 @@ class Level:
                             if col == '390' or col == '391' or col == '392' or col == '393':
                                 self.nb_monster += 1
 
-        return self.nb_monster
+        print(self.nb_monster)
 
     def shoot(self):
         x_dist = self.mouse_pos[0] - (1024 / 2)
@@ -208,30 +210,20 @@ class Level:
 
     def check_collide_obstacles(self):
         for obstacle in self.obstacle_sprites:
-            if pygame.sprite.spritecollide(obstacle, self.fire_group, True):
-                # print("Need to train your aim bro")
-                if obstacle.sprite_type == 'grass':
-                    obstacle.kill()
+            if len(self.fire_group.sprites()) >= 1:
+                for fire_ball in self.fire_group:
+                    if obstacle.hitbox2.colliderect(fire_ball.hitbox):
+                        print("COLLIDE: Need to train your aim bro")
+                        fire_ball.kill()
+                        if obstacle.sprite_type == 'grass':
+                            obstacle.kill()
 
     def check_collide_interactable(self):
         self.keys = pygame.key.get_pressed()
 
         for interactable in self.interactable_sprites:
             if pygame.sprite.spritecollide(interactable, self.player_group, False):
-                self.ui.show_interaction()
-        if self.keys[pygame.K_e]:
-            self.pressed = True
-            self.press_time = pygame.time.get_ticks()
-            self.is_displayed = not self.is_displayed
-        if self.is_displayed:
-            self.ui.show_cauldron_menu(True)
-
-    def cooldowns(self):
-        current_time = pygame.time.get_ticks()
-
-        if self.pressed:
-            if current_time - self.pressed >= 4000:
-                self.pressed = False
+                self.ui.show_cauldron_menu()
 
     def run(self):
         # met à jour et dessine les sprites

@@ -9,7 +9,16 @@ class Tile(pygame.sprite.Sprite):
         self.image = surface
         if sprite_type == 'object':
             self.rect = self.image.get_rect(
-                topleft=(pos[0], pos[1] - TILESIZE))
+                center=(pos[0], pos[1] - TILESIZE))
         else:
             self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -10)
+        
+        # Pour le personnage
+        self.hitbox = self.rect.inflate(-30, -10)
+
+        # Pour les boules de feu
+        self.hitbox2 = self.rect.inflate(-150, -120)
+        self.hitbox2.y = self.hitbox2.y - 40
+        self.hitbox2.x = self.hitbox2.x - 0
+        
+
