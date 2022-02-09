@@ -27,6 +27,8 @@ class Level:
         self.current_attack = None
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
+        self.interactable_sprites = pygame.sprite.Group()
+        self.player_group = pygame.sprite.Group()
 
         # sprites (setup)
         self.create_map()
@@ -52,8 +54,12 @@ class Level:
             'objects': import_folder('../graphics/objects')
         }
 
-        Chaudron((2170, 300), [self.visible_sprites,
-                 self.obstacle_sprites], self.obstacle_sprites)
+        Chaudron(
+            (2170, 300),
+            [self.visible_sprites,
+             self.obstacle_sprites,
+             self.interactable_sprites],
+            self.obstacle_sprites)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -88,7 +94,8 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites,
+                                     self.player_group],
                                     self.obstacle_sprites,
                                     self.shoot,
                                     self.player_death,
@@ -176,6 +183,11 @@ class Level:
                 if obstacle.sprite_type == 'grass':
                     obstacle.kill()
 
+    def check_collide_interactable(self):
+        for interactable in self.interactable_sprites:
+            if pygame.sprite.spritecollide(interactable, self.player_group, False):
+                self.ui.show_interaction()
+
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
@@ -192,6 +204,9 @@ class Level:
 
         # vérification des colisions entre bullets et mobs /!\ DÉ-COMMENTEZ LORSQUE LES HITBOX DES OBSTACLES SERONT RÉDUITES
         self.check_collide_obstacles()
+
+        # intéraction avec le chaudron
+        self.check_collide_interactable()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
