@@ -1,6 +1,8 @@
 import math
+import time
 from tkinter.messagebox import NO
 from tkinter.ttk import Style
+from unittest import main
 import pygame
 from settings import *
 from support import import_folder
@@ -9,7 +11,7 @@ from projectile import *
 
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacle_sprites, create_magic, shoot):
+    def __init__(self, pos, groups, obstacle_sprites, create_magic, shoot,Recreate_map,kill_map):
         super().__init__(groups)
         self.image = pygame.image.load(
             '../graphics/test/player.png').convert_alpha()
@@ -20,11 +22,25 @@ class Player(Entity):
         # graphics setup
         self.import_player_assets()
         self.status = 'down'
+        self.Recreate_map = Recreate_map
+        self.kill_map = kill_map
+
+        #font
+        self.test_font = pygame.font.Font('../font/Pixeltype.ttf',50)
+
+        #time
+        self.dernierTemps = None
+        self.is_waiting = False
+        self.is_pressed = False
+        self.resume= False
+        self.credit = False
+
 
         # mouvement
         self.attacking = False
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
+        self.game_pause = False
 
         # magie
         self.create_magic = create_magic
@@ -58,9 +74,14 @@ class Player(Entity):
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
 
+
+    def game_pause(self):
+        self.game_pause
+
     def input(self):
         keys = pygame.key.get_pressed()
-        if not self.attacking:
+        if self.game_pause == False:
+            #if not self.attacking:
             # mouvements
             if keys[pygame.K_z]:
                 self.direction.y = -1
@@ -79,7 +100,7 @@ class Player(Entity):
                 self.status = 'left'
             else:
                 self.direction.x = 0
-
+        
             # magie
             # if keys[pygame.K_LCTRL] and not self.attacking:
             #     self.attacking = True
@@ -89,7 +110,7 @@ class Player(Entity):
             #         self.magic_index]['strength']
             #     self.create_magic(style, strength)
 
-            if pygame.mouse.get_pressed()[0]:
+            if pygame.mouse.get_pressed()[0] and  not self.attacking:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 # self.fired = True
@@ -102,6 +123,51 @@ class Player(Entity):
             # debug death
             if keys[pygame.K_m]:
                 self.health = 0
+
+        if keys[pygame.K_ESCAPE] and self.is_pressed == False or self.resume == True and self.is_pressed == False :
+            self.is_pressed = True
+            self.is_waiting = False
+            if self.game_pause:
+                self.game_pause = False
+            else:
+                self.game_pause = True
+        if self.game_pause:
+            self.display_surface.fill(((64,64,64)))
+
+            self.resume_surface = pygame.image.load('../graphics/menu_pause/resume.png').convert_alpha()
+            self.resume_rect = self.resume_surface.get_rect(midbottom =(512,330))
+            self.display_surface.blit(self.resume_surface,self.resume_rect)
+
+            self.credit_surface = pygame.image.load('../graphics/menu_pause/credit.png').convert_alpha()
+            self.credit_rect = self.credit_surface.get_rect(midbottom =(512,460))
+            self.display_surface.blit(self.credit_surface,self.credit_rect)
+
+            self.Rmenu_surface = pygame.image.load('../graphics/menu_pause/Rmenu.png').convert_alpha()
+            self.Rmenu_rect = self.Rmenu_surface.get_rect(midbottom =(512,590))
+            self.display_surface.blit(self.Rmenu_surface,self.Rmenu_rect)
+
+            if not self.is_waiting:
+                self.dernierTemps = time.time()
+                self.is_waiting = True
+            if time.time() > self.dernierTemps + 0.1:
+                self.is_pressed = False
+                self.is_waiting = False
+
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.resume_rect.collidepoint(event.pos):
+                        self.resume= True
+
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.credit_rect.collidepoint(event.pos):
+                        self.credit = True
+        
+        
+        if self.credit and self.game_pause:
+            self.display_surface.fill(((64,64,64)))
+
+
+
 
     def get_status(self):
 
@@ -126,14 +192,9 @@ class Player(Entity):
             self.is_dead = True
             self.health = 0
             # print(self.health)
-            # self.kill()
-            # self.visible_sprites = YSortCameraGroup()
-            # try de reccrer un joueur ( marche pas)
-            # self.player = Player(
-            #  (2112, 1344),
-            # [visible_sprites],
-            #  self.obstacle_sprites,
-            #  self.create_magic)
+            #self.kill()
+            #self.kill_map()
+            #self.Recreate_map(2112, 1344)
 
     def get_pos(self):
         return [self.rect.left, self.rect.top]
@@ -157,12 +218,13 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
+
     def update(self):
-        self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move(self.speed)
         # position de la souris
+        self.input()
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)

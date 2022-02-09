@@ -79,7 +79,7 @@ class Level:
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
-                                    self.create_magic, self.shoot)
+                                    self.create_magic, self.shoot,self.create_map,self.kill_map)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -96,6 +96,66 @@ class Level:
                                        self.attackable_sprites],
                                       self.obstacle_sprites)
 
+
+    def Recreate_map(self,x,y):
+        layouts = {
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
+            'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+        graphics = {
+            'grass': import_folder('../graphics/Grass'),
+            'objects': import_folder('../graphics/objects')
+        }
+
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        # positions
+                        x = x
+                        y = y
+                        # limites du terrain
+                        if style == 'boundary':
+                            Tile(
+                                (x, y), [self.obstacle_sprites], 'invisible')
+                        # herbe
+                        if style == 'grass':
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x, y), [self.visible_sprites,
+                                 self.obstacle_sprites], 'grass', random_grass_image)
+
+                        # objets
+                        if style == 'object':
+                            surf = graphics['objects'][int(col)]
+                            Tile((x, y), [self.visible_sprites,
+                                 self.obstacle_sprites], 'object', surf)
+
+                        # entities
+                        if style == 'entities':
+                            if col == '394':
+                                self.player = Player(
+                                    (x, y),
+                                    [self.visible_sprites],
+                                    self.obstacle_sprites,
+                                    self.create_magic, self.shoot,self.create_map,self.kill_map)
+                            else:
+                                if col == '390':
+                                    monster_name = 'bamboo'
+                                elif col == '391':
+                                    monster_name = 'spirit'
+                                elif col == '392':
+                                    monster_name = 'raccoon'
+                                else:
+                                    monster_name = 'squid'
+
+                                Enemy(monster_name,
+                                      (x, y),
+                                      [self.visible_sprites,
+                                       self.attackable_sprites],
+                                      self.obstacle_sprites)                                  
+
     def create_magic(self, style, strength):
         print(style)
         print(strength)
@@ -108,6 +168,7 @@ class Level:
         fire_ball = Projectile(self.fire_img, (1024 / 2),
                                (768 / 2), self.angle)
         self.fire_group.add(fire_ball)
+
 
     def run(self):
         # met à jour et dessine les sprites
@@ -123,6 +184,8 @@ class Level:
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
+    def kill_map(self):
+        self.kill()
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
@@ -160,3 +223,4 @@ class YSortCameraGroup(pygame.sprite.Group):
                          if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
             enemy.enemy_update(player)
+
