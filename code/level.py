@@ -147,8 +147,6 @@ class Level:
                             if col == '390' or col == '391' or col == '392' or col == '393':
                                 self.nb_monster += 1
 
-        print(self.nb_monster)
-
     def count_monsters(self):
         nb = len(self.enemy_sprites)+1
         return nb
@@ -212,16 +210,12 @@ class Level:
                                                        self.enemy_sprites],
                                                    self.obstacle_sprites)
 
- 
-
     def check_collide_obstacles(self):
-        for obstacle in self.obstacle_sprites:            
+        for obstacle in self.obstacle_sprites:
             if len(self.fire_group.sprites()) >= 1:
-                for fire_ball in self.fire_group: 
+                for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
-                        print("COLLIDE: Need to train your aim bro")
                         if obstacle.sprite_type != 'invisible':
-                            print(obstacle.sprite_type)
                             fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
                             obstacle.kill()

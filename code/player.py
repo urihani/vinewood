@@ -79,7 +79,6 @@ class Player(Entity):
                 self.status = 'up'
                 if keys[pygame.K_SPACE]:
                     self.has_dashed = True
-                    print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -92,7 +91,6 @@ class Player(Entity):
                 self.status = 'down'
                 if keys[pygame.K_SPACE]:
                     self.has_dashed = True
-                    print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -108,7 +106,6 @@ class Player(Entity):
                 self.status = 'right'
                 if keys[pygame.K_SPACE]:
                     self.has_dashed = True
-                    print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -121,7 +118,6 @@ class Player(Entity):
                 self.status = 'left'
                 if keys[pygame.K_SPACE]:
                     self.has_dashed = True
-                    print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
                             self.hitbox.x += self.direction.x * \
@@ -148,9 +144,7 @@ class Player(Entity):
             if keys[pygame.K_SPACE]:
                 self.i = 0
                 self.speed = 45
-                print("input")
                 while (self.i < 10):
-                    print("in")
                     if keys[pygame.K_z]:
                         self.direction.y = -1
                         self.status = 'up'
@@ -234,8 +228,6 @@ class Player(Entity):
         self.animate()
         self.move(self.speed)
         if self.has_dashed == True and self.cool_dash <= self.cool_dash_max:
-            print(self.tired)
-            print(self.cool_dash)
             self.cool_dash += 1
         elif self.has_dashed == True and self.cool_dash >= self.cool_dash_max:
             self.duration = 0

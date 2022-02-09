@@ -40,7 +40,7 @@ class UI:
         count_monsters_rect = textsurface.get_rect()
         #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
         self.display_surface.blit(textsurface, bg_rect)
-        print(self.nb_enemies)
+        # print(self.nb_enemies)
 
     def show_cauldron_menu(self):
         # print('show menu')
