@@ -25,10 +25,6 @@ HEALTH_COLOR = 'red'
 ENERGY_COLOR = 'blue'
 UI_BORDER_COLOR_ACTIVE = 'gold'
 
-# magie
-magic_data = {
-    'flame': {'strength': 5, 'graphic': '../graphics/particles/flame/fire.png'}, }
-
 # enemis
 monster_data = {
     'squid': {'health': 100, 'exp': 100, 'damage': 20, 'attack_type': 'slash', 'attack_sound': '../audio/attack/slash.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 360},

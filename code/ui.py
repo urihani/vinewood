@@ -16,13 +16,6 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
-        # convert magic dictionary
-        self.magic_graphics = []
-        for magic in magic_data.values():
-            path = magic['graphic']
-            magic = pygame.image.load(path).convert_alpha()
-            self.magic_graphics.append(magic)
-
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
@@ -100,7 +93,8 @@ class UI:
 
     def magic_overlay(self, magic_index, has_switched):
         bg_rect = self.selection_box(80, 635, has_switched)
-        magic_surf = self.magic_graphics[magic_index]
+        magic_surf = pygame.image.load(
+            '../graphics/powers/simple_fire/0.png').convert_alpha()
         magic_rect = magic_surf.get_rect(center=bg_rect.center)
 
         self.display_surface.blit(magic_surf, magic_rect)

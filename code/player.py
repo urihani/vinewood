@@ -29,7 +29,6 @@ class Player(Entity):
 
         # magie
         self.magic_index = 0
-        self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
         self.shoot = shoot
@@ -67,7 +66,7 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
-            # mouvements
+        # mouvements
         if keys[pygame.K_z]:
             self.direction.y = -1
             self.status = 'up'
@@ -124,7 +123,6 @@ class Player(Entity):
                         self.direction.x = 0
                     self.i += 1
                 self.speed = self.speed/10
-
 
         # debug death
         if keys[pygame.K_m]:
@@ -193,5 +191,5 @@ class Player(Entity):
         self.mouse_pos = pygame.mouse.get_pos()
         self.display_surface.blit(self.crosshair_img, self.mouse_pos)
 
-        #print(self.rect.left)
-        #print(self.rect.top)
+        # print(self.rect.left)
+        # print(self.rect.top)
