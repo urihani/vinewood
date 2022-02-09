@@ -89,7 +89,7 @@ class Game:
                 self.is_pressed = False
             else:
                 self.game_pause = True
-        if self.game_pause:
+        if self.game_pause and not self.credit:
             self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
 
@@ -121,9 +121,13 @@ class Game:
             #         if self.resume_rect.collidepoint(event.pos):
             #             self.resume = True
 
-            #     if event.type == pygame.MOUSEBUTTONUP:
-            #         if self.credit_rect.collidepoint(event.pos):
-            #             self.credit = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                if self.credit_rect.collidepoint(event.pos):
+                    self.credit = True
+                
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
         if self.credit:
             self.clock.tick(0)
@@ -132,11 +136,13 @@ class Game:
                 '../graphics/menu_pause/retour.png').convert_alpha()
             self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
             self.display_surface.blit(self.retour_surf, self.retour_rect)
-            # for event in pygame.event.get():
-            #     if event.type == pygame.MOUSEBUTTONUP:
-            #         if self.retour_rect.collidepoint(event.pos):
-            #             self.credit = False
-
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if self.retour_rect.collidepoint(event.pos):
+                        self.credit = False
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
 if __name__ == '__main__':
     game = Game()
