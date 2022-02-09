@@ -13,8 +13,8 @@ class Projectile(pygame.sprite.Sprite):
         self.sprites = sprites
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x-20
+        self.rect.y = y-20
         self.angle = angle
         self.x = x
         self.y = y
@@ -55,7 +55,7 @@ class Projectile(pygame.sprite.Sprite):
         # CODE DE JU
         #if self.dist > self.reach:
 
-        if self.dist > 75:
+        if self.dist > 120:
             self.kill()
 
     def animate(self):

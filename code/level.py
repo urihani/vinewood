@@ -187,8 +187,8 @@ class Level:
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
-        # vérification des colisions entre bullets et mobs
-        self.check_collide_obstacles()
+        # vérification des colisions entre bullets et mobs /!\ DÉ-COMMENTEZ LORSQUE LES HITBOX DES OBSTACLES SERONT RÉDUITES
+        # self.check_collide_obstacles()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
