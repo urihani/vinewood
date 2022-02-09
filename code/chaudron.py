@@ -20,6 +20,9 @@ class Chaudron(Interactable):
         # movement
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)
+        
+        # Pour les boules de feu
+        self.hitbox2 = self.rect.inflate(0, -10)
         self.obstacle_sprites = obstacle_sprites
 
     def animate(self):
