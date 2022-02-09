@@ -82,7 +82,8 @@ class Player(Entity):
                     print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
                             self.duration += 1
                         else:
                             tired = True
@@ -94,7 +95,8 @@ class Player(Entity):
                     print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
                             self.duration += 1
                         else:
                             tired = True
@@ -109,7 +111,8 @@ class Player(Entity):
                     print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
                             self.duration += 1
                         else:
                             tired = True
@@ -121,15 +124,13 @@ class Player(Entity):
                     print("DASH")
                     if self.can_dash and self.tired == False:
                         if self.duration <= self.max_duration:
-                            self.hitbox.x += self.direction.x * (self.speed*2.5)
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
                             self.duration += 1
                         else:
-                            tired = True               
+                            tired = True
             else:
                 self.direction.x = 0
-                
-
-                
 
             # boules de feu
             if pygame.mouse.get_pressed()[0] and not self.attacking:
@@ -141,9 +142,6 @@ class Player(Entity):
                 self.attack_time = pygame.time.get_ticks()
                 self.player_pos = self.get_pos()
                 self.shoot()
-
-            
-          
 
         # dash
         if self.can_dash:
@@ -217,7 +215,6 @@ class Player(Entity):
             if current_time - self.attack_time >= self.cooldown:
                 self.attacking = False
 
-
     def animate(self):
         animation = self.animations[self.status]
 
@@ -248,7 +245,6 @@ class Player(Entity):
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
 
         # print(self.rect.left)
         # print(self.rect.top)

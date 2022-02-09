@@ -43,7 +43,9 @@ class Game:
 
     def update(self):
         self.mouse_pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
+        self.crosshair_rect = self.crosshair_img.get_rect(
+            center=self.mouse_pos)
+        self.display_surface.blit(self.crosshair_img, self.crosshair_rect)
 
     def run(self):
         while True:
@@ -77,9 +79,7 @@ class Game:
 
     def game_pause_input_check(self):
         keys = pygame.key.get_pressed()
-        self.mouse_pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
-        if (keys[pygame.K_ESCAPE] and self.is_pressed == False and self.credit == False ) or (self.resume == True and self.is_pressed == False and self.credit == False):
+        if (keys[pygame.K_ESCAPE] and self.is_pressed == False and self.credit == False) or (self.resume == True and self.is_pressed == False and self.credit == False):
             
             self.is_pressed = True
             #self.is_waiting = False
