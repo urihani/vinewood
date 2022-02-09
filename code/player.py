@@ -29,7 +29,6 @@ class Player(Entity):
 
         # magie
         self.magic_index = 0
-        self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
         self.shoot = shoot
@@ -52,6 +51,9 @@ class Player(Entity):
 
         # dash
         self.can_dash = True
+        self.max_duration = 7.5
+        self.duration = 0
+        self.tired = False
 
     def import_player_assets(self):
         character_path = '../graphics/hero/'
@@ -67,35 +69,72 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
+        if not self.attacking:
             # mouvements
-        if keys[pygame.K_z]:
-            self.direction.y = -1
-            self.status = 'up'
-        elif keys[pygame.K_s]:
-            self.direction.y = 1
-            self.status = 'down'
-        else:
-            self.direction.y = 0
+            if keys[pygame.K_z]:
+                self.direction.y = -1
+                self.status = 'up'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
+            elif keys[pygame.K_s]:
+                self.direction.y = 1
+                self.status = 'down'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
+            else:
+                self.direction.y = 0
 
-        if keys[pygame.K_d]:
-            self.direction.x = 1
-            self.status = 'right'
-        elif keys[pygame.K_q]:
-            self.direction.x = -1
-            self.status = 'left'
-        else:
-            self.direction.x = 0
+            if keys[pygame.K_d]:
+                self.direction.x = 1
+                self.status = 'right'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
+            elif keys[pygame.K_q]:
+                self.direction.x = -1
+                self.status = 'left'
+                if keys[pygame.K_SPACE]:
+                    print("DASH")
+                    if self.can_dash and self.tired == False:
+                        if self.duration <= self.max_duration:
+                            self.hitbox.x += self.direction.x * \
+                                (self.speed*2.5)
+                            self.duration += 1
+                        else:
+                            tired = True
+            else:
+                self.direction.x = 0
 
             # boules de feu
-        if pygame.mouse.get_pressed()[0] and not self.attacking:
-            shoot_sound = pygame.mixer.Sound(
-                '../audio/blum/blum_fireball.wav')
-            shoot_sound.set_volume(0.5)
-            shoot_sound.play()
-            self.attacking = True
-            self.attack_time = pygame.time.get_ticks()
-            self.player_pos = self.get_pos()
-            self.shoot()
+            if pygame.mouse.get_pressed()[0] and not self.attacking:
+                shoot_sound = pygame.mixer.Sound(
+                    '../audio/blum/blum_fireball.wav')
+                shoot_sound.set_volume(0.5)
+                shoot_sound.play()
+                self.attacking = True
+                self.attack_time = pygame.time.get_ticks()
+                self.player_pos = self.get_pos()
+                self.shoot()
 
         # dash
         if self.can_dash:
@@ -124,7 +163,6 @@ class Player(Entity):
                         self.direction.x = 0
                     self.i += 1
                 self.speed = self.speed/10
-
 
         # debug death
         if keys[pygame.K_m]:
@@ -191,7 +229,6 @@ class Player(Entity):
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
-        self.display_surface.blit(self.crosshair_img, self.mouse_pos)
 
-        #print(self.rect.left)
-        #print(self.rect.top)
+        # print(self.rect.left)
+        # print(self.rect.top)

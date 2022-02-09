@@ -16,7 +16,7 @@ from field import Field
 
 
 class Level:
-    def __init__(self):
+    def __init__(self, ui):
         # obtenir la surface d'affichage
         self.display_surface = pygame.display.get_surface()
 
