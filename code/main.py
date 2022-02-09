@@ -59,8 +59,6 @@ class Game:
                 self.level.run()
 
             # souris
-            self.mouse_pos = pygame.mouse.get_pos()
-            self.display_surface.blit(self.crosshair_img, self.mouse_pos)
             self.update()
             self.game_pause_input_check()
             pygame.display.update()
