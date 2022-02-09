@@ -16,7 +16,7 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
-        self.nb_temp = 12
+        self.nb_temp = 47
 
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
@@ -55,6 +55,7 @@ class UI:
         else:
             self.display_row(
                 '../graphics/power_ups/none.png', 355, 25)
+            self.player.can_dash = False
 
         # fire_rate
         if self.nb_temp <= 42:
@@ -128,6 +129,7 @@ class UI:
             # dash
             if self.dash_rect.collidepoint(event.pos) and self.nb_temp <= 47:
                 print('dash - ok')
+                self.player.can_dash = True
             # fire_rate
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
             if self.fire_rate_rect.collidepoint(event.pos) and self.nb_temp <= 42:
@@ -151,6 +153,7 @@ class UI:
 
     def display(self, player, count_monsters):
         self.count_monsters = count_monsters
+        self.player = player
         self.show_bar(
             player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
 

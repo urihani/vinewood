@@ -50,7 +50,7 @@ class Player(Entity):
             '../graphics/crosshair/0.png').convert_alpha()
 
         # dash
-        self.can_dash = True
+        self.can_dash = False
         self.max_duration = 7.5
         self.duration = 0
         self.tired = False
@@ -72,7 +72,7 @@ class Player(Entity):
 
     def input(self):
         keys = pygame.key.get_pressed()
-            # mouvements
+        # mouvements
         if keys[pygame.K_z]:
             self.direction.y = -1
             self.status = 'up'
