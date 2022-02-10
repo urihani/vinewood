@@ -66,7 +66,7 @@ class UI:
 
         # reach
         if self.nb_enemies <= 42:
-            if not powers_data['fire_ball']['reach'] == 1000 and not powers_data['fire_ball']['distance'] == 2:
+            if not powers_data['fire_ball']['reach'] == 750 and not powers_data['fire_ball']['distance'] == 3:
                 self.reach_rect = self.display_row(
                     '../graphics/power_ups/portee.png', 355, 75)
             else:
@@ -78,7 +78,7 @@ class UI:
 
         # speed
         if self.nb_enemies <= 36:
-            if not self.player.speed == 6:
+            if  self.player.speed <= 5:
                 self.speed_rect = self.display_row(
                     '../graphics/power_ups/vitesse.png', 355, 125)
             else:
@@ -196,8 +196,8 @@ class UI:
             # reach
             if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
                 # print('reach - ok')
-                powers_data['fire_ball']['reach'] = 1000
-                powers_data['fire_ball']['distance'] = 2
+                powers_data['fire_ball']['reach'] = 750
+                powers_data['fire_ball']['distance'] = 3
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
             if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:
@@ -212,7 +212,7 @@ class UI:
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
             if self.fire_rate_rect.collidepoint(event.pos) and self.nb_enemies <= 20:
                 # print('fire_rate - ok')
-                self.player.cooldown = 300
+                self.player.cooldown = 600
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'damage_rect'):
             # damage
             if self.damage_rect.collidepoint(event.pos) and self.nb_enemies <= 12:
