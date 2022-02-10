@@ -16,7 +16,7 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
-        self.nb_temp = 36
+        self.nb_temp = 28
 
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
@@ -144,6 +144,7 @@ class UI:
             # health
             if self.health_rect.collidepoint(event.pos) and self.nb_temp <= 28:
                 print('health - ok')
+                self.player.health = 150
             # fire_rate
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
             if self.fire_rate_rect.collidepoint(event.pos) and self.nb_temp <= 20:
