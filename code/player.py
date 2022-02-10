@@ -107,6 +107,10 @@ class Player(Entity):
                 self.has_dashed = True
                 if self.can_dash and self.tired == False:
                     if self.duration <= self.max_duration:
+                        d_dash_sound = pygame.mixer.Sound(
+                            '../audio/blum/blum_daash.wav')
+                        d_dash_sound.set_volume(0.1)
+                        d_dash_sound.play()
                         self.hitbox.x += self.direction.x * \
                             (self.speed*2.5)
                         self.duration += 1

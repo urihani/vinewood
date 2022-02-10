@@ -229,9 +229,14 @@ class Level:
                         if obstacle.sprite_type == 'grass':
                             offset = pygame.math.Vector2(1)
                             pos = obstacle.rect.center
-                            for grass in range(3,6):
-                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
+                            for grass in range(3, 6):
+                                self.animation_player.create_grass_particles(
+                                    pos - offset, [self.visible_sprites])
                             obstacle.kill()
+                            grass_sound = pygame.mixer.Sound(
+                                '../audio/blum/blum_grass_broke.wav')
+                            grass_sound.set_volume(0.5)
+                            grass_sound.play()
 
     def check_collide_interactable(self):
         self.keys = pygame.key.get_pressed()
