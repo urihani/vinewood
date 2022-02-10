@@ -34,5 +34,5 @@ monster_data = {
 
 # powers
 powers_data = {
-    'fire_ball': {'damage': 30, 'cooldown': 400, 'speed': 2, 'reach': 1600, 'reload': 1},
+    'fire_ball': {'damage': 30, 'cooldown': 400, 'speed': 2, 'reach': 600, 'reload': 1},
 }
