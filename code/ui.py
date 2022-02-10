@@ -35,7 +35,7 @@ class UI:
         self.nb_enemies = self.count_monsters()
         #myfont = pygame.font.SysFont('Comic Sans MS', 15)
         textsurface = self.font.render(
-            f"Nombre d'ennemis restants : {self.nb_enemies}", False, (0, 0, 0,))
+            f"Nombre d'ennemis restants : {self.nb_enemies}", False, TEXT_COLOR)
         count_monsters_rect = textsurface.get_rect()
         #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
         self.display_surface.blit(textsurface, bg_rect)
@@ -52,7 +52,7 @@ class UI:
                 '../graphics/power_ups/dash.png', 355, 25)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 25)
+                '../graphics/power_ups/none3.png', 355, 25)
             self.player.can_dash = False
 
         # reach
@@ -61,7 +61,7 @@ class UI:
                 '../graphics/power_ups/portee.png', 355, 75)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 75)
+                '../graphics/power_ups/none5.png', 355, 75)
 
         # speed
         if self.nb_enemies <= 36:
@@ -69,7 +69,7 @@ class UI:
                 '../graphics/power_ups/vitesse.png', 355, 125)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 125)
+                '../graphics/power_ups/none6.png', 355, 125)
 
         # health
         if self.nb_enemies <= 28:
@@ -77,7 +77,7 @@ class UI:
                 '../graphics/power_ups/sante.png', 355, 175)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 175)
+                '../graphics/power_ups/none8.png', 355, 175)
 
         # fire_rate
         if self.nb_enemies <= 20:
@@ -85,7 +85,7 @@ class UI:
                 '../graphics/power_ups/cadence.png', 355, 225)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 225)
+                '../graphics/power_ups/none8.png', 355, 225)
 
         # damage
         if self.nb_enemies <= 12:
@@ -93,7 +93,41 @@ class UI:
                 '../graphics/power_ups/degats.png', 355, 275)
         else:
             self.display_row(
-                '../graphics/power_ups/none.png', 355, 275)
+                '../graphics/power_ups/none8.png', 355, 275)
+
+        # nourriture
+        bg_rect = pygame.Rect(450, 355, 355, 20)
+        title_surf = self.font.render('nourriture', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        # indication
+        bg_rect = pygame.Rect(365, 400, 355, 20)
+        title_surf = self.font.render(
+            'Revenez ici pour vous', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 420, 355, 20)
+        title_surf = self.font.render(
+            'nourrir et devenir', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 440, 355, 20)
+        title_surf = self.font.render(
+            'plus fort!', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 500, 355, 20)
+        title_surf = self.font.render(
+            'zqsd : bouger', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+        bg_rect = pygame.Rect(365, 520, 355, 20)
+        title_surf = self.font.render(
+            'espace : capacité n°1', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+        bg_rect = pygame.Rect(365, 540, 355, 20)
+        title_surf = self.font.render(
+            'clic gauche : tirer', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
 
     def display_row(self, path, x, y):
         dash_img = pygame.image.load(
@@ -132,7 +166,8 @@ class UI:
             # reach
             if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
                 print('reach - ok')
-                powers_data['fire_ball']['reach'] = 1200
+                powers_data['fire_ball']['reach'] = 1000
+                powers_data['fire_ball']['distance'] = 2
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
             if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:

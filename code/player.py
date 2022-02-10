@@ -9,7 +9,6 @@ from entity import Entity
 from projectile import *
 
 
-
 class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn):
         super().__init__(groups)
@@ -37,7 +36,7 @@ class Player(Entity):
 
         # stats
         self.stats = {'health': 100,
-                      'attack': 10, 'speed': 5}
+                      'attack': 25, 'speed': 5}
         self.health = self.stats['health']
         self.speed = self.stats['speed']
         self.is_dead = False
@@ -108,6 +107,10 @@ class Player(Entity):
                 self.has_dashed = True
                 if self.can_dash and self.tired == False:
                     if self.duration <= self.max_duration:
+                        d_dash_sound = pygame.mixer.Sound(
+                            '../audio/blum/blum_daash.wav')
+                        d_dash_sound.set_volume(0.1)
+                        d_dash_sound.play()
                         self.hitbox.x += self.direction.x * \
                             (self.speed*2.5)
                         self.duration += 1
