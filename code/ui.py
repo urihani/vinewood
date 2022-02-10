@@ -164,33 +164,33 @@ class UI:
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'dash_rect'):
             # dash
             if self.dash_rect.collidepoint(event.pos) and self.nb_enemies <= 47:
-                print('dash - ok')
+                # print('dash - ok')
                 self.player.can_dash = True
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'reach_rect'):
             # reach
             if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
-                print('reach - ok')
+                # print('reach - ok')
                 powers_data['fire_ball']['reach'] = 1000
                 powers_data['fire_ball']['distance'] = 2
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
             if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:
-                print('speed - ok')
+                # print('speed - ok')
                 self.player.speed = 6
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'health_rect'):
             # health
             if self.health_rect.collidepoint(event.pos) and self.nb_enemies <= 28:
-                print('health - ok')
+                # print('health - ok')
                 self.player.health = 150
             # fire_rate
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
             if self.fire_rate_rect.collidepoint(event.pos) and self.nb_enemies <= 20:
-                print('fire_rate - ok')
+                # print('fire_rate - ok')
                 self.player.cooldown = 300
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'damage_rect'):
             # damage
             if self.damage_rect.collidepoint(event.pos) and self.nb_enemies <= 12:
-                print('damage - ok')
+                # print('damage - ok')
                 powers_data['fire_ball']['damage'] = 50
 
     def display(self, player, count_monsters):
