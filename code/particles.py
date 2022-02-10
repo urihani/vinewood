@@ -2,13 +2,7 @@ import pygame
 from settings import *
 from support import import_folder
 from random import choice
-import math
-from tkinter.messagebox import NO
-from tkinter.ttk import Style
-from turtle import speed
 from support import import_folder
-from entity import Entity
-from projectile import *
 
 class AnimationPlayer:
     def __init__(self):
@@ -49,7 +43,7 @@ class ParticleEffect(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         self.frames = animation_frames
         self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center = pos)
 
     def animate(self):
         self.frame_index += self.animation_speed
@@ -60,3 +54,4 @@ class ParticleEffect(pygame.sprite.Sprite):
 
     def update(self):
         self.animate()
+        print("efef")

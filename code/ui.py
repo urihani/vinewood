@@ -16,8 +16,6 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
-        self.nb_temp = 36
-
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
@@ -49,7 +47,7 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
         # dash
-        if self.nb_temp <= 47:
+        if self.nb_enemies <= 47:
             self.dash_rect = self.display_row(
                 '../graphics/power_ups/dash.png', 355, 25)
         else:
@@ -58,7 +56,7 @@ class UI:
             self.player.can_dash = False
 
         # reach
-        if self.nb_temp <= 42:
+        if self.nb_enemies <= 42:
             self.reach_rect = self.display_row(
                 '../graphics/power_ups/portee.png', 355, 75)
         else:
@@ -66,7 +64,7 @@ class UI:
                 '../graphics/power_ups/none.png', 355, 75)
 
         # speed
-        if self.nb_temp <= 36:
+        if self.nb_enemies <= 36:
             self.speed_rect = self.display_row(
                 '../graphics/power_ups/vitesse.png', 355, 125)
         else:
@@ -74,7 +72,7 @@ class UI:
                 '../graphics/power_ups/none.png', 355, 125)
 
         # health
-        if self.nb_temp <= 28:
+        if self.nb_enemies <= 28:
             self.health_rect = self.display_row(
                 '../graphics/power_ups/sante.png', 355, 175)
         else:
@@ -82,7 +80,7 @@ class UI:
                 '../graphics/power_ups/none.png', 355, 175)
 
         # fire_rate
-        if self.nb_temp <= 20:
+        if self.nb_enemies <= 20:
             self.fire_rate_rect = self.display_row(
                 '../graphics/power_ups/cadence.png', 355, 225)
         else:
@@ -90,7 +88,7 @@ class UI:
                 '../graphics/power_ups/none.png', 355, 225)
 
         # damage
-        if self.nb_temp <= 12:
+        if self.nb_enemies <= 12:
             self.damage_rect = self.display_row(
                 '../graphics/power_ups/degats.png', 355, 275)
         else:
@@ -127,32 +125,34 @@ class UI:
         #       and self.cauldron_menu_visible)
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'dash_rect'):
             # dash
-            if self.dash_rect.collidepoint(event.pos) and self.nb_temp <= 47:
+            if self.dash_rect.collidepoint(event.pos) and self.nb_enemies <= 47:
                 print('dash - ok')
                 self.player.can_dash = True
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'reach_rect'):
             # reach
-            if self.reach_rect.collidepoint(event.pos) and self.nb_temp <= 42:
+            if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
                 print('reach - ok')
                 powers_data['fire_ball']['reach'] = 1200
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
-            if self.speed_rect.collidepoint(event.pos) and self.nb_temp <= 36:
+            if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:
                 print('speed - ok')
                 self.player.speed = 6
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'health_rect'):
             # health
-            if self.health_rect.collidepoint(event.pos) and self.nb_temp <= 28:
+            if self.health_rect.collidepoint(event.pos) and self.nb_enemies <= 28:
                 print('health - ok')
+                self.player.health = 150
             # fire_rate
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'fire_rate_rect'):
-            if self.fire_rate_rect.collidepoint(event.pos) and self.nb_temp <= 20:
+            if self.fire_rate_rect.collidepoint(event.pos) and self.nb_enemies <= 20:
                 print('fire_rate - ok')
                 self.player.cooldown = 300
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'damage_rect'):
             # damage
-            if self.damage_rect.collidepoint(event.pos) and self.nb_temp <= 12:
+            if self.damage_rect.collidepoint(event.pos) and self.nb_enemies <= 12:
                 print('damage - ok')
+                powers_data['fire_ball']['damage'] = 50
 
     def display(self, player, count_monsters):
         self.count_monsters = count_monsters
