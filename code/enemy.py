@@ -4,6 +4,7 @@ from entity import Entity
 from support import *
 from particles import AnimationPlayer
 from level import *
+from math import sin
 
 
 class Enemy(Entity):
@@ -41,6 +42,12 @@ class Enemy(Entity):
         self.can_attack = True
         self.attack_time = None
         self.attack_cooldown = 400
+
+        # flickering
+        self.check_health = self.health
+        self.flicker_duration_max = 120
+        self.flicker_duration = 0
+        self.touched = False
 
     def import_graphics(self, name):
         self.animations = {'idle': [], 'move': [], 'attack': []}
@@ -116,6 +123,29 @@ class Enemy(Entity):
         self.move(self.speed)
         self.animate()
         self.cooldown()
+        # ICI...
+        print(self.flicker_duration)
+        print(self.touched)
+    
+    def flicker(self):
+        value = sin(pygame.time.get_ticks())
+        if value >= 0:
+            return 255
+        else:
+            return 0 
+
+
+    def flickering(self, status):
+        if status == True:
+            self.image.set_alpha(self.flicker())
+        else:
+            self.image.set_alpha(255)
+
+    
+        
+        
+
+
 
     def enemy_update(self, player, fire_group):
 
@@ -130,7 +160,10 @@ class Enemy(Entity):
             hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
             hit_sound.set_volume(0.2)
             hit_sound.play()
-            if self.health <= 0:
-                self.kill()
+            # ...ET LA
+            if self.touched == False and self.flicker_duration == 0:
+                self.touched = True
+            
             player.tired = False
             player.duration = 0
+            
