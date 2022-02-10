@@ -47,7 +47,7 @@ class Enemy(Entity):
         self.check_health = self.health
         self.flicker_duration_max = 120
         self.flicker_duration = 0
-        self.touched = False
+        # self.touched = False
 
     def import_graphics(self, name):
         self.animations = {'idle': [], 'move': [], 'attack': []}
@@ -132,6 +132,7 @@ class Enemy(Entity):
         if value >= 0:
             return 255
         else:
+            self.touched = False
             return 0
 
     def flickering(self, status):
@@ -154,11 +155,11 @@ class Enemy(Entity):
             hit_sound.set_volume(0.2)
             hit_sound.play()
             # ...ET LA
-            if self.touched == False and self.flicker_duration == 0:
+            if hasattr(self, 'touched') and self.touched == False and self.flicker_duration == 0:
                 self.touched = True
 
             if self.health <= 0:
                 self.kill()
-            
+
             player.tired = False
             player.duration = 0
