@@ -130,6 +130,10 @@ class Enemy(Entity):
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.can_attack = True
 
+        if not self.vulnerable:
+            if current_time - self.hit_time >= self.invincibility_duration:
+                self.vulnerable = True
+
     def get_damage(self):
         if self.vulnerable:
             self.hit_time = pygame.time.get_ticks()
@@ -139,23 +143,6 @@ class Enemy(Entity):
         self.move(self.speed)
         self.animate()
         self.cooldown()
-        # ICI...
-        # print(self.flicker_duration)
-        # print(self.touched)
-
-    def flicker(self):
-        value = sin(pygame.time.get_ticks())
-        if value >= 0:
-            return 255
-        else:
-            self.touched = False
-            return 0
-
-    def flickering(self, status):
-        if status == True:
-            self.image.set_alpha(self.flicker())
-        else:
-            self.image.set_alpha(255)
 
     def enemy_update(self, player, fire_group):
 
