@@ -49,6 +49,11 @@ class Enemy(Entity):
         self.flicker_duration = 0
         # self.touched = False
 
+        # invincibility timer
+        self.vulnerable = True
+        self.hit_time = None
+        self.invincibility_duration = 300
+
     def import_graphics(self, name):
         self.animations = {'idle': [], 'move': [], 'attack': []}
         main_path = f'../graphics/monsters/{name}/'
@@ -113,11 +118,22 @@ class Enemy(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
     def cooldown(self):
+        current_time = pygame.time.get_ticks()
         if not self.can_attack:
-            current_time = pygame.time.get_ticks()
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.can_attack = True
+
+    def get_damage(self):
+        if self.vulnerable:
+            self.hit_time = pygame.time.get_ticks()
+            self.vulnerable = False
 
     def update(self):
         self.move(self.speed)
@@ -149,14 +165,12 @@ class Enemy(Entity):
         # collisions avec les boules de feu
         if pygame.sprite.spritecollide(self, fire_group, True):
             self.health -= player.stats['attack']
-            #self.health -= player.stats['attack']
+            # self.health -= player.stats['attack']
             # if self.health <= 0:
             hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
             hit_sound.set_volume(0.2)
             hit_sound.play()
-            # ...ET LA
-            if hasattr(self, 'touched') and self.touched == False and self.flicker_duration == 0:
-                self.touched = True
+            self.get_damage()
 
             if self.health <= 0:
                 self.kill()
