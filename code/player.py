@@ -234,7 +234,7 @@ class Player(Entity):
         if value >= 0:
             return 255
         else:
-            return 0
+            return 0 
 
 
     def flickering(self, status):
@@ -260,8 +260,6 @@ class Player(Entity):
         print(self.health)
         print(self.check_health)
         print(self.flicker_duration)
-        if self.health == self.check_health:
-            print("nothing")
         if self.health != self.check_health:
             self.flickering(True)
             self.flicker_duration += 1
@@ -271,6 +269,8 @@ class Player(Entity):
                 self.check_health = self.health
                 self.flickering(False)
                 print("stop")
+        else:
+            self.flickering(False)
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
