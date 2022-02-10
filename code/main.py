@@ -127,7 +127,6 @@ class Game:
                     if self.resume_rect.collidepoint(event.pos):
                             self.resume = True
                             self.resume_hover = False
-                if event.type == pygame.MOUSEBUTTONUP:
                     if self.credit_rect.collidepoint(event.pos):
                         self.credit = True
                         self.credit_hover = False
