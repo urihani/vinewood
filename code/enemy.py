@@ -77,7 +77,7 @@ class Enemy(Entity):
                     '../audio/blum/blum_ouch.wav')
                 damage_sound.set_volume(0.2)
                 damage_sound.play()
-                player.health -= self.attack_damage
+                # player.health -= self.attack_damage
                 player.get_status()
         elif self.status == 'move':
             self.direction = self.get_player_distance_direction(player)[1]
@@ -119,4 +119,3 @@ class Enemy(Entity):
             self.kill()
             player.tired = False
             player.duration = 0
-
