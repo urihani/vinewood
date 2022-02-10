@@ -243,7 +243,8 @@ class Game:
             self.draw_text('Chaudron: https://opengameart.org/content/lpc-dungeon-elements',260,560)
             self.draw_text('aliments: https://henrysoftware.itch.io/pixel-food?download',260,600)
             self.draw_text('Son :',220,640)
-            self.draw_text('musique original créer avec ',260,600)
+            self.draw_text('musique: original créer avec FLStudio ',260,600)
+            self.draw_text('Sound Effects : Splice  ',260,600)
 
 
             self.handle_event3(self.event)
