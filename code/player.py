@@ -58,6 +58,11 @@ class Player(Entity):
         self.cool_dash = 0
         self.has_dashed = False
 
+        # flickering
+        self.check_health = self.health
+        self.flicker_duration_max = 120
+        self.flicker_duration = 0
+
     def import_player_assets(self):
         character_path = '../graphics/hero/'
         self.animations = {
@@ -237,6 +242,20 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
+    def flicker(self):
+        value = sin(pygame.time.get_ticks())
+        if value >= 0:
+            return 255
+        else:
+            return 0
+
+
+    def flickering(self, status):
+        if status == True:
+            self.image.set_alpha(self.flicker())
+        else:
+            self.image.set_alpha(255)
+
     def update(self):
         self.input()
         self.cooldowns()
@@ -250,6 +269,21 @@ class Player(Entity):
             self.cool_dash = 0
             self.has_dashed = False
             self.tired = False
+        
+        print(self.health)
+        print(self.check_health)
+        print(self.flicker_duration)
+        if self.health == self.check_health:
+            print("nothing")
+        if self.health != self.check_health:
+            self.flickering(True)
+            self.flicker_duration += 1
+            print("touche")
+            if self.flicker_duration == self.flicker_duration_max:
+                self.flicker_duration = 0
+                self.check_health = self.health
+                self.flickering(False)
+                print("stop")
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()

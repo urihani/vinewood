@@ -194,17 +194,6 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
 
-                        # herbe
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile(
-                                (x, y),
-                                [self.visible_sprites,
-                                 self.obstacle_sprites,
-                                 self.attackable_sprites],
-                                'grass',
-                                random_grass_image)
-
                         # entities
                         if style == 'entities':
                             if col == '394':
@@ -266,6 +255,10 @@ class Level:
             if current_time - self.pressed >= 4000:
                 self.pressed = False
 
+    def collide_animation(self, signal):
+        if signal == True:
+            print("test")
+
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
@@ -276,14 +269,6 @@ class Level:
         self.ui.display(self.player, self.count_monsters)
         # player status
         self.player_dead = self.player.is_dead
-
-        for sp in self.interactable_sprites:
-            print(sp)
-
-        for pl in self.player_group:
-            print(pl)
-
-        print("confirm")
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
