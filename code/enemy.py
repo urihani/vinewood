@@ -33,6 +33,7 @@ class Enemy(Entity):
         self.attack_radius = monster_info['attack_radius']
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
+        self.attack_sound = monster_info['attack_sound']
 
         # player interaction
         self.can_attack = True
@@ -77,6 +78,12 @@ class Enemy(Entity):
                     '../audio/blum/blum_ouch.wav')
                 damage_sound.set_volume(0.2)
                 damage_sound.play()
+                enemy_sound = pygame.mixer.Sound(self.attack_sound)
+                if self.attack_sound == '../audio/attack/fireball.wav':
+                    enemy_sound.set_volume(0.1)
+                else:
+                    enemy_sound.set_volume(0.4)
+                enemy_sound.play()
                 # player.health -= self.attack_damage
                 player.get_status()
         elif self.status == 'move':
@@ -116,6 +123,9 @@ class Enemy(Entity):
         if pygame.sprite.spritecollide(self, fire_group, True):
             #self.health -= player.stats['attack']
             # if self.health <= 0:
+            hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
+            hit_sound.set_volume(0.2)
+            hit_sound.play()
             self.kill()
             player.tired = False
             player.duration = 0
