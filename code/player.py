@@ -256,21 +256,15 @@ class Player(Entity):
             self.has_dashed = False
             self.tired = False
 
-        # print(self.health)
-        # print(self.check_health)
-        # print(self.flicker_duration)
-        if self.health == self.check_health:
-            pass
-            # print("nothing")
         if self.health != self.check_health:
             self.flickering(True)
             self.flicker_duration += 1
-            # print("touche")
             if self.flicker_duration == self.flicker_duration_max:
                 self.flicker_duration = 0
                 self.check_health = self.health
                 self.flickering(False)
-                # print("stop")
+        else:
+            self.flickering(False)
 
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()

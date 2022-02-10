@@ -16,9 +16,16 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
+<<<<<<< HEAD
         self.font = pygame.font.Font(UI_FONT, 15)
 
         # intro fade
+=======
+        self.font = pygame.font.Font(UI_FONT,13)
+        self.font2 = pygame.font.Font(UI_FONT,18)
+       
+        #intro fade
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
         self.intro = True
 
         self.ui = UI()
@@ -38,8 +45,14 @@ class Game:
         self.credit = False
         self.display_surface = pygame.display.get_surface()
         self.game_pause = False
+<<<<<<< HEAD
 
         # hover
+=======
+        self.event = pygame.event
+        
+        #hover
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
         self.resume_hover = False
         self.credit_hover = False
 
@@ -53,18 +66,65 @@ class Game:
             center=self.mouse_pos)
         self.display_surface.blit(self.crosshair_img, self.crosshair_rect)
 
+    def draw_text(self,text,x,y):
+        text_surf = self.font.render(text,False,TEXT_COLOR)
+        text_rect = pygame.Rect(x,y,768,20)
+        self.display_surface.blit( text_surf,text_rect )
+
+    def draw_text2(self,text,x,y):
+        text_surf = self.font2.render(text,False,TEXT_COLOR)
+        text_rect = pygame.Rect(x,y,768,20)
+        self.display_surface.blit( text_surf,text_rect )
+
+    def handle_event1(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.wake_rect.collidepoint(event.pos):
+                self.intro = False
+
+
+    def handle_event2(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.resume_rect.collidepoint(event.pos):
+                self.resume = True
+                self.resume_hover = False
+            if self.credit_rect.collidepoint(event.pos):
+                self.credit = True
+                self.credit_hover = False
+
+        if event.type == pygame.MOUSEMOTION:
+                if self.resume_rect.collidepoint(event.pos):
+                    self.resume_hover = True
+                else:
+                    self.resume_hover = False
+
+        if event.type == pygame.MOUSEMOTION:
+            if self.credit_rect.collidepoint(event.pos):
+                self.credit_hover = True
+            else:
+                self.credit_hover = False
+
+    def handle_event3(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+                    if self.retour_rect.collidepoint(event.pos):
+                        self.credit = False
+
     def run(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            for self.event in pygame.event.get():
+                if self.event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+<<<<<<< HEAD
                 self.ui.handle_event(event)
 
+=======
+                self.ui.handle_event(self.event)
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
             self.screen.fill('black')
             if self.game_pause == False and self.credit == False:
                 if self.intro:
                     self.display_surface.fill(((0, 0, 0)))
+<<<<<<< HEAD
                     text_surf = self.font.render(
                         'Vous venez de vous réveiller, vous regardez autour de vous....', False, TEXT_COLOR)
                     text_rect = pygame.Rect(100, 100, 350, 20)
@@ -73,6 +133,22 @@ class Game:
                     if keys[pygame.K_n]:
                         self.intro = False
                 else:
+=======
+                    self.draw_text('Vous venez de vous réveiller, vous regardez autour de vous....',40,150)
+                    self.draw_text('Une île déserte!',40,200)
+                    self.draw_text('Mais un bruit effrayant vient stopper votre contemplation...',40,250)
+                    self.draw_text("Des monstres! c'était sûr en fait!  ",40,300)
+                    self.draw_text('La seule présence amicale dans cette nuit infernale est un vieux chaudron peu bavard...',40,350)
+                    self.draw_text('Des morceaux de monstres flottent à sa surface ce qui dégage une odeur pestilentielle...',40,400)
+                    self.draw_text('Vous buvez cette étrange mixture et vous vous sentez étrangement plus fort...',40,450)
+                    self.draw_text('Beaucoup plus fort.',40,500)
+
+                    self.wake_serf = pygame.image.load('../graphics/menu_pause/wake_up.png').convert_alpha()
+                    self.wake_rect = self.wake_serf.get_rect(midbottom =(800,700))
+                    self.display_surface.blit(self.wake_serf, self.wake_rect)
+                    self.handle_event1(self.event)
+                else:   
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
                     self.level.run()
 
             # souris
@@ -107,7 +183,6 @@ class Game:
             else:
                 self.game_pause = True
         if self.game_pause and not self.credit:
-            self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
 
             self.logo_serf = pygame.image.load(
@@ -140,6 +215,7 @@ class Game:
             self.is_pressed = keys[pygame.K_ESCAPE]
             #self.is_waiting = False
 
+<<<<<<< HEAD
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.resume_rect.collidepoint(event.pos):
@@ -164,6 +240,9 @@ class Game:
                         self.credit_hover = True
                     else:
                         self.credit_hover = False
+=======
+            self.handle_event2(self.event)
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
 
         if self.resume_hover:
             self.resume_surface_hover = pygame.image.load(
@@ -182,13 +261,13 @@ class Game:
                 self.credit_surface_hover, self.credit_rect)
 
         if self.credit:
-            self.clock.tick(0)
             self.display_surface.fill(((64, 64, 64)))
             self.retour_surf = pygame.image.load(
                 '../graphics/menu_pause/retour.png').convert_alpha()
             self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
             self.display_surface.blit(self.retour_surf, self.retour_rect)
 
+<<<<<<< HEAD
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.retour_rect.collidepoint(event.pos):
@@ -196,6 +275,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+=======
+            self.draw_text('Credits',40,100)
+
+
+            self.handle_event3(self.event)
+                
+>>>>>>> b5e22a64b757c001f76f4100f5b8298ef3c5f9fd
 
 
 if __name__ == '__main__':
