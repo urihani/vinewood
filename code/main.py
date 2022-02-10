@@ -44,6 +44,7 @@ class Game:
         # hover
         self.resume_hover = False
         self.credit_hover = False
+        self.leave_hover = False
 
         # souris menu
         self.crosshair_img = pygame.image.load(
@@ -78,6 +79,9 @@ class Game:
             if self.credit_rect.collidepoint(event.pos):
                 self.credit = True
                 self.credit_hover = False
+            if self.credit_rect.collidepoint(event.pos):
+                self.leave = True
+                self.leave_hover = False
 
         if event.type == pygame.MOUSEMOTION:
             if self.resume_rect.collidepoint(event.pos):
@@ -90,6 +94,12 @@ class Game:
                 self.credit_hover = True
             else:
                 self.credit_hover = False
+
+        if event.type == pygame.MOUSEMOTION:
+            if self.leave_rect.collidepoint(event.pos):
+                self.leave_hover = True
+            else:
+                self.leave_hover = False
 
     def handle_event3(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
@@ -174,10 +184,10 @@ class Game:
                 midbottom=(512, 460))
             self.display_surface.blit(self.credit_surface, self.credit_rect)
 
-            self.Rmenu_surface = pygame.image.load(
+            self.leave_surf = pygame.image.load(
                 '../graphics/menu_pause/Rmenu.png').convert_alpha()
-            self.Rmenu_rect = self.Rmenu_surface.get_rect(midbottom=(512, 590))
-            self.display_surface.blit(self.Rmenu_surface, self.Rmenu_rect)
+            self.leave_rect = self.leave_surf.get_rect(midbottom=(512, 590))
+            self.display_surface.blit(self.leave_surf, self.leave_rect)
 
             # if not self.is_waiting:
             #self.dernierTemps = time.time()
@@ -205,6 +215,14 @@ class Game:
             self.display_surface.blit(
                 self.credit_surface_hover, self.credit_rect)
 
+        if self.leave_hover:
+            self.leave_surface_hover = pygame.image.load(
+                '../graphics/menu_pause/Rmenu_hover.png').convert_alpha()
+            self.leave_rect = self.leave_surface_hover.get_rect(
+                midbottom=(512, 590))
+            self.display_surface.blit(
+                self.leave_surface_hover, self.leave_rect)
+
         if self.credit:
             self.display_surface.fill(((64, 64, 64)))
             self.retour_surf = pygame.image.load(
@@ -212,13 +230,20 @@ class Game:
             self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
             self.display_surface.blit(self.retour_surf, self.retour_rect)
 
-            self.draw_text2('Credits',430,100)
-            self.draw_text('Game designeurs: Julien , Loris',470,100)
-            self.draw_text('Codeurs : Julien , Loris,  loic et mathis',490,100)
-            self.draw_text('Rôle',510,100)
-            self.draw_text('Rôle',530,100)
-            self.draw_text('Rôle',550,100)
-            self.draw_text('Rôle',570,100)
+            self.draw_text2('Credits',440,130)
+            self.draw_text('Rôles :',220,200)
+            self.draw_text('Game designeurs: Julien , Loris',260,240)
+            self.draw_text('Codeurs : Julien , Loris,  loic et mathis',260,280)
+            self.draw_text('graphiste : mathis',260,320)
+            self.draw_text(' Ingé son :mathis',260,360)
+            self.draw_text('Graphisme :',220,400)
+            self.draw_text('Map et ennemies: https://pixel-boy.itch.io/ninja-adventure-asset-pack',260,440)
+            self.draw_text('boule de feu: https://nyknck.itch.io/pixelarteffectfx017',260,480)
+            self.draw_text('Perso: https://szadiart.itch.io/rpg-main-character',260,520)
+            self.draw_text('Chaudron: https://opengameart.org/content/lpc-dungeon-elements',260,560)
+            self.draw_text('aliments: https://henrysoftware.itch.io/pixel-food?download',260,600)
+            self.draw_text('Son :',220,640)
+            self.draw_text('musique original créer avec ',260,600)
 
 
             self.handle_event3(self.event)
