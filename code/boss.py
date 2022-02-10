@@ -6,8 +6,13 @@ from particles import AnimationPlayer
 from level import *
 
 
-class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites):
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, monster_name, pos, groups):
+
+        super().__init__(groups)
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.direction = pygame.math.Vector2()
 
         # general setup
         super().__init__(groups)
@@ -20,9 +25,9 @@ class Enemy(Entity):
 
         # movement
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -10)
-        self.obstacle_sprites = obstacle_sprites
+        self.hitbox = self.rect.inflate(-100, -100)
         self.groups = groups
+        self._layer = 1
 
         # stats
         self.monster_name = monster_name
@@ -47,6 +52,19 @@ class Enemy(Entity):
         main_path = f'../graphics/monsters/{name}/'
         for animation in self.animations.keys():
             self.animations[animation] = import_folder(main_path + animation)
+
+    def move(self, speed):
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+
+        self.hitbox.x += self.direction.x * speed
+        self.collision('horizontal')
+        self.hitbox.y += self.direction.y * speed
+        self.collision('vertical')
+        self.rect.center = self.hitbox.center
+
+    def collision(self, direction):
+        pass
 
     def get_player_distance_direction(self, player):
         enemy_vec = pygame.math.Vector2(self.rect.center)

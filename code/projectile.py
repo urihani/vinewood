@@ -21,6 +21,7 @@ class Projectile(pygame.sprite.Sprite):
         self.x_dist = 1
         self.y_dist = 1
         self.hitbox = self.rect
+        self._layer = 1
 
         # stats
         self.speed = powers_data['fire_ball']['speed']
@@ -56,6 +57,7 @@ class Projectile(pygame.sprite.Sprite):
         # CODE DE JU
         if self.dist > self.reach:
             self.kill()
+            pass
 
     def animate(self):
         self.current_sprite += 0.3
