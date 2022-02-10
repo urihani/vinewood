@@ -226,7 +226,8 @@ class Level:
                 for fire_ball in self.fire_group:
                     if obstacle.hitbox2.colliderect(fire_ball.hitbox):
                         if obstacle.sprite_type != 'invisible':
-                            fire_ball.kill()
+                            # fire_ball.kill()
+                            pass
                         if obstacle.sprite_type == 'grass':
                             offset = pygame.math.Vector2(1)
                             pos = obstacle.rect.center
@@ -255,14 +256,13 @@ class Level:
 
     def collide_animation(self, signal):
         if signal == True:
-            print("test")
+            # print("test")
+            pass
 
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        self.fire_group.update()
-        self.fire_group.draw(self.display_surface)
         self.visible_sprites.enemy_update(self.player, self.fire_group)
         self.ui.display(self.player, self.count_monsters)
         # player status
@@ -275,6 +275,8 @@ class Level:
 
         # intéraction avec le chaudron
         self.check_collide_interactable()
+        self.fire_group.update()
+        self.fire_group.draw(self.display_surface)
 
         self.count_monsters()
 

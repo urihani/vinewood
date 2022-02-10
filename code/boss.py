@@ -4,11 +4,15 @@ from entity import Entity
 from support import *
 from particles import AnimationPlayer
 from level import *
-from math import sin
 
 
-class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites):
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, monster_name, pos, groups):
+
+        super().__init__(groups)
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.direction = pygame.math.Vector2()
 
         # general setup
         super().__init__(groups)
@@ -21,9 +25,9 @@ class Enemy(Entity):
 
         # movement
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -10)
-        self.obstacle_sprites = obstacle_sprites
+        self.hitbox = self.rect.inflate(-100, -100)
         self.groups = groups
+        self._layer = 1
 
         # stats
         self.monster_name = monster_name
@@ -43,17 +47,24 @@ class Enemy(Entity):
         self.attack_time = None
         self.attack_cooldown = 400
 
-        # flickering
-        self.check_health = self.health
-        self.flicker_duration_max = 120
-        self.flicker_duration = 0
-        self.touched = False
-
     def import_graphics(self, name):
         self.animations = {'idle': [], 'move': [], 'attack': []}
         main_path = f'../graphics/monsters/{name}/'
         for animation in self.animations.keys():
             self.animations[animation] = import_folder(main_path + animation)
+
+    def move(self, speed):
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+
+        self.hitbox.x += self.direction.x * speed
+        self.collision('horizontal')
+        self.hitbox.y += self.direction.y * speed
+        self.collision('vertical')
+        self.rect.center = self.hitbox.center
+
+    def collision(self, direction):
+        pass
 
     def get_player_distance_direction(self, player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -123,22 +134,6 @@ class Enemy(Entity):
         self.move(self.speed)
         self.animate()
         self.cooldown()
-        # ICI...
-        # print(self.flicker_duration)
-        # print(self.touched)
-
-    def flicker(self):
-        value = sin(pygame.time.get_ticks())
-        if value >= 0:
-            return 255
-        else:
-            return 0
-
-    def flickering(self, status):
-        if status == True:
-            self.image.set_alpha(self.flicker())
-        else:
-            self.image.set_alpha(255)
 
     def enemy_update(self, player, fire_group):
 
@@ -153,12 +148,7 @@ class Enemy(Entity):
             hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
             hit_sound.set_volume(0.2)
             hit_sound.play()
-            # ...ET LA
-            if self.touched == False and self.flicker_duration == 0:
-                self.touched = True
-
             if self.health <= 0:
                 self.kill()
-            
             player.tired = False
             player.duration = 0

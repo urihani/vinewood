@@ -85,6 +85,10 @@ class Player(Entity):
                 self.has_dashed = True
                 if self.can_dash and self.tired == False:
                     if self.duration <= self.max_duration:
+                        z_dash_sound = pygame.mixer.Sound(
+                            '../audio/blum/blum_daash.wav')
+                        z_dash_sound.set_volume(0.1)
+                        z_dash_sound.play()
                         self.hitbox.y += self.direction.y * \
                             (self.speed*2.5)
                         self.duration += 1
@@ -97,6 +101,10 @@ class Player(Entity):
                 self.has_dashed = True
                 if self.can_dash and self.tired == False:
                     if self.duration <= self.max_duration:
+                        s_dash_sound = pygame.mixer.Sound(
+                            '../audio/blum/blum_daash.wav')
+                        s_dash_sound.set_volume(0.1)
+                        s_dash_sound.play()
                         self.hitbox.y += self.direction.y * \
                             (self.speed*2.5)
                         self.duration += 1
@@ -128,6 +136,10 @@ class Player(Entity):
                 self.has_dashed = True
                 if self.can_dash and self.tired == False:
                     if self.duration <= self.max_duration:
+                        q_dash_sound = pygame.mixer.Sound(
+                            '../audio/blum/blum_daash.wav')
+                        q_dash_sound.set_volume(0.1)
+                        q_dash_sound.play()
                         self.hitbox.x += self.direction.x * \
                             (self.speed*2.5)
                         self.duration += 1
@@ -199,8 +211,9 @@ class Player(Entity):
 
         # mort
         if self.health <= 0:
-            death_sound = pygame.mixer.Sound('../audio/blum/blum_dead.wav')
-            death_sound.set_volume(0.2)
+            death_sound = pygame.mixer.Sound(
+                '../audio/blum/blum_dead.wav')
+            death_sound.set_volume(0.8)
             death_sound.play()
             self.is_dead = True
             self.health = 0
@@ -234,8 +247,7 @@ class Player(Entity):
         if value >= 0:
             return 255
         else:
-            return 0 
-
+            return 0
 
     def flickering(self, status):
         if status == True:
