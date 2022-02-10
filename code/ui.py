@@ -31,15 +31,19 @@ class UI:
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
     def show_count_monsters(self):
-        bg_rect = pygame.Rect(550, 10, 250, 50)
         self.nb_enemies = self.count_monsters()
-        #myfont = pygame.font.SysFont('Comic Sans MS', 15)
-        textsurface = self.font.render(
-            f"Nombre d'ennemis restants : {self.nb_enemies}", False, TEXT_COLOR)
-        count_monsters_rect = textsurface.get_rect()
-        #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
-        self.display_surface.blit(textsurface, bg_rect)
-        # print(self.nb_enemies)
+        if self.nb_enemies != 0:
+            bg_rect = pygame.Rect(550, 10, 250, 50)
+            textsurface = self.font.render(
+                f"Nombre d'ennemis restants : {self.nb_enemies}", False, TEXT_COLOR)
+            count_monsters_rect = textsurface.get_rect()
+            self.display_surface.blit(textsurface, bg_rect)
+        else:
+            bg_rect = pygame.Rect(225, 250, 450, 50)
+            textsurface = self.font_big.render(
+                "Vous avez gagné !", False, TEXT_COLOR)
+            text_fin_rect = textsurface.get_rect()
+            self.display_surface.blit(textsurface, bg_rect)
 
     def show_cauldron_menu(self):
         # print('show menu')
