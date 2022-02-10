@@ -1,5 +1,6 @@
 from os import kill
 from tkinter.messagebox import NO
+from turtle import pos
 import pygame
 import math
 from settings import *
@@ -12,6 +13,7 @@ from ui import UI
 from enemy import Enemy
 from projectile import *
 from chaudron import Chaudron
+from particles import AnimationPlayer
 
 
 class Level:
@@ -52,6 +54,9 @@ class Level:
         self.is_displayed = False
         self.pressed = False
         self.press_time = None
+
+        # particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -148,7 +153,7 @@ class Level:
                                 self.nb_monster += 1
 
     def count_monsters(self):
-        nb = len(self.enemy_sprites)+1
+        nb = len(self.enemy_sprites)
         return nb
 
     def shoot(self):
@@ -177,6 +182,7 @@ class Level:
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
+
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -190,9 +196,12 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites,
+                                     self.player_group],
                                     self.obstacle_sprites,
-                                    self.shoot, self.player_death, self.respawn)
+                                    self.shoot,
+                                    self.player_death,
+                                    self.respawn)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -218,6 +227,10 @@ class Level:
                         if obstacle.sprite_type != 'invisible':
                             fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
+                            offset = pygame.math.Vector2(1)
+                            pos = obstacle.rect.center
+                            for grass in range(3,6):
+                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
                             obstacle.kill()
 
     def check_collide_interactable(self):
@@ -245,6 +258,13 @@ class Level:
         # player status
         self.player_dead = self.player.is_dead
 
+        for sp in self.interactable_sprites:
+            print(sp)
+
+        for pl in self.player_group:
+            print(pl)
+
+        print("confirm")
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
