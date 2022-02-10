@@ -16,7 +16,7 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
-        self.nb_temp = 42
+        self.nb_temp = 36
 
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
@@ -139,6 +139,7 @@ class UI:
             # speed
             if self.speed_rect.collidepoint(event.pos) and self.nb_temp <= 36:
                 print('speed - ok')
+                self.player.speed = 6
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'health_rect'):
             # health
             if self.health_rect.collidepoint(event.pos) and self.nb_temp <= 28:
