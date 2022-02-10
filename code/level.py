@@ -140,10 +140,6 @@ class Level:
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
-        graphics = {
-            'grass': import_folder('../graphics/grass'),
-            'objects': import_folder('../graphics/objects')
-        }
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -181,6 +177,11 @@ class Level:
             'grass': import_csv_layout('../map/map_grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
+        }
+
+        graphics = {
+            'grass': import_folder('../graphics/grass'),
+            'objects': import_folder('../graphics/objects')
         }
 
         for style, layout in layouts.items():
@@ -252,6 +253,10 @@ class Level:
             if current_time - self.pressed >= 4000:
                 self.pressed = False
 
+    def collide_animation(self, signal):
+        if signal == True:
+            print("test")
+
     def run(self):
         # met à jour et dessine les sprites
         self.visible_sprites.custom_draw(self.player)
@@ -262,14 +267,6 @@ class Level:
         self.ui.display(self.player, self.count_monsters)
         # player status
         self.player_dead = self.player.is_dead
-
-        for sp in self.interactable_sprites:
-            print(sp)
-
-        for pl in self.player_group:
-            print(pl)
-
-        print("confirm")
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
