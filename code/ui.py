@@ -57,7 +57,7 @@ class UI:
                     '../graphics/power_ups/dash.png', 355, 25)
             else:
                 self.dash_rect = self.display_row(
-                    '../graphics/power_ups/dash.buy.png', 355, 25)
+                    '../graphics/power_ups/dash_buy.png', 355, 25)
             
         else:
             self.display_row(
