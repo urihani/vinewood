@@ -95,6 +95,36 @@ class UI:
             self.display_row(
                 '../graphics/power_ups/none.png', 355, 275)
 
+        # nourriture
+        bg_rect = pygame.Rect(450, 355, 355, 20)
+        title_surf = self.font.render('nourriture', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        # indication
+        bg_rect = pygame.Rect(365, 400, 355, 20)
+        title_surf = self.font.render(
+            'Revenez ici pour vous', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 420, 355, 20)
+        title_surf = self.font.render(
+            'nourrir et devenir', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 440, 355, 20)
+        title_surf = self.font.render(
+            'plus fort!', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
+        bg_rect = pygame.Rect(365, 500, 355, 20)
+        title_surf = self.font.render(
+            'zqsd : bouger', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+        bg_rect = pygame.Rect(365, 520, 355, 20)
+        title_surf = self.font.render(
+            'espace : capacité n°1', False, TEXT_COLOR)
+        self.display_surface.blit(title_surf, bg_rect)
+
     def display_row(self, path, x, y):
         dash_img = pygame.image.load(
             path).convert_alpha()
