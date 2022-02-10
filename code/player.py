@@ -9,7 +9,6 @@ from entity import Entity
 from projectile import *
 
 
-
 class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, shoot, player_death, respawn):
         super().__init__(groups)
@@ -37,7 +36,7 @@ class Player(Entity):
 
         # stats
         self.stats = {'health': 100,
-                      'attack': 10, 'speed': 5}
+                      'attack': 25, 'speed': 5}
         self.health = self.stats['health']
         self.speed = self.stats['speed']
         self.is_dead = False

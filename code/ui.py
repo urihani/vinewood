@@ -132,7 +132,8 @@ class UI:
             # reach
             if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
                 print('reach - ok')
-                powers_data['fire_ball']['reach'] = 1200
+                powers_data['fire_ball']['reach'] = 1000
+                powers_data['fire_ball']['distance'] = 2
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'speed_rect'):
             # speed
             if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:
