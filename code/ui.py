@@ -39,9 +39,9 @@ class UI:
             count_monsters_rect = textsurface.get_rect()
             self.display_surface.blit(textsurface, bg_rect)
         else:
-            bg_rect = pygame.Rect(30, 250, 450, 50)
+            bg_rect = pygame.Rect(225, 250, 450, 50)
             textsurface = self.font_big.render(
-                "Vous avez vaincu tous vos ennemis !", False, TEXT_COLOR)
+                "Vous avez gagné !", False, TEXT_COLOR)
             text_fin_rect = textsurface.get_rect()
             self.display_surface.blit(textsurface, bg_rect)
 

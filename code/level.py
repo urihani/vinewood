@@ -126,14 +126,12 @@ class Level:
                                 else:
                                     monster_name = 'squid'
 
-                                # self.enemy = Enemy(monster_name,
-                                #                    (x, y),
-                                #                    [self.visible_sprites,
-                                #                        self.attackable_sprites,
-                                #                        self.enemy_sprites],
-                                #                    self.obstacle_sprites)
-        self.bamboo = Enemy('bamboo', (1050, 1300), [
-                            self.visible_sprites, self.attackable_sprites, self.enemy_sprites], self.obstacle_sprites)
+                                self.enemy = Enemy(monster_name,
+                                                   (x, y),
+                                                   [self.visible_sprites,
+                                                       self.attackable_sprites,
+                                                       self.enemy_sprites],
+                                                   self.obstacle_sprites)
 
     def nb_monsterMax(self):
         layouts = {
