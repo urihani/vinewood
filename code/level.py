@@ -256,7 +256,8 @@ class Level:
 
     def collide_animation(self, signal):
         if signal == True:
-            print("test")
+            # print("test")
+            pass
 
     def run(self):
         # met à jour et dessine les sprites
