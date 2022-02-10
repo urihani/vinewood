@@ -183,8 +183,6 @@ class Level:
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
 
-        
-
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -229,7 +227,8 @@ class Level:
                         if obstacle.sprite_type != 'invisible':
                             fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
-                            self.animation_player.create_grass_particles(pos, [self.visible_sprites])
+                            self.animation_player.create_grass_particles(
+                                pos, [self.visible_sprites])
                             obstacle.kill()
 
     def check_collide_interactable(self):
@@ -261,8 +260,8 @@ class Level:
             print(sp)
 
         for pl in self.player_group:
-            print(pl)    
-            
+            print(pl)
+
         print("confirm")
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
