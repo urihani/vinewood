@@ -66,7 +66,7 @@ class UI:
 
         # reach
         if self.nb_enemies <= 42:
-            if not powers_data['fire_ball']['reach'] == 1000 and powers_data['fire_ball']['distance'] == 2:
+            if not powers_data['fire_ball']['reach'] == 1000 and not powers_data['fire_ball']['distance'] == 2:
                 self.reach_rect = self.display_row(
                     '../graphics/power_ups/portee.png', 355, 75)
             else:
