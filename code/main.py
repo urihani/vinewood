@@ -17,7 +17,7 @@ class Game:
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(UI_FONT,13)
-        self.font2 = pygame.font.Font(UI_FONT,18)
+        self.font2 = pygame.font.Font(UI_FONT,25)
        
         #intro fade
         self.intro = True
@@ -117,7 +117,7 @@ class Game:
                     self.draw_text('Vous buvez cette étrange mixture et vous vous sentez étrangement plus fort...',40,450)
                     self.draw_text('Beaucoup plus fort.',40,500)
 
-                    self.wake_serf = pygame.image.load('../graphics/menu_pause/wake_up.png').convert_alpha()
+                    self.wake_serf = pygame.image.load('../graphics/menu_pause/Wake_up.png').convert_alpha()
                     self.wake_rect = self.wake_serf.get_rect(midbottom =(800,700))
                     self.display_surface.blit(self.wake_serf, self.wake_rect)
                     self.handle_event1(self.event)
@@ -203,7 +203,13 @@ class Game:
             self.retour_rect = self.retour_surf.get_rect(topleft=(0, 0))
             self.display_surface.blit(self.retour_surf, self.retour_rect)
 
-            self.draw_text('Credits',40,100)
+            self.draw_text2('Credits',430,100)
+            self.draw_text('Game designeurs: Julien , Loris')
+            self.draw_text('Codeurs : Julien , Loris,  loic et mathis')
+            self.draw_text('Rôle')
+            self.draw_text('Rôle')
+            self.draw_text('Rôle')
+            self.draw_text('Rôle')
 
 
             self.handle_event3(self.event)
