@@ -16,6 +16,8 @@ class UI:
 
         self.clock = pygame.time.Clock()
 
+        self.is_speed = False
+
     def show_bar(self, current, max_amount, bg_rect, color):
         # draw bg
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
@@ -78,7 +80,7 @@ class UI:
 
         # speed
         if self.nb_enemies <= 36:
-            if  self.player.speed <= 5:
+            if not self.is_speed:
                 self.speed_rect = self.display_row(
                     '../graphics/power_ups/vitesse.png', 355, 125)
             else:
@@ -102,7 +104,7 @@ class UI:
 
         # fire_rate
         if self.nb_enemies <= 20:
-            if not self.player.cooldown == 300:
+            if not self.player.cooldown == 600:
                 self.fire_rate_rect = self.display_row(
                     '../graphics/power_ups/cadence.png', 355, 225)
             else:
@@ -114,7 +116,7 @@ class UI:
 
         # damage
         if self.nb_enemies <= 12:
-            if not powers_data['fire_ball']['damage'] != 50:
+            if not powers_data['fire_ball']['damage'] == 50:
                 self.damage_rect = self.display_row(
                     '../graphics/power_ups/degats.png', 355, 275)
             else:
@@ -203,6 +205,7 @@ class UI:
             if self.speed_rect.collidepoint(event.pos) and self.nb_enemies <= 36:
                 # print('speed - ok')
                 self.player.speed = 6
+                self.is_speed = True
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'health_rect'):
             # health
             if self.health_rect.collidepoint(event.pos) and self.nb_enemies <= 28:
