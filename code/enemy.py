@@ -123,12 +123,12 @@ class Enemy(Entity):
         # collisions avec les boules de feu
         if pygame.sprite.spritecollide(self, fire_group, True):
             self.health -= player.stats['attack']
+            #self.health -= player.stats['attack']
+            # if self.health <= 0:
+            hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
+            hit_sound.set_volume(0.2)
+            hit_sound.play()
             if self.health <= 0:
-                #self.health -= player.stats['attack']
-                # if self.health <= 0:
-                hit_sound = pygame.mixer.Sound('../audio/blum/blum_hit.wav')
-                hit_sound.set_volume(0.2)
-                hit_sound.play()
                 self.kill()
             player.tired = False
             player.duration = 0
