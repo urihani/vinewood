@@ -163,6 +163,9 @@ class Enemy(Entity):
             # ...ET LA
             if self.touched == False and self.flicker_duration == 0:
                 self.touched = True
+
+            if self.health <= 0:
+                self.kill()
             
             player.tired = False
             player.duration = 0
