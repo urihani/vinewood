@@ -129,7 +129,7 @@ class Game:
             self.game_pause_input_check()
             pygame.display.update()
             if self.game_pause or self.credit:
-                self.clock.tick(0)
+                #self.clock.tick(0)
                 # faire disparaitre le curseur
                 pygame.mouse.set_cursor()
             else:
@@ -204,12 +204,12 @@ class Game:
             self.display_surface.blit(self.retour_surf, self.retour_rect)
 
             self.draw_text2('Credits',430,100)
-            self.draw_text('Game designeurs: Julien , Loris')
-            self.draw_text('Codeurs : Julien , Loris,  loic et mathis')
-            self.draw_text('Rôle')
-            self.draw_text('Rôle')
-            self.draw_text('Rôle')
-            self.draw_text('Rôle')
+            self.draw_text('Game designeurs: Julien , Loris',470,100)
+            self.draw_text('Codeurs : Julien , Loris,  loic et mathis',490,100)
+            self.draw_text('Rôle',510,100)
+            self.draw_text('Rôle',530,100)
+            self.draw_text('Rôle',550,100)
+            self.draw_text('Rôle',570,100)
 
 
             self.handle_event3(self.event)
