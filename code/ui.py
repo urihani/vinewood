@@ -52,8 +52,13 @@ class UI:
 
         # dash
         if self.nb_enemies <= 47:
-            self.dash_rect = self.display_row(
-                '../graphics/power_ups/dash.png', 355, 25)
+            if not self.player.can_dash:
+                self.dash_rect = self.display_row(
+                    '../graphics/power_ups/dash.png', 355, 25)
+            else:
+                self.dash_rect = self.display_row(
+                    '../graphics/power_ups/dash_buy.png', 355, 25)
+            
         else:
             self.display_row(
                 '../graphics/power_ups/none3.png', 355, 25)
@@ -61,40 +66,60 @@ class UI:
 
         # reach
         if self.nb_enemies <= 42:
-            self.reach_rect = self.display_row(
-                '../graphics/power_ups/portee.png', 355, 75)
+            if not powers_data['fire_ball']['reach'] == 1000 and powers_data['fire_ball']['distance'] == 2:
+                self.reach_rect = self.display_row(
+                    '../graphics/power_ups/portee.png', 355, 75)
+            else:
+                self.reach_rect = self.display_row(
+                    '../graphics/power_ups/portee_buy.png', 355, 75)
         else:
             self.display_row(
                 '../graphics/power_ups/none5.png', 355, 75)
 
         # speed
         if self.nb_enemies <= 36:
-            self.speed_rect = self.display_row(
-                '../graphics/power_ups/vitesse.png', 355, 125)
+            if not self.player.speed == 6:
+                self.speed_rect = self.display_row(
+                    '../graphics/power_ups/vitesse.png', 355, 125)
+            else:
+                self.speed_rect = self.display_row(
+                    '../graphics/power_ups/vitesse_buy.png', 355, 125)
         else:
             self.display_row(
                 '../graphics/power_ups/none6.png', 355, 125)
 
         # health
         if self.nb_enemies <= 28:
-            self.health_rect = self.display_row(
-                '../graphics/power_ups/sante.png', 355, 175)
+            if not self.player.health == 150:
+                self.health_rect = self.display_row(
+                 '../graphics/power_ups/sante.png', 355, 175)
+            else:
+                self.health_rect = self.display_row(
+                 '../graphics/power_ups/sante_buy.png', 355, 175)
         else:
             self.display_row(
                 '../graphics/power_ups/none8.png', 355, 175)
 
         # fire_rate
         if self.nb_enemies <= 20:
-            self.fire_rate_rect = self.display_row(
-                '../graphics/power_ups/cadence.png', 355, 225)
+            if not self.player.cooldown == 300:
+                self.fire_rate_rect = self.display_row(
+                    '../graphics/power_ups/cadence.png', 355, 225)
+            else:
+                self.fire_rate_rect = self.display_row(
+                    '../graphics/power_ups/cadence_buy.png', 355, 225)
         else:
             self.display_row(
                 '../graphics/power_ups/none8.png', 355, 225)
 
         # damage
         if self.nb_enemies <= 12:
-            self.damage_rect = self.display_row(
-                '../graphics/power_ups/degats.png', 355, 275)
+            if not powers_data['fire_ball']['damage'] != 50:
+                self.damage_rect = self.display_row(
+                    '../graphics/power_ups/degats.png', 355, 275)
+            else:
+                self.damage_rect = self.display_row(
+                    '../graphics/power_ups/degats_buy.png', 355, 275)
         else:
             self.display_row(
                 '../graphics/power_ups/none8.png', 355, 275)
@@ -166,6 +191,7 @@ class UI:
             if self.dash_rect.collidepoint(event.pos) and self.nb_enemies <= 47:
                 # print('dash - ok')
                 self.player.can_dash = True
+                self.show_cauldron_menu
         if event.type == pygame.MOUSEBUTTONDOWN and hasattr(self, 'reach_rect'):
             # reach
             if self.reach_rect.collidepoint(event.pos) and self.nb_enemies <= 42:
