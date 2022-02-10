@@ -78,7 +78,7 @@ class Enemy(Entity):
                     '../audio/blum/blum_ouch.wav')
                 damage_sound.set_volume(0.2)
                 damage_sound.play()
-                player.health -= self.attack_damage
+                #player.health -= self.attack_damage
                 enemy_sound = pygame.mixer.Sound(self.attack_sound)
                 if self.attack_sound == '../audio/attack/fireball.wav':
                     enemy_sound.set_volume(0.1)
