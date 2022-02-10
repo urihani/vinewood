@@ -229,7 +229,10 @@ class Level:
                         if obstacle.sprite_type != 'invisible':
                             fire_ball.kill()
                         if obstacle.sprite_type == 'grass':
-                            self.animation_player.create_grass_particles(pos, [self.visible_sprites])
+                            offset = pygame.math.Vector2(1)
+                            pos = obstacle.rect.center
+                            for grass in range(3,6):
+                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
                             obstacle.kill()
 
     def check_collide_interactable(self):
