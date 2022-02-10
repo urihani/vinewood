@@ -36,7 +36,7 @@ class UI:
         self.nb_enemies = self.count_monsters()
         #myfont = pygame.font.SysFont('Comic Sans MS', 15)
         textsurface = self.font.render(
-            f"Nombre d'ennemis restants : {self.nb_enemies}", False, (0, 0, 0,))
+            f"Nombre d'ennemis restants : {self.nb_enemies}", False, TEXT_COLOR)
         count_monsters_rect = textsurface.get_rect()
         #pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
         self.display_surface.blit(textsurface, bg_rect)
