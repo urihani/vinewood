@@ -3,6 +3,7 @@ from settings import *
 from entity import Entity
 from support import *
 from particles import AnimationPlayer
+from level import *
 
 
 class Enemy(Entity):
@@ -21,6 +22,7 @@ class Enemy(Entity):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)
         self.obstacle_sprites = obstacle_sprites
+        self.groups = groups
 
         # stats
         self.monster_name = monster_name
