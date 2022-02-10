@@ -153,7 +153,7 @@ class Level:
                                 self.nb_monster += 1
 
     def count_monsters(self):
-        nb = len(self.enemy_sprites)+1
+        nb = len(self.enemy_sprites)
         return nb
 
     def shoot(self):
