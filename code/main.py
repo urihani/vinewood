@@ -16,6 +16,10 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('VineWood')
         self.clock = pygame.time.Clock()
+        self.font = pygame.font.Font(UI_FONT,15)
+
+        #intro fade
+        self.intro = True
 
         self.ui = UI()
         self.level = Level(self.ui)
@@ -56,10 +60,18 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 self.ui.handle_event(event)
-
-            self.screen.fill('black')
+            #self.screen.fill('black')
             if self.game_pause == False and self.credit == False:
-                self.level.run()
+                if self.intro:
+                    self.display_surface.fill(((0, 0, 0)))
+                    text_surf = self.font.render('Vous venez de vous réveiller, vous regardez autour de vous....',False,TEXT_COLOR)
+                    text_rect = pygame.Rect(100,100,350,20)
+                    self.display_surface.blit( text_surf,text_rect )
+                    keys = pygame.key.get_pressed()
+                    if keys[pygame.K_n]:
+                        self.intro = False
+                else:   
+                    self.level.run()
 
             # souris
             self.update()
