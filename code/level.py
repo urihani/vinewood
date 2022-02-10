@@ -192,17 +192,6 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
 
-                        # herbe
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile(
-                                (x, y),
-                                [self.visible_sprites,
-                                 self.obstacle_sprites,
-                                 self.attackable_sprites],
-                                'grass',
-                                random_grass_image)
-
                         # entities
                         if style == 'entities':
                             if col == '394':
