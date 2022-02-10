@@ -79,8 +79,9 @@ class Game:
             if self.credit_rect.collidepoint(event.pos):
                 self.credit = True
                 self.credit_hover = False
-            if self.credit_rect.collidepoint(event.pos):
-                self.leave = True
+            if self.leave_rect.collidepoint(event.pos):
+                pygame.quit()
+                sys.exit()
                 self.leave_hover = False
 
         if event.type == pygame.MOUSEMOTION:
@@ -185,7 +186,7 @@ class Game:
             self.display_surface.blit(self.credit_surface, self.credit_rect)
 
             self.leave_surf = pygame.image.load(
-                '../graphics/menu_pause/Rmenu.png').convert_alpha()
+                '../graphics/menu_pause/leave.png').convert_alpha()
             self.leave_rect = self.leave_surf.get_rect(midbottom=(512, 590))
             self.display_surface.blit(self.leave_surf, self.leave_rect)
 
@@ -217,7 +218,7 @@ class Game:
 
         if self.leave_hover:
             self.leave_surface_hover = pygame.image.load(
-                '../graphics/menu_pause/Rmenu_hover.png').convert_alpha()
+                '../graphics/menu_pause/leave_hover.png').convert_alpha()
             self.leave_rect = self.leave_surface_hover.get_rect(
                 midbottom=(512, 590))
             self.display_surface.blit(

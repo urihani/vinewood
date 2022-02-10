@@ -36,7 +36,7 @@ class Player(Entity):
 
         # stats
         self.stats = {'health': 100,
-                      'attack': 25, 'speed': 5}
+                      'attack': 30, 'speed': 5}
         self.health = self.stats['health']
         self.speed = self.stats['speed']
         self.is_dead = False
@@ -89,8 +89,7 @@ class Player(Entity):
                             '../audio/blum/blum_daash.wav')
                         z_dash_sound.set_volume(0.1)
                         z_dash_sound.play()
-                        self.hitbox.y += self.direction.y * \
-                            (self.speed*2.5)
+                        self.hitbox.y += self.direction.y * (self.speed*2.5)
                         self.duration += 1
                     else:
                         tired = True
@@ -124,8 +123,7 @@ class Player(Entity):
                             '../audio/blum/blum_daash.wav')
                         d_dash_sound.set_volume(0.1)
                         d_dash_sound.play()
-                        self.hitbox.x += self.direction.x * \
-                            (self.speed*2.5)
+                        self.hitbox.x += self.direction.x * (self.speed*2.5)
                         self.duration += 1
                     else:
                         tired = True
