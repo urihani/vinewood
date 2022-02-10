@@ -182,6 +182,9 @@ class Level:
             'object': import_csv_layout('../map/map_Objects.csv'),
             'entities': import_csv_layout('../map/map_Entities.csv')
         }
+
+        
+
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -195,9 +198,12 @@ class Level:
                             if col == '394':
                                 self.player = Player(
                                     (x, y),
-                                    [self.visible_sprites],
+                                    [self.visible_sprites,
+                                     self.player_group],
                                     self.obstacle_sprites,
-                                    self.shoot, self.player_death, self.respawn)
+                                    self.shoot,
+                                    self.player_death,
+                                    self.respawn)
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -251,6 +257,13 @@ class Level:
         # player status
         self.player_dead = self.player.is_dead
 
+        for sp in self.interactable_sprites:
+            print(sp)
+
+        for pl in self.player_group:
+            print(pl)    
+            
+        print("confirm")
         # position de la souris
         self.mouse_pos = pygame.mouse.get_pos()
 
