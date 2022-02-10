@@ -40,8 +40,8 @@ class Game:
         self.display_surface = pygame.display.get_surface()
         self.game_pause = False
         self.event = pygame.event
-        
-        #hover
+
+        # hover
         self.resume_hover = False
         self.credit_hover = False
 
@@ -55,21 +55,20 @@ class Game:
             center=self.mouse_pos)
         self.display_surface.blit(self.crosshair_img, self.crosshair_rect)
 
-    def draw_text(self,text,x,y):
-        text_surf = self.font.render(text,False,TEXT_COLOR)
-        text_rect = pygame.Rect(x,y,768,20)
-        self.display_surface.blit( text_surf,text_rect )
+    def draw_text(self, text, x, y):
+        text_surf = self.font.render(text, False, TEXT_COLOR)
+        text_rect = pygame.Rect(x, y, 768, 20)
+        self.display_surface.blit(text_surf, text_rect)
 
-    def draw_text2(self,text,x,y):
-        text_surf = self.font2.render(text,False,TEXT_COLOR)
-        text_rect = pygame.Rect(x,y,768,20)
-        self.display_surface.blit( text_surf,text_rect )
+    def draw_text2(self, text, x, y):
+        text_surf = self.font2.render(text, False, TEXT_COLOR)
+        text_rect = pygame.Rect(x, y, 768, 20)
+        self.display_surface.blit(text_surf, text_rect)
 
     def handle_event1(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
             if self.wake_rect.collidepoint(event.pos):
                 self.intro = False
-
 
     def handle_event2(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
@@ -81,10 +80,10 @@ class Game:
                 self.credit_hover = False
 
         if event.type == pygame.MOUSEMOTION:
-                if self.resume_rect.collidepoint(event.pos):
-                    self.resume_hover = True
-                else:
-                    self.resume_hover = False
+            if self.resume_rect.collidepoint(event.pos):
+                self.resume_hover = True
+            else:
+                self.resume_hover = False
 
         if event.type == pygame.MOUSEMOTION:
             if self.credit_rect.collidepoint(event.pos):
@@ -94,8 +93,8 @@ class Game:
 
     def handle_event3(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
-                    if self.retour_rect.collidepoint(event.pos):
-                        self.credit = False
+            if self.retour_rect.collidepoint(event.pos):
+                self.credit = False
 
     def run(self):
         while True:
@@ -121,7 +120,7 @@ class Game:
                     self.wake_rect = self.wake_serf.get_rect(midbottom =(800,700))
                     self.display_surface.blit(self.wake_serf, self.wake_rect)
                     self.handle_event1(self.event)
-                else:   
+                else:
                     self.level.run()
 
             # souris
@@ -158,19 +157,25 @@ class Game:
         if self.game_pause and not self.credit:
             self.display_surface.fill(((64, 64, 64)))
 
-            self.logo_serf = pygame.image.load('../graphics/menu_pause/logo.png').convert_alpha()
-            self.logo_rect = self.logo_serf.get_rect(midbottom =(512,150))
+            self.logo_serf = pygame.image.load(
+                '../graphics/menu_pause/logo.png').convert_alpha()
+            self.logo_rect = self.logo_serf.get_rect(midbottom=(512, 150))
             self.display_surface.blit(self.logo_serf, self.logo_rect)
 
-            self.resume_surface = pygame.image.load('../graphics/menu_pause/resume.png').convert_alpha()
-            self.resume_rect = self.resume_surface.get_rect(midbottom=(512, 330))
+            self.resume_surface = pygame.image.load(
+                '../graphics/menu_pause/resume.png').convert_alpha()
+            self.resume_rect = self.resume_surface.get_rect(
+                midbottom=(512, 330))
             self.display_surface.blit(self.resume_surface, self.resume_rect)
 
-            self.credit_surface = pygame.image.load('../graphics/menu_pause/credits.png').convert_alpha()
-            self.credit_rect = self.credit_surface.get_rect(midbottom=(512, 460))
+            self.credit_surface = pygame.image.load(
+                '../graphics/menu_pause/credits.png').convert_alpha()
+            self.credit_rect = self.credit_surface.get_rect(
+                midbottom=(512, 460))
             self.display_surface.blit(self.credit_surface, self.credit_rect)
 
-            self.Rmenu_surface = pygame.image.load('../graphics/menu_pause/Rmenu.png').convert_alpha()
+            self.Rmenu_surface = pygame.image.load(
+                '../graphics/menu_pause/Rmenu.png').convert_alpha()
             self.Rmenu_rect = self.Rmenu_surface.get_rect(midbottom=(512, 590))
             self.display_surface.blit(self.Rmenu_surface, self.Rmenu_rect)
 
@@ -185,16 +190,20 @@ class Game:
             self.handle_event2(self.event)
 
         if self.resume_hover:
-            self.resume_surface_hover = pygame.image.load('../graphics/menu_pause/resume_hover.png').convert_alpha()
+            self.resume_surface_hover = pygame.image.load(
+                '../graphics/menu_pause/resume_hover.png').convert_alpha()
             self.resume_rect = self.resume_surface_hover.get_rect(
-            midbottom=(512, 330))
-            self.display_surface.blit(self.resume_surface_hover, self.resume_rect)
+                midbottom=(512, 330))
+            self.display_surface.blit(
+                self.resume_surface_hover, self.resume_rect)
 
         if self.credit_hover:
-            self.credit_surface_hover = pygame.image.load('../graphics/menu_pause/credits_hover.png').convert_alpha()
+            self.credit_surface_hover = pygame.image.load(
+                '../graphics/menu_pause/credits_hover.png').convert_alpha()
             self.credit_rect = self.credit_surface_hover.get_rect(
                 midbottom=(512, 460))
-            self.display_surface.blit(self.credit_surface_hover, self.credit_rect)
+            self.display_surface.blit(
+                self.credit_surface_hover, self.credit_rect)
 
         if self.credit:
             self.display_surface.fill(((64, 64, 64)))
@@ -213,7 +222,7 @@ class Game:
 
 
             self.handle_event3(self.event)
-                
+
 
 if __name__ == '__main__':
     game = Game()
