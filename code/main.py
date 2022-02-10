@@ -236,7 +236,7 @@ class Game:
             self.draw_text('Game designeurs: Julien , Loris',260,240)
             self.draw_text('Codeurs : Julien , Loris,  loic et mathis',260,280)
             self.draw_text('graphiste : mathis',260,320)
-            self.draw_text(' Ingé son :mathis',260,360)
+            self.draw_text('Ingé son : mathis',260,360)
             self.draw_text('Graphisme :',220,400)
             self.draw_text('Map et ennemies: https://pixel-boy.itch.io/ninja-adventure-asset-pack',260,440)
             self.draw_text('boule de feu: https://nyknck.itch.io/pixelarteffectfx017',260,480)
@@ -244,8 +244,8 @@ class Game:
             self.draw_text('Chaudron: https://opengameart.org/content/lpc-dungeon-elements',260,560)
             self.draw_text('aliments: https://henrysoftware.itch.io/pixel-food?download',260,600)
             self.draw_text('Son :',220,640)
-            self.draw_text('musique: original créer avec FLStudio ',260,600)
-            self.draw_text('Sound Effects : Splice  ',260,600)
+            self.draw_text('musique: original créer avec FLStudio ',260,680)
+            self.draw_text('Sound Effects : Splice  ',260,720)
 
 
             self.handle_event3(self.event)

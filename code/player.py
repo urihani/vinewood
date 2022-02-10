@@ -184,8 +184,8 @@ class Player(Entity):
                 self.speed = self.speed/10
 
         # debug death
-        if keys[pygame.K_m]:
-            self.health = 0
+        #if keys[pygame.K_m]:
+            #self.health = 0
 
         # POUR LE MENU PAUSE : voir main.py, c'est le seul moyen que j'ai trouvé pour modifier la framerate et figer le jeu. Loïc
 
