@@ -124,28 +124,21 @@ class Enemy(Entity):
         self.animate()
         self.cooldown()
         # ICI...
-        print(self.flicker_duration)
-        print(self.touched)
-    
+        # print(self.flicker_duration)
+        # print(self.touched)
+
     def flicker(self):
         value = sin(pygame.time.get_ticks())
         if value >= 0:
             return 255
         else:
-            return 0 
-
+            return 0
 
     def flickering(self, status):
         if status == True:
             self.image.set_alpha(self.flicker())
         else:
             self.image.set_alpha(255)
-
-    
-        
-        
-
-
 
     def enemy_update(self, player, fire_group):
 
@@ -163,7 +156,6 @@ class Enemy(Entity):
             # ...ET LA
             if self.touched == False and self.flicker_duration == 0:
                 self.touched = True
-            
+
             player.tired = False
             player.duration = 0
-            
